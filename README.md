@@ -4,6 +4,7 @@
 
 - 제품 요구사항: [PRD.md](./PRD.md)
 - 기술 설계: [TRD.md](./TRD.md)
+- 구현 명세 요약: [SPEC.md](./SPEC.md)
 - UI 시안: [Figma — 청도 해커톤 UI 시안](https://www.figma.com/design/1jSoQXwAjX8pv01kjulZYf/%EC%B2%AD%EB%8F%84-%ED%95%B4%EC%BB%A4%ED%86%A4-UI-%EC%8B%9C%EC%95%88?node-id=0-1)
 - 라이브러리 명세 정리: [GitHub Copilot SDK](./docs/reference/copilot-sdk.md), [Microsoft Agent Framework](./docs/reference/agent-framework.md)
 
