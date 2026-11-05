@@ -34,7 +34,7 @@ a { color: var(--run-fg); }
 .banner-main { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
 .brand { font-size: 1.05rem; }
 .banner-help { font-size: .9rem; margin-top: .25rem; color: #d9dfdc; }
-.banner-help summary { cursor: pointer; min-height: 32px; display: inline-flex; align-items: center; text-decoration: underline; }
+.banner-help summary { cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; }
 .banner-help p { margin: .25rem 0; max-width: 70rem; }
 .badge.badge-replay { color: #fff; background: var(--fail-fg); border-color: var(--fail-fg); }
 
@@ -126,7 +126,7 @@ input[type="file"] { min-height: 44px; font: inherit; }
 .step-name { font-weight: 700; }
 .step-meta { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .step-error { color: var(--fail-fg); font-size: .88rem; margin: .35rem 0 0; }
-.step details summary { cursor: pointer; font-size: .85rem; color: var(--primary); min-height: 32px; display: flex; align-items: center; }
+.step details summary { cursor: pointer; font-size: .85rem; color: var(--primary); min-height: 44px; display: flex; align-items: center; }
 .step .agent-note { font-size: .85rem; background: var(--bg); padding: .4rem .6rem; border-radius: 6px; max-height: 16em; overflow: auto; margin: .25rem 0 0; overflow-wrap: anywhere; }
 .step .agent-note p { margin: .2rem 0; }
 .step .agent-note ul { margin: .2rem 0; padding-left: 1.1rem; }

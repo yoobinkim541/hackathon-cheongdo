@@ -96,12 +96,12 @@ SSE 이벤트: `run_started`, `masked`, `transcribed`, `normalized`, `profile`, 
 ## 8. 비기능 요구사항
 
 - **성능:** 1건 90초 이내, 모델 호출 45초 제한(시간 초과·오류 시 세션 삭제 후 새 세션으로 재시도, 단계당 최대 2회 시도, `rate_limit`은 재시도 없음), 동시 실행 4건(평가 포함, 넘으면 자리가 날 때 시작).
-- **성공 지표(PRD 표 3):** 재현율 ≥90%("확인 필요"도 찾은 것으로 셈), 정밀도 ≥90%("규칙상 충족"만 대상), 둘 다 사례별 값의 5건 평균. 근거 일치율 100%(모델이 인용한 판정과 규칙 함수 결과의 일치이며 정답 자격 정확도가 아님). 처리 시간 90초 이내. 가리기 잔존 0건·가리기 재현율 100%. CER 사진 ≤0.10, 녹음 ≤0.15. 배포 앱 실측(2026-11-05 15:27–15:29 KST, 커밋 `2674bead`, 라이브 5건): 재현율·정밀도·근거 일치율 1.00, 평균 42.7초(31.0~55.8초), 잔존 0건, CER 사진 0.000·녹음 0.117. 이전 리비전(`5bb3c20`)에서는 사례 4 정밀도 0.00이 배포 앱에서 2회 재현되었고(STT 오인식), `2674bead`에서 고쳤다(`docs/eval-result.md`).
+- **성공 지표(PRD 표 3):** 재현율 ≥90%("확인 필요"도 찾은 것으로 셈), 정밀도 ≥90%("규칙상 충족"만 대상), 둘 다 사례별 값의 5건 평균. 근거 일치율 100%(모델이 인용한 판정과 규칙 함수 결과의 일치이며 정답 자격 정확도가 아님). 처리 시간 90초 이내. 가리기 잔존 0건·가리기 재현율 100%. CER 사진 ≤0.10, 녹음 ≤0.15. 배포 앱 실측(2026-11-05 15:37–15:39 KST, 커밋 `a9a4b1ae`, 라이브 5건): 재현율·정밀도·근거 일치율 1.00, 평균 40.6초(35.4~49.7초), 잔존 0건, CER 사진 0.000·녹음 0.117, Verifier 보완 0건. 이전 리비전(`5bb3c20`)에서는 사례 4 정밀도 0.00이 배포 앱에서 2회 재현되었고(STT 오인식), `2674bead`에서 고쳤다(`docs/eval-result.md`).
 - **신뢰성:** 서버는 진행 중인 실행을 재생으로 바꾸지 않는다. 데모 사례 실행이 실패로 끝나면 UI가 같은 사례로 `mode:"replay"` 새 실행을 시작하고 "저장된 실행 재생" 배지를 보인다(`data/replays/case1~case5.json`). 직접 입력은 재생 없이 오류·재시도 버튼.
 - **보안:** 세션 쿠키 `dh_sid`(HttpOnly, SameSite=Strict, https에서 Secure)로 실행·평가를 만든 브라우저에 묶음, POST에 `X-Requested-With: dongheng` 필수, CSP 등 보안 헤더와 `no-store`, OpenAPI 문서 끔, IP별 분당 5회(`POST /api/runs`), 입력 4,000자 제한, 본문 JSON 64KB, 사진 5MB·음성 10MB·WAV 2분 제한(내용 시그니처 검사), `/api/eval` 전역 동시 1건·분당 1회, 내장 도구 숨김 + 단계별 권한 허용 목록, 메모는 `<case_note>` 데이터로만 취급, 토큰은 Key Vault(사용자 할당 관리 ID, `AZURE_CLIENT_ID`), 사진·음성 원본은 Azure AI Services(키 없는 관리 ID 인증)로만 보내고 모델에는 가린 텍스트만 전달, 상담 데이터 저장 없음(마지막 활동 뒤 30분, 생성 후 최대 45분에 삭제, Copilot CLI 세션 파일도 함께 삭제). 상세와 한계는 `docs/api.md` 3절.
 - **관측:** Application Insights trace(예: `4c4b94fd281063f0ccf0fb2da3e2c707`, 루트 span `dongheng.run`), `/healthz` 가용성 테스트와 경고 3개(가용성 실패, 5xx, `rate_limit`). `ALERT_EMAIL`을 정했을 때만 메일 작업 그룹을 연결한다. 확정 이벤트에 담당자 검토 시간 `review_seconds`와 고친 구획 수 `edited_sections`를 기록한다.
 - **복구 한계:** 최소·최대 복제본 1, 실행 상태는 프로세스 메모리. 재배포·재시작 시 진행 중인 실행이 사라지고(`run_not_found`), 데모 사례는 실패 시 저장된 실행 재생으로 자동 전환한다.
-- **접근성:** 진행·검증·확정 알림 `aria-live="polite"`, 검증 완료·확정 시 포커스를 결과 제목(`#result-title`)으로 이동, 근거 패널 열림 시 근거 제목으로 이동하고 닫으면 누른 항목으로 복귀, 탭 좌우 화살표 이동, 승인 창 `<dialog>`(Esc로 닫힘), `:focus-visible` 3px 외곽선, 본문 글자 명도 대비 4.5:1 이상(측정값 TRD 9절), 색+글자 배지.
+- **접근성·UX:** 진행·검증·확정 알림 `aria-live="polite"`, 검증 완료·확정 시 포커스를 결과 제목(`#result-title`)으로 이동, 근거 패널 열림 시 근거 제목으로 이동하고 닫으면 누른 항목으로 복귀, 탭 좌우 화살표 이동, 승인 창 `<dialog>`(Esc로 닫힘), `:focus-visible` 3px 외곽선, 본문 글자 명도 대비 4.5:1 이상(측정값 TRD 9절), 색+글자 배지, 버튼·탭 터치 영역 44px 이상. 타임라인의 도구 호출은 쉬운 한국어 칩(예: "기초연금 → 해당 없음")으로, 모델 출력은 단계별 "에이전트 설명 보기"에 글로 표시한다.
 - **책임 있는 AI:** 상단 배너(합성 데이터 전용, AI 초안, 담당자 검토 필요), AI 설명과 초안에 "AI 초안" 표시, 제도 데이터는 예시임을 표시.
 
 ## 9. 기술 스택과 배포
@@ -138,11 +138,12 @@ scripts/record_replay.py
 docs/{api.md,reference/}
 infra/main.bicep, infra/main.parameters.json, infra/modules/{resources,ai,alerts,fetch-image}.bicep
 azure.yaml, Dockerfile, requirements.txt
-tests/{test_core.py,test_rules.py}   # 단위 테스트 42개
+tests/{test_core.py,test_rules.py}   # 단위 테스트 43개
+.github/workflows/ci.yml              # CI: pytest, az bicep build
 ```
 
 아래층은 위층을 import하지 않는다. 모듈별 불변 규칙은 TRD 본문(3.2절 상태 쓰기 주체와 이벤트 경로, 3.3절 ID 계약과 단일 판정 원천, 3.5절 승인 뒤 코드 확정, 11절 모듈 의존 방향)을 따른다.
 
-테스트(MAF·네트워크 없이, `python -m pytest` 42개 통과): 가리기·OCR 숫자 보정 패턴, 한글 수사 정규화, 규칙 함수 경계값·판정 순서·평가 사례 기대값(긴급복지 위기 사유 조건 포함), Verifier 대조 규칙과 보완·규칙 7 생략, 확정 문서 생성, 입력 검사. 제출 도구 거부 규칙과 권한 처리기는 테스트가 없다.
+테스트(MAF·네트워크 없이, `python -m pytest` 43개 통과): 가리기·OCR 숫자 보정 패턴, 한글 수사 정규화, 규칙 함수 경계값·판정 순서·평가 사례 기대값(긴급복지 위기 사유 조건, 이미 받는 제도 조건 포함), Verifier 대조 규칙과 보완·규칙 7 생략, 확정 문서 생성, 입력 검사. 제출 도구 거부 규칙과 권한 처리기는 테스트가 없다. GitHub Actions CI(`.github/workflows/ci.yml`)가 push·PR마다 pytest와 `az bicep build`를 실행한다.
 
 배포 앱 E2E 확인(브라우저로 데모 사례를 승인까지 진행): 확정 문서 구획이 `[object HTMLHeadingElement]`로 찍히던 결함을 찾아 고쳤다(`el()`이 중첩 배열 자식을 끝까지 펼치도록 `children.flat(Infinity)`). 확정 뒤 상태 배지가 "확정 처리 중"에 머무는 결함도 고쳤다(SSE `finalized`·`approval_kept`가 승인 POST 응답보다 먼저 도착해 실행이 끝난 경우, 응답 처리가 끝난 상태를 덮어쓰지 않음). 두 결함은 단위 테스트 범위(서버 순수 코어) 밖이라 E2E 점검 항목으로 둔다(TRD 10절).

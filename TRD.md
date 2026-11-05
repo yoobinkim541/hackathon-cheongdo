@@ -55,7 +55,7 @@ flowchart LR
 <p>그림 1. 구성도</p>
 
 - 컨테이너 하나에 FastAPI 앱과 Copilot CLI 런타임이 같이 들어간다. 앱 시작 시 `AgentHub.start()`가 `CopilotClient(base_directory=COPILOT_BASE_DIRECTORY)`를 한 번 만들고 시작해 모든 `GitHubCopilotAgent`에 `client=`로 공유한다. 에이전트마다 CLI 프로세스를 띄우지 않는다. 공유 클라이언트는 에이전트가 멈추지 않으므로 앱 종료 시 `RunService.shutdown()`이 `await client.stop()`을 직접 호출한다.
-- 에이전트 6개(NoteNormalizer, Profiler, 매칭 3개, Documenter)는 앱 시작 시 한 번 만들고 모든 실행이 공유한다. 실행마다 달라지는 것은 `AgentSession`과 `function_invocation_kwargs`다.
+- 모델을 쓰는 단계는 에이전트 6개(NoteNormalizer, Profiler, 매칭 3개, Documenter)뿐이며, 앱 시작 시 한 번 만들고 모든 실행이 공유한다. 실행마다 달라지는 것은 `AgentSession`과 `function_invocation_kwargs`다. InputRouter·OCR·STT·Intake·Verifier·ReferralGate는 모델을 호출하지 않는 코드 실행기다. 특히 Verifier(근거 검증)는 순수 함수(`verify.coverage_gaps`, `verify.verify`, `rules.evaluate`)만 쓴다(3.4절).
 - Copilot 인증 토큰은 환경변수 `COPILOT_GITHUB_TOKEN`으로 넣고 Copilot CLI 런타임이 직접 읽는다. 앱 코드는 이 값을 읽지 않는다.
 - Docker 빌드 단계에서 `COPILOT_SKIP_CLI_DOWNLOAD=0 python -m copilot download-runtime`으로 런타임을 `COPILOT_CLI_EXTRACT_DIR=/opt/copilot-runtime`에 미리 내려받는다. 하위 명령 없이 `python -m copilot`만 실행하면 종료 코드 1로 끝난다. 내려받은 뒤에야 `ENV COPILOT_SKIP_CLI_DOWNLOAD=1`을 설정해 실행 중 내려받기를 막는다. 캐시가 없으면 `CopilotClient()` 생성자가 `RuntimeError`를 내고, 이때 `/readyz`의 `copilot_started`가 `false`가 된다. 오류 문자열은 응답에 넣지 않고 로그에만 남긴다(5절).
 
@@ -72,6 +72,18 @@ flowchart LR
 | 관측 | 실행마다 `dongheng.run` span 아래 `workflow.run` → 실행기 처리 → `invoke_agent` → `execute_tool` span이 Application Insights에 남는다. 예시 trace ID `4c4b94fd281063f0ccf0fb2da3e2c707` | 3.8절, `docs/eval-result.md` |
 
 <p>표 1-1. Copilot SDK·MAF 활용 항목</p>
+
+| 기능 | 파일:함수·클래스 | 배포 실행 증거 |
+|---|---|---|
+| 공유 `CopilotClient`(Copilot SDK) | `app/agents.py`: `AgentHub.start()`가 `CopilotClient(base_directory=...)`를 한 번 만들어 6개 에이전트에 공유 | `/readyz`의 `copilot_started`·`copilot_authenticated`·`copilot_ready`, 평가 실행 5건 모두 라이브(`docs/eval-result.md` 표 1) |
+| 단계별 `GitHubCopilotAgent` + 도구 허용 목록 + 권한 처리기 | `app/agents.py`: `AgentHub.start()`(에이전트 생성), `TOOL_ALLOWLIST`(6개 단계), `make_permission_handler(step)` | 저장된 실행 `data/replays/case1.json`의 `tool_call` 21건이 모두 허용 목록 안의 도구다(`check_eligibility` 13, `search_schemes` 3, `submit_matches` 3, `record_case_profile` 1, `submit_draft` 1) |
+| 에이전트 호출 래퍼(시간 제한·재시도·감사 기록·스트림 변환) | `app/agents.py`: `call_agent()`, `app/events.py`: `map_update()` | 같은 파일의 `token` 346건, `tool_result` 21건, `usage` 16건 |
+| MAF `WorkflowBuilder` switch-case 입력 분기 | `app/workflow.py`: `build_workflow()`의 `add_switch_case_edge_group(router, ...)`, `InputRouter` | 평가 실행에서 사례 2는 OCR 경로(인식 2.2초), 사례 4는 STT 경로(전사 1.7초), 나머지는 텍스트 경로로 실행 |
+| MAF fan-out/fan-in(매칭 3개 병렬) | `app/workflow.py`: `add_fan_out_edges(profiler, matchers)`, `add_fan_in_edges(matchers, verifier)`, `MatchExecutor`, `VerifierExecutor` | Application Insights span `executor.process match_living`·`match_health`·`match_care`가 같은 trace에서 겹침(`docs/eval-result.md` 표 3). 최종 실행의 Verifier 보완 0건(매칭 에이전트가 13개 제도를 모두 직접 판정) |
+| MAF `request_info` 사람 승인 | `app/workflow.py`: `ReferralGate`(`ctx.request_info(...)`, 응답 처리기), `app/service.py`: `RunService.respond()` | 사례 실행마다 `approval_required` 뒤 승인 시 `finalized`(`review_seconds`·`edited_sections` 포함) |
+| OpenTelemetry 계측 | `app/telemetry.py`: `enable_instrumentation(enable_sensitive_data=False)`, `app/service.py`: `dongheng.run` span | trace ID `4c4b94fd281063f0ccf0fb2da3e2c707`(Application Insights) |
+
+<p>표 1-2. Copilot SDK·MAF 기능 사용 표(사례 1 저장된 실행은 실제 라이브 실행을 기록한 것이다)</p>
 
 ```mermaid
 sequenceDiagram
@@ -362,7 +374,7 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 | 관리 ID | 사용자 할당 관리 ID 하나로 ACR pull(`AcrPull`), Key Vault 비밀 읽기(`Key Vault Secrets User`), AI Services 호출(`Cognitive Services User`, 키 없는 인증) | `infra/modules/resources.bicep`, `infra/modules/ai.bicep` |
 | 비밀 관리 | `COPILOT_GITHUB_TOKEN`은 Key Vault 비밀로만 두고 Container App secret이 `keyVaultUrl`로 참조 | 표 6 |
 | 재현 가능한 배포 | `azd up` 한 번으로 Bicep(구독 범위 `main.bicep`과 모듈 4개: `resources`·`ai`·`alerts`·`fetch-image`) 프로비저닝과 ACR 원격 빌드·배포 | `azure.yaml`, `infra/` |
-| 추적 | 실행별 `dongheng.run` trace와 단계별 span, 예시 trace ID `4c4b94fd281063f0ccf0fb2da3e2c707`, span p50/p95 | `docs/eval-result.md` 표 2 |
+| 추적 | 실행별 `dongheng.run` trace와 단계별 span, 예시 trace ID `4c4b94fd281063f0ccf0fb2da3e2c707`, span p50/p95 | `docs/eval-result.md` 표 3 |
 
 <p>표 6-1. Azure 운영 근거</p>
 
@@ -399,7 +411,8 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 ## 9. UI
 
 - 첫 화면은 위에서부터 고정 배너 → 한 줄 소개("방문 상담 메모를 근거 있는 연계 문서 초안으로") → 주 버튼 "데모 사례로 시작"과 사례 5건 목록 → 보조 버튼 "직접 입력", "평가 실행" 순으로 둔다. 주 버튼은 하나다.
-- 세 구획: 입력(데모 사례 선택, 입력 방식 탭 "텍스트"·"사진"·"음성"; 음성 탭은 브라우저 녹음과 파일 올리기를 함께 둔다) / 단계 타임라인(실시간 진행, 도구 호출과 결과, 단계별 시간·토큰) / 결과(제도 분류, 근거 패널, 문서 초안, 승인 버튼). 화면 폭 768px 이하에서는 세 구획을 세로로 쌓고, 버튼과 탭의 터치 영역은 44px 이상으로 둔다.
+- 세 구획: 입력(데모 사례 선택, 입력 방식 탭 "텍스트"·"사진"·"음성"; 음성 탭은 브라우저 녹음과 파일 올리기를 함께 둔다) / 단계 타임라인(실시간 진행, 도구 호출과 결과, 단계별 시간·토큰) / 결과(제도 분류, 근거 패널, 문서 초안, 승인 버튼). 화면 폭 768px 이하에서는 세 구획을 세로로 쌓고, 버튼과 탭의 터치 영역은 44px 이상(`style.css`의 `.btn`·`.tab` `min-height: 44px`)으로 둔다.
+- 타임라인 표시: 도구 호출은 함수 이름 대신 쉬운 한국어 칩으로 보인다. 판정 도구 결과는 "제도 이름 → 결과"(예: "기초연금 → 해당 없음") 형식이고, 칩은 좁은 열 안에서 줄바꿈된다. 모델이 스트리밍한 글은 단계마다 접힌 "에이전트 설명 보기"(`<details>`) 안에 글자(`textContent`)로 표시해, 원문 토큰 나열 대신 읽을 수 있는 설명으로 보인다.
 - 인식 결과 확인: 사진·음성 입력이면 타임라인 아래에 인식 원문(가린 뒤)과 정리본을 나란히 보이고, 불확실 구간은 밑줄과 "확인 필요" 글자로, 모델이 바꾼 구간은 바꾸기 전 글을 함께 보인다. 담당자는 정리본을 고친 뒤 "고친 정리본으로 다시 실행"으로 텍스트 실행을 새로 시작할 수 있다.
 - 상단 고정 배너: 합성 데이터 전용, AI 초안, 담당자 검토 필요. 배너 아래 도움말에 가리기의 한계를 적는다.
 - 접근성(`app/static/index.html`, `app/static/app.js`, `app/static/style.css`에서 확인한 구현):
@@ -419,7 +432,8 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 - 일정(2026-11-05 KST): 14:00–14:15 최소 샘플, 14:15–14:45 빈 앱 `azd up`(`enableAiServices` 끔) 뒤 AI Services 켜고 재배포, 같은 시간에 팀원 1명이 합성 사진·녹음 제작, 14:45–15:30 F1~F8(매칭 병렬 포함)과 UI, 15:30 1차 제출, 15:30–15:40 재생 파일 생성(F11), 15:40–15:55 사진·음성 입력(F12~F14), 15:55 판단 시각(배포 앱에서 사진·음성 경로가 통과하지 않으면 그 시각에 자르고 이 문서와 PRD에서도 지운다), 15:55–16:10 평가 실행(F10), 16:10–16:20 문서 동기화, 16:20 최종 제출.
 - 구현 상태: F12~F14는 구현했다. OCR·STT 호출은 `app/ingest.py`, 실행기와 분기는 `app/workflow.py`(`OcrExecutor`, `SttExecutor`, `NormalizerExecutor`, InputRouter switch-case), 업로드 검사는 `app/limits.py`, 브라우저 녹음과 업로드 화면은 `app/static/`에 있다. 가용성 테스트와 경고 3개, 브라우저 녹음, STT 화자 분리도 구현했다. 사진·음성 경로를 유지할지는 배포 앱에서의 검증 결과로 15:55에 판단한다.
 - 시간이 모자라면 아래 순서로 자르고, 자른 항목은 이 문서와 PRD에서도 지운다: (1) Application Insights 가용성 테스트와 경고 3개, (2) 브라우저 녹음(파일 올리기와 데모 음성만 유지), (3) STT 화자 분리, (4) F13 음성 입력 전체(사례 4는 녹음 대본 텍스트로 실행), (5) F12 사진 입력 전체와 F14(사례 2는 메모 텍스트로 실행, InputRouter는 텍스트 경로만 남김). 15:55에 배포 앱에서 사진·음성 경로가 통과하지 않으면 (4)·(5)를 그 시각에 결정한다. F1~F8, F10, F11은 자르지 않는다.
-- 단위 테스트 42개(MAF·네트워크 없이, `tests/test_core.py`, `tests/test_rules.py`, `python -m pytest` 전체 통과): 개인정보 가리기 패턴(주민등록번호·전화·계좌·주소·이름, 자리표시자 재사용, 한글 숫자 전화번호, 숫자열과 OCR 숫자 보정, 금액·날짜 보존, 잔존 검사), 한글 수사 정규화와 `new_numbers`, Verifier(`coverage_gaps`, `check_citations` 거부 사유, 규칙 적용과 보완, 감사 기록 불완전 시 규칙 7 생략), `render_final`(부분집합 검사, 고친 구획 반영), 입력 검사(`check_text`, `sniff_media`, `check_media`), 자격 규칙(전체 제도 적재, 기준 중위소득 표, 경계값, 판정 순서, 조건 ID 형식, 긴급복지 위기 사유 조건, 평가 사례 기대값과 규칙 결과 일치). 제출 도구의 거부 규칙과 권한 처리기는 단위 테스트가 없다.
+- 단위 테스트 43개(MAF·네트워크 없이, `tests/test_core.py`, `tests/test_rules.py`, `python -m pytest` 전체 통과): 개인정보 가리기 패턴(주민등록번호·전화·계좌·주소·이름, 자리표시자 재사용, 한글 숫자 전화번호, 숫자열과 OCR 숫자 보정, 금액·날짜 보존, 잔존 검사), 한글 수사 정규화와 `new_numbers`, Verifier(`coverage_gaps`, `check_citations` 거부 사유, 규칙 적용과 보완, 감사 기록 불완전 시 규칙 7 생략), `render_final`(부분집합 검사, 고친 구획 반영), 입력 검사(`check_text`, `sniff_media`, `check_media`), 자격 규칙(전체 제도 적재, 기준 중위소득 표, 경계값, 판정 순서, 조건 ID 형식, 긴급복지 위기 사유 조건, 이미 받는 제도 조건, 평가 사례 기대값과 규칙 결과 일치). 제출 도구의 거부 규칙과 권한 처리기는 단위 테스트가 없다.
+- CI: GitHub Actions `.github/workflows/ci.yml`이 `main` push와 PR마다 두 작업을 실행한다. `test`는 Python 3.12에서 `requirements-dev.txt`를 설치하고 `python -m pytest -q`를, `bicep`은 `az bicep build --file infra/main.bicep`으로 Bicep 구문·형식을 검사한다.
 - E2E 점검(배포 앱에서 브라우저로 데모 사례를 승인까지 진행): 단위 테스트가 다루지 않는 화면 결함 두 가지를 이 점검에서 찾아 고쳤다. (1) 확정 문서의 구획이 `[object HTMLHeadingElement]`로 찍혔다. `renderDoc`이 구획마다 `[h5, p]` 배열을 넘기는데 `el()`이 자식을 한 단계만 펼쳐 요소가 문자열로 바뀌었기 때문이며, `children.flat(Infinity)`로 끝까지 펼쳐 고쳤다. (2) 확정 뒤 상태 배지가 "확정 처리 중"에 머물렀다. SSE `finalized`가 승인 POST 응답보다 먼저 도착하면 응답 처리가 상태를 `resuming`으로 덮어썼기 때문이며, `finalized`·`approval_kept`를 받으면 실행을 끝난 것으로 표시하고 그 뒤에는 상태를 덮어쓰지 않게 고쳤다. 이 두 항목(확정 문서 구획 제목·본문 표시, 확정 후 배지 "확정")을 배포 후 확인 항목에 넣는다.
 - 구현 중 라이브러리 동작 때문에 바꾼 것: MAF가 중첩 도구 인자를 `dict`로 넘겨 도구 안에서 Pydantic 검증을 한다(3.3절). 실행기 출력을 `AgentResponseUpdate | UiEvent` 합집합 대신 `UiEvent` 하나로 고정하고, 스트림 변환을 `call_agent` 안으로 옮겼다(3.2절).
 - 배포 환경에서 확인할 것: Container Apps ingress가 `X-Forwarded-For` 끝에 클라이언트 IP를 덧붙이는지, Korea Central의 한국어 빠른 전사·화자 분리, 진행 중 턴에서 `delete_session`이 턴을 멈추는지, `available_tools`로 내장 도구가 실제로 숨겨지는지. 다르면 해당 절에 적은 대안을 적용하고 이 문서를 같은 커밋에서 고친다.
