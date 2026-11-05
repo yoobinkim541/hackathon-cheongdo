@@ -147,8 +147,9 @@ def build_workflow(run: RunState) -> Workflow:
 5. `unknown` 판정은 "확인 필요"로 분류하고 누락 필드를 Documenter의 추가 질문 입력으로 넘긴다.
 6. 도메인 제도 커버리지: Verifier는 분야마다 모든 `scheme_id`에 판정 기록이 있는지 확인하고, 에이전트가 건너뛴 제도는 규칙 함수를 직접 실행해 `source="verifier"` 판정으로 채운다. 매칭이 실패한 분야에도 적용한다. 모델 호출 없이 재현율 목표(90%)를 코드로 지키는 장치다.
 7. 모델이 낸 추천이 인용한 `decision_id`는 그 단계의 감사 기록(모델이 실제로 받은 도구 결과)에도 있어야 한다. 감사 기록은 `call_agent`가 스트림의 `function_call`·`function_result` 콘텐츠로 남긴다. 판정 기록에는 있지만 모델이 받지 않은 판정을 인용한 추천은 제거한다. `source="verifier"` 판정은 모델 추천이 아니므로 이 규칙의 대상이 아니다. 그 단계의 감사 기록이 불완전하면(호출 수와 결과 수가 다름) 그 단계에서 이 규칙을 건너뛰고, 건너뛴 사실을 trace 속성(`app.verify.rule7_skipped`)과 검증 결과(`audit_rule_skipped`)에 표시한다. 규칙 1~6은 감사 기록과 관계없이 적용된다.
+8. 질문 보완: 확인 필요 항목 가운데 에이전트가 질문을 쓰지 않았거나 Verifier가 직접 채운 항목은 누락 필드별 고정 질문 템플릿(`rules.py`의 필드→질문 표)으로 질문을 만든다. 그래서 모든 확인 필요 항목에는 질문이 하나 이상 있다. 이 규칙도 감사 기록과 관계없이 적용된다.
 
-Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_gaps()`로 빠진 제도를 찾고, (2) 빠진 제도마다 `rules.evaluate()` 결과를 `run.record_decision(..., source="verifier")`로 남긴 뒤, (3) `verify.verify(matches, decisions, audit, schemes)`로 규칙 1~5·7을 적용한다. 규칙 2·3의 인용 검사는 `submit_matches`와 같은 `verify.check_citations()`를 쓴다.
+Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_gaps()`로 빠진 제도를 찾고, (2) 빠진 제도마다 `rules.evaluate()` 결과를 `run.record_decision(..., source="verifier")`로 남긴 뒤, (3) `verify.verify(matches, decisions, audit, schemes)`로 규칙 1~5·7·8을 적용한다. 규칙 2·3의 인용 검사는 `submit_matches`와 같은 `verify.check_citations()`를 쓴다.
 
 ### 3.4.1 매칭 에이전트가 하는 일
 
@@ -185,9 +186,10 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 
 - 대상 장면: 담당자는 방문 중 종이에 메모하거나 휴대폰으로 상담을 녹음한다. 사무실로 돌아와 이를 다시 입력하는 일이 표 1(PRD)의 "메모 정리" 단계다. 사진과 음성을 바로 받으면 이 단계의 재입력을 없앤다.
 - OCR 실행기: Document Intelligence `prebuilt-read` 모델(API 2024-11-30, `azure-ai-documentintelligence` SDK)을 `DefaultAzureCredential`(Container Apps에서는 사용자 할당 관리 ID)로 호출한다. Read 모델은 한국어 손글씨 인식을 지원한다[문헌: https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/language-support/ocr?view=doc-intel-4.0.0]. 결과의 단어별 신뢰도가 0.8 미만인 단어는 불확실 구간으로 표시한다. 형식은 JPEG·PNG, 5MB 이하.
-- STT 실행기: Speech 빠른 전사 REST API(`/speechtotext/transcriptions:transcribe?api-version=2025-10-15`)를 Entra 토큰(범위 `https://cognitiveservices.azure.com/.default`)으로 호출한다[문헌: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/fast-transcription-create]. 정의는 `locales: ["ko-KR"]`, 화자 분리(최대 2명: 담당자·대상자), 구문 목록(제도 이름 13개와 "차상위", "기준 중위소득", "맞춤형급여" 같은 용어)을 쓴다. 구문 목록은 제도 이름 오인식을 줄이기 위해서다. 형식은 WAV·MP3·WebM(브라우저 `MediaRecorder` 기본 형식 포함), 2분·10MB 이하. 한국어 빠른 전사 지원과 화자 분리 동작은 최소 샘플에서 확인하고, 안 되면 화자 분리를 빼고 이 문서를 고친다.
+- STT 실행기: Speech 빠른 전사 REST API(`/speechtotext/transcriptions:transcribe?api-version=2025-10-15`)를 Entra 토큰(범위 `https://cognitiveservices.azure.com/.default`)으로 호출한다[문헌: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/fast-transcription-create]. 정의는 `locales: ["ko-KR"]`, 화자 분리(최대 2명: 담당자·대상자), 구문 목록(제도 이름 13개와 "차상위", "기준 중위소득", "맞춤형급여" 같은 용어)을 쓴다. 구문 목록은 제도 이름 오인식을 줄이기 위해서다. 형식은 WAV·MP3·WebM(브라우저 `MediaRecorder` 기본 형식 포함), 2분·10MB 이하. 길이는 WAV는 헤더로, MP3·WebM은 전사 응답의 `durationMilliseconds`로 확인한다(MediaRecorder의 WebM에는 길이 헤더가 없고, 10MB는 2분을 넘는 MP3도 담을 수 있다). 2분을 넘으면 인식 결과를 버리고 거부한다. 브라우저 녹음은 클라이언트가 120초에서 자동으로 멈춘다. 한국어 빠른 전사 지원과 화자 분리 동작은 최소 샘플에서 확인하고, 안 되면 화자 분리를 빼고 이 문서를 고친다.
 - 원본 처리: 사진·음성 원본은 요청 처리 중 메모리에만 두고 디스크·로그에 남기지 않는다. 원본은 팀 구독의 Azure AI Services로만 가고 Copilot 모델로 가지 않는다. Azure AI Services 쪽의 데이터 보존 기간은 이 문서 작성 중 확인하지 못했으며, 그래서 합성 데이터만 입력하도록 안내한다. 인식 텍스트는 Intake에서 텍스트 입력과 같은 규칙으로 가린 뒤에야 NoteNormalizer로 간다.
 - NoteNormalizer: 가린 인식 텍스트를 받아 말 반복·끊김·맞춤법을 정리하고 화자 표시를 "담당자:"·"대상자:"로 바꾼다. 원문에 없는 사실과 숫자를 더하지 않는다. `record_clean_note`가 원문에 없는 숫자가 생긴 정리본을 거부하므로, 모델이 금액·나이를 지어내도 다음 단계로 가지 않는다. 거부는 1회까지 다시 시도하고, 두 번째도 거부되면 정리를 건너뛰고 가린 인식 텍스트를 그대로 Profiler에 넘기며 화면에 "정리 생략"을 표시한다. 바꾼 구간(`edits[]`)과 불확실 구간은 화면에서 원문과 나란히 보인다.
+- 정리본 수정 후 재실행: 담당자가 고친 정리본은 새 텍스트 실행(`POST /api/runs`의 `note`, 선택 필드 `origin_run_id`)으로 보낸다. 고친 텍스트도 Intake 가리기를 거치고, OCR·STT·NoteNormalizer는 건너뛴다.
 - 데모: 사례 2는 손글씨 메모 사진, 사례 4는 방문 녹음으로 제공한다. 둘 다 합성 내용이며, 사진은 팀원이 합성 메모를 손으로 써서 찍고 음성은 팀원이 합성 대본을 읽어 녹음한다. 이 제작은 코딩과 병렬로 13:45–14:30에 끝낸다. 심사 에이전트는 마이크나 카메라 없이 데모 사례 버튼만으로 OCR·STT 경로를 실행할 수 있다. 사례 2·4의 저장된 실행 재생 파일(F11)에는 OCR·STT 결과와 정리본도 들어 있어, 호출 한도 초과 때도 사진·음성 경로의 결과를 보여 준다.
 - 관측: OCR·STT 호출의 성공 여부, 소요 시간, 인식 글자 수, 불확실 구간 수를 span 속성으로 남긴다. `/readyz`는 시작 시 Azure AI Services용 Entra 토큰 발급 성공 여부를 함께 캐시해 보인다(인식 호출은 하지 않는다).
 - OCR·STT 실행기(`OcrExecutor`, `SttExecutor`)는 `workflow.py`에 두고, `ingest.py`에는 Azure 호출 함수만 둔다.
@@ -197,7 +199,7 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 
 ### 4.1 CaseProfile
 
-`age`, `household_type`(독거/부부/조손/한부모/기타), `household_size`, `monthly_income_krw`, `assets_krw`, `disability`(등급 정도 또는 없음), `chronic_illness`, `housing`(자가/전세/월세/무상), `monthly_rent_krw`, `caregiver_available`, `isolation_signals`(목록), `crisis_events`(실직·질병·사망 등), `missing_fields`(목록). 알 수 없는 값은 `null`이고 추정하지 않는다.
+`age`, `household_type`(독거/부부/조손/한부모/기타), `household_size`, `monthly_income_krw`, `assets_krw`, `disability`(없음/경증/중증), `chronic_illness`, `housing`(자가/전세/월세/무상), `monthly_rent_krw`, `caregiver_available`, `isolation_signals`(목록), `crisis_events`(실직·질병·사망 등), `missing_fields`(목록). 알 수 없는 값은 `null`이고 추정하지 않는다. 목록 필드(`isolation_signals`, `crisis_events`)는 메모에 언급이 없으면 `null`(모름), 없다고 밝힌 경우에만 빈 목록이다.
 
 규칙 함수가 읽는 필수 필드는 `age`, `household_type`, `household_size`, `monthly_income_krw`, `disability`, `housing` 6개로 한정하고, 제도마다 이 중 실제로 읽는 필드를 `schemes.json`의 `required_fields`로 정한다. 나머지 필드는 서술 신호로 매칭 우선순위와 Documenter 입력에만 쓴다.
 
@@ -208,7 +210,22 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 - 13개 제도로 고정한다. 항목마다 `id`, `name`, `domain`, `summary`, `rules`(규칙 함수 이름과 기준값), `required_fields`, `source_url`, `checked_at`, `is_example: true`.
 - 기준값은 보건복지부 고시와 복지로 공식 안내에서 가져오고 `source_url`과 확인일을 적는다. 예: 2026년 기준 중위소득 1인 가구 2,564,238원, 4인 가구 6,494,738원, 생계급여 선정기준 기준 중위소득 32%(1인 820,556원) [문헌: 보건복지부고시 제2025-135호, https://www.law.go.kr/LSW//admRulInfoP.do?admRulSeq=2100000262584]. 이 주소가 열리지 않으면 복지로 공식 안내 주소로 바꾼다.
 - 대상 제도(분야별, 괄호는 `id`): 생계·주거(`living`) — 생계급여(`livelihood_benefit`), 주거급여(`housing_benefit`), 긴급복지 생계지원(`emergency_livelihood`), 에너지바우처(`energy_voucher`). 건강·의료(`health`) — 의료급여(`medical_benefit`), 본인부담 경감(차상위)(`copay_reduction`), 장애인연금(`disability_pension`), 건강검진·방문건강관리(`health_checkup_visit`). 돌봄·고립·일자리(`care`) — 기초연금(`basic_pension`), 노인맞춤돌봄서비스(`elderly_care_service`), 응급안전안심서비스(`emergency_safety_service`), 노인일자리(공익활동)(`senior_job_public`), 고독사 예방 안부 확인(`lonely_death_prevention`). 조건 ID는 `{scheme_id}.{조건}` 형식이다.
-- 소득인정액 계산은 단순화한다(월 소득 + 재산 환산 생략 또는 고정 환산율). 단순화 사실을 화면과 데이터에 표기한다.
+- 소득인정액 단순화(확정): `소득인정액 = monthly_income_krw`. 재산 환산은 하지 않고 `assets_krw`는 화면 표시에만 쓴다. 기준액은 `기준 중위소득(가구원 수) × 기준 비율`에서 원 미만을 버린 값이고 비교는 이하(≤)다. `schemes.json` 최상위에 가구원 수 1~7의 기준 중위소득표와 출처·확인일을 두고, 8인 이상은 7인 값을 쓰며 화면에 표기한다. 이 단순화를 화면과 데이터에 표기한다.
+- 제도별 조건(조건 ID 접미사). 규칙은 6개 필드만 읽는다. 기준 비율·기준액은 고시를 확인해 `schemes.json`에 기입하며, 아래 비율은 작성 시점의 계획값이라 고시와 다르면 고시를 따른다.
+  - `livelihood_benefit`: `income` 소득인정액 ≤ 기준 중위소득 32%.
+  - `housing_benefit`: `income` ≤ 48%, `housing` 전세·월세(자가는 수선급여 대상이라 단순화로 제외하고 표기).
+  - `emergency_livelihood`: `income` ≤ 75%. 위기 사유(실직·질병 등)는 규칙이 읽지 않고, Profiler의 서술 신호로 매칭 우선순위를 정하며 Documenter가 위기 사유 확인을 확인 항목으로 적는다.
+  - `energy_voucher`: `recipient` 생계·의료·주거급여 중 하나가 `eligible`, `vulnerable` `age` ≥ 65 또는 `disability` ≠ 없음.
+  - `medical_benefit`: `income` ≤ 40%.
+  - `copay_reduction`: `income` ≤ 50%.
+  - `disability_pension`: `age` ≥ 18, `disability` = 중증, `income` 소득인정액 ≤ 선정기준액(독거는 단독가구, 부부는 부부가구 기준액이고 그 밖의 가구 유형은 `unknown`).
+  - `health_checkup_visit`: `age` ≥ 65, `target` `household_type` = 독거 또는 소득인정액 ≤ 기준 중위소득 50%.
+  - `basic_pension`: `age` ≥ 65, `income` 소득인정액 ≤ 선정기준액(가구 구분은 장애인연금과 같다).
+  - `elderly_care_service`: `age` ≥ 65, `tier` 생계급여·의료급여·본인부담 경감·기초연금 중 하나가 `eligible`.
+  - `emergency_safety_service`: `living_alone` `household_type` = 독거, `target` `age` ≥ 65 또는 `disability` = 중증.
+  - `senior_job_public`: `age` ≥ 65, `pension` `basic_pension`이 `eligible`.
+  - `lonely_death_prevention`: `living_alone` `household_type` = 독거. 고립 신호는 규칙이 읽지 않고 매칭 우선순위와 Documenter 입력에만 쓴다.
+- 선행 판정: `recipient`, `tier`, `pension` 조건은 수급 여부를 입력받지 않고 같은 프로필로 선행 제도 규칙을 내부 호출한 결과로 대신한다. 별도 판정 기록은 만들지 않고 `conditions[].used_values`에 선행 제도 ID와 결과를 적는다. 선행 판정이 `unknown`이면 그 조건도 `unknown`이다. 선행 제도(`livelihood_benefit`, `medical_benefit`, `housing_benefit`, `copay_reduction`, `basic_pension`)는 다른 제도에 의존하지 않아 순환이 없다. 이 대체도 단순화이며 화면에 표기한다.
 
 ### 4.3 평가 데이터 `data/eval_cases.json`
 
@@ -216,18 +233,25 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 
 사례 2와 4는 입력 형식이 다르다. 사례마다 `input_type`(`text`·`image`·`audio`)과 `media_path`(`data/samples/` 파일), `reference_text`(사진·녹음의 정답 원문)를 둔다. 평가 실행은 이 두 사례에서 인식 텍스트와 정답 원문의 문자 오류율(CER)을 계산하고, 인식 오류가 판정 결과까지 바꿨는지(정답 프로필과의 필수 필드 일치 수)를 함께 보인다.
 
+지표 정의: 재현율 = (`expected_eligible` ∪ `expected_unknown`) 중 최종 결과가 `eligible` 또는 `unknown`인 제도의 비율. 정밀도 = 최종 `eligible` 중 `expected_eligible`에 속한 비율. 근거 일치율 = 화면에 표시된 추천 중 판정 기록과 일치하는 비율이며, 검증에서 제거된 건수와 Verifier 보완 건수를 따로 보인다. CER = 공백을 뺀 인식 텍스트와 `reference_text`의 문자 단위 편집 거리 ÷ `reference_text` 글자 수. 필수 필드 일치 수 = 공통 6개 필드 중 `expected_profile`과 같은 값의 수.
+
+### 4.4 문서 구획 ID
+
+상담기록지 `record.basic_info`, `record.summary`, `record.needs`, `record.linked_schemes`, `record.follow_up`, 의뢰서 `referral.agency`, `referral.subject`, `referral.schemes`, `referral.officer`. 9절의 인쇄 문서 순서와 같다. `submit_draft`의 구획 키와 승인 응답의 `edited_sections` 키는 이 ID만 허용하고, 그 밖의 키는 400이다. 단계 이름과 경계 타입의 원본은 아키텍처 스파인(AD-2, AD-3)과 `app/schemas.py`다.
+
 ## 5. API와 이벤트
 
 | 메서드·경로 | 설명 |
 |---|---|
 | `GET /` | UI |
-| `GET /api/cases` | 데모 사례 목록 |
-| `POST /api/runs` | JSON `{note | case_id, mode: "live"|"replay"}` 또는 `multipart/form-data`(`file`: 사진·음성, `kind`: `image`|`audio`) → `{run_id}` |
+| `GET /api/cases` | 데모 사례 목록(`case_id`, 제목, 요약, `input_type`). 정답 라벨은 보내지 않는다 |
+| `POST /api/runs` | JSON `{note | case_id, mode: "live"|"replay", origin_run_id?}` 또는 `multipart/form-data`(`file`: 사진·음성, `kind`: `image`|`audio`) → `{run_id}`. `case_id`가 사진·음성 사례(2, 4)이면 서버가 `data/samples/`의 파일을 쓴다. `origin_run_id`는 정리본을 고친 재실행(3.9절)의 출처 실행을 기록한다. 입력 검사에 실패하면 400 |
 | `GET /api/runs/{run_id}/events` | SSE(아래 표 5). 이벤트마다 실행 안에서 단조 증가하는 `id`를 붙이고, 서버는 실행별 이벤트 로그를 둔다. 재접속 시 `Last-Event-ID` 다음 이벤트부터 다시 보낸다. 승인 응답으로 재개된 워크플로와 `/ask` 답변의 이벤트도 같은 로그로 보낸다. `done`을 보낸 뒤에만 연결을 닫고, 승인 대기 중에는 연결을 유지한다 |
-| `POST /api/runs/{run_id}/approval` | `{request_id, approved, edited_sections, scheme_ids?}`. 대기 중인 `request_info`에 응답을 넣어 워크플로를 이어 간다. 요청 ID가 대기 중인 것과 다르거나 이미 처리됐으면 409 |
-| `POST /api/runs/{run_id}/ask` | 후속 질문 `{question}` → `202 {ask_id}`. 답변은 실행의 SSE로 `step="ask"` 이벤트로 온다. `awaiting_approval`·`finalized`에서만, 실행당 동시 1건(그 밖에는 409) |
+| `POST /api/runs/{run_id}/approval` | `{request_id, approved, edited_sections, scheme_ids?}`. 대기 중인 `request_info`에 응답을 넣어 워크플로를 이어 간다. 요청 ID가 대기 중인 것과 다르거나 이미 처리됐으면 409, `edited_sections` 키가 4.4절 구획 ID가 아니거나 `scheme_ids`가 Verifier 통과 집합의 부분집합이 아니면 400 |
+| `POST /api/runs/{run_id}/ask` | 후속 질문 `{question}`(4,000자 이하, 가리기를 거친 뒤 모델로 간다) → `202 {ask_id}`. 재생 실행은 Documenter 세션이 없어 409. 답변은 실행의 SSE로 `step="ask"` 이벤트로 온다. `awaiting_approval`·`finalized`에서만, 실행당 동시 1건(그 밖에는 409) |
 | `POST /api/eval` | 평가 실행 시작. 즉시 `{eval_id}`를 돌려준다 |
 | `GET /api/eval/{eval_id}/events` | 평가 진행 SSE. 사례마다 `case_started`, `case_completed`(라이브/재생 구분, 단계별 소요 시간, 판정 결과), 끝에 `eval_summary`(지표). 봉투의 `run_id` 자리에 `eval_id`가 들어간다 |
+| `GET /api/features` | 켜진 기능 플래그(UI가 사진·음성 탭, 녹음, 추가 질문 칩, 재승인을 보일지 정한다) |
 | `GET /healthz` | 프로세스 상태 |
 | `GET /readyz` | `CopilotClient` 시작 여부, `get_auth_status()`의 인증 상태, 모델 목록 확인 결과, AI Services 토큰 발급 결과. `service.startup()`이 1회 확인한 결과(`Readiness`)를 메모리에 두고 반환하며 요청마다 모델을 호출하지 않는다. 429 때문에 복제본이 트래픽에서 빠지지 않게 하기 위해서다 |
 
@@ -275,7 +299,7 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 <p>표 6. Azure 리소스</p>
 
 - 최대 복제본을 1로 두고 단일 리비전 모드를 쓴다. 실행 상태, SSE 연결, 승인 대기 중인 워크플로 인스턴스를 프로세스 메모리에 두므로, 복제본이나 활성 리비전이 둘이면 승인 POST가 다른 프로세스로 가서 404가 난다. 최종 제출 뒤에는 재배포하지 않는다.
-- 앱은 `DefaultAzureCredential`로 사용자 할당 관리 ID를 쓰므로 환경변수 `AZURE_CLIENT_ID`에 그 관리 ID의 clientId를 넣는다(넣지 않으면 시스템 할당 ID를 찾다 실패한다). 앱이 읽는 환경변수는 `COPILOT_GITHUB_TOKEN`, `AZURE_CLIENT_ID`, `AZURE_AI_ENDPOINT`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, `COPILOT_MODEL`, `REASONING_PROFILER`, `REASONING_MATCH`, `REASONING_DOCUMENTER`, `ENABLE_AI_SERVICES`이고 모두 `config.Settings`에서만 읽는다. `COPILOT_CLI_EXTRACT_DIR`, `COPILOT_SKIP_CLI_DOWNLOAD`, `HOME`은 Dockerfile에서만 정한다.
+- 앱은 `DefaultAzureCredential`로 사용자 할당 관리 ID를 쓰므로 환경변수 `AZURE_CLIENT_ID`에 그 관리 ID의 clientId를 넣는다(넣지 않으면 시스템 할당 ID를 찾다 실패한다). 앱이 읽는 환경변수는 `COPILOT_GITHUB_TOKEN`, `AZURE_CLIENT_ID`, `AZURE_AI_ENDPOINT`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, `COPILOT_MODEL`, `REASONING_PROFILER`, `REASONING_MATCH`, `REASONING_DOCUMENTER`와 기능 플래그 10개(`ENABLE_AI_SERVICES`, `ENABLE_IMAGE_INPUT`, `ENABLE_AUDIO_INPUT`, `STT_DIARIZATION`, `ENABLE_BROWSER_RECORDING`, `ENABLE_REAPPROVAL`, `ENABLE_ASK`, `ENABLE_SESSION_HOOKS`, `ENABLE_CONTEXT_PROVIDER`, `MATCH_PARALLEL`)이고 모두 `config.Settings`에서만 읽는다. 플래그는 모두 기본 꺼짐이며 Bicep 매개변수로 넣는다. `ENABLE_AI_SERVICES`가 꺼지면 사진·음성 플래그도 꺼진 것으로 본다(10절). `COPILOT_CLI_EXTRACT_DIR`, `COPILOT_SKIP_CLI_DOWNLOAD`, `HOME`은 Dockerfile에서만 정한다.
 - Bicep에서 관리 ID와 세 역할 할당(`AcrPull`, `Key Vault Secrets User`, `Cognitive Services User`)을 먼저 만들고 Container App이 이들에 `dependsOn`한다. 역할 전파 지연으로 첫 배포가 실패하면 `azd up`을 한 번 더 실행한다.
 - Azure AI Services는 별도 Bicep 모듈로 두고 `enableAiServices` 매개변수로 켠다. 빈 앱 첫 배포는 이 값을 끄고 해서 AI Services 문제로 텍스트 경로 배포가 늦어지지 않게 한다. 빈 앱이 뜬 직후 값을 켜고 다시 `azd up`을 해 리소스와 역할 할당을 미리 만들어 둔다(역할 전파 시간을 버는 목적). 지역은 Container Apps와 같은 지역을 쓰고, 최소 샘플에서 그 지역의 한국어 빠른 전사가 실패하면 AI Services만 빠른 전사 지원 지역으로 옮긴다.
 - 대체안: 마감 90분 전까지 Key Vault 참조 배포가 성공하지 않으면 Container Apps secret으로 토큰을 넣고 사유를 README에 적는다.
@@ -321,10 +345,10 @@ Verifier 실행기는 순수 함수만 쓴다. 순서는 (1) `verify.coverage_ga
 
 ## 10. 검증과 구현 순서
 
-- 구현 순서: (1) 최소 샘플로 라이브러리 시그니처 확인(1절, Document Intelligence·Speech 호출 포함)하고 결과를 `docs/eval-result.md`에 남김, (2) 빈 FastAPI 앱을 `azd up`으로 배포, (3) 텍스트 입력으로 단계 직렬 실행해 F1~F8을 배포된 앱에서 통과, (4) 저장된 실행 재생 파일 생성(F11), (5) 사진·음성 입력(F12, F13)과 NoteNormalizer, (6) 분야별 매칭 병렬화, (7) 평가 실행, (8) 문서 확정. 병렬 실행이 불안정하면 매칭 3개를 순차 호출로 바꾸고 이 문서를 고친다.
-- 일정(2026-11-05 KST): 13:45–14:00 최소 샘플(Copilot 결합), 14:00–14:30 빈 앱 배포(`enableAiServices` 끔) 뒤 AI Services 켜고 재배포, 같은 시간에 합성 사진·녹음 제작, 14:30–15:10 텍스트 입력으로 직렬 F1~F8과 재생 파일, 15:10 1차 제출, 15:10–15:35 OCR·STT 호출 확인과 사진·음성 입력(F12~F14), 15:35 판단 시각, 15:35–15:55 병렬화·승인 루프·평가 실행, 15:55–16:10 TRD·PRD를 구현과 맞춤, 16:20 최종 제출.
-- 시간이 모자라면 아래 순서로 자르고, 자른 항목은 이 문서와 PRD에서도 지운다: (1) Application Insights 가용성 테스트, (2) 브라우저 녹음(파일 올리기와 데모 음성만 유지), (3) STT 화자 분리, (4) 거부 뒤 승인 다시 걸기(거부 시 `drafted`로 끝냄), (5) F9 후속 질문(칩을 숨김), (6) 세션 훅 2개(관측 전용이므로 감사 기록·규칙 7에는 영향 없음), (7) `VerifiedDecisionsProvider`(Documenter 지시문에 판정 목록을 직접 넣음), (8) 매칭 병렬화(간선만 바꿔 순차 호출), (9) F13 음성 입력 전체(사례 4는 녹음 대본 텍스트로 실행), (10) F12 사진 입력 전체와 F14(사례 2는 메모 텍스트로 실행, InputRouter는 텍스트 경로만 남김). 15:35에 배포 앱에서 사진·음성 경로가 통과하지 않으면 (9)·(10)을 그 시각에 결정한다. F1~F8, F10, F11은 자르지 않는다.
-- 단위 테스트(MAF·네트워크 없이): 순수 코어 전체 — 개인정보 가리기 패턴(한글 숫자 전화번호, OCR 숫자 보정 포함), 자격 규칙 함수(경계값, 판정 순서), Verifier 대조 규칙 1~7, `render_final`, 입력 검사(`limits`) — 와 제출 도구 거부 규칙(`record_clean_note` 새 숫자, `submit_matches` 인용, `submit_draft` 구획 ID, 상태·단계 검사), `TOOL_ALLOWLIST`에서 만든 권한 처리기.
+- 구현 순서와 일정: `docs/sdd/SPRINTS.md`가 기준이다. 요약하면 S0 계약 골격·최소 샘플·인프라(14:00–14:15) → S1 순수 코어 병렬(14:15–14:45) → S2 텍스트 입력·매칭 직렬로 F1~F8 배포 통과(14:45–15:10, 1차 제출) → S3 재생·평가와 MAF 깊이 기능(15:10–15:40) → S4 사진·음성(15:40–16:00, 코드 동결) → S5 문서·최종 제출(16:20). 아래 자르는 순서의 역순으로 만들어, 시간이 모자라면 덜 중요한 기능이 잘리게 한다. 태스크 25개의 범위·소유 파일·수용 기준은 `docs/sdd/tasks/`에 있다.
+- 기능 플래그: 자를 수 있는 기능은 모두 `config.Settings`의 플래그(표 7) 뒤에 만들고, 오케스트레이터가 게이트에서 배포 설정으로 켠다. 기능을 자르는 일은 플래그를 끄는 것이다.
+- 시간이 모자라면 아래 순서로 자르고, 자른 항목은 이 문서와 PRD에서도 지운다: (1) Application Insights 가용성 테스트, (2) 브라우저 녹음(파일 올리기와 데모 음성만 유지), (3) STT 화자 분리, (4) F13 음성 입력 전체(사례 4는 녹음 대본 텍스트로 실행), (5) F12 사진 입력 전체와 F14(사례 2는 메모 텍스트로 실행, InputRouter는 텍스트 경로만 남김), (6) 거부 뒤 승인 다시 걸기(거부 시 `drafted`로 끝냄), (7) F9 후속 질문(칩을 숨김), (8) 세션 훅 2개(관측 전용이므로 감사 기록·규칙 7에는 영향 없음), (9) `VerifiedDecisionsProvider`(Documenter 지시문에 판정 목록을 직접 넣음), (10) 매칭 병렬화(간선만 바꿔 순차 호출). 입력 확장(F12·F13)을 MAF 활용 깊이(심사 가중치 25%)보다 먼저 자르는 순서이며, 이 순서는 아키텍처 스파인의 기능 축소 순서와 같다. 코드 동결(G3, 16:00)에 배포 앱에서 사진·음성 경로가 통과하지 않으면 (4)·(5)의 플래그를 끄고, F12·F13을 모두 자르면 `enableAiServices`를 꺼서 Azure AI Services 리소스도 배포에서 뺀다. F1~F8, F10, F11은 자르지 않는다.
+- 단위 테스트(MAF·네트워크 없이): 순수 코어 전체 — 개인정보 가리기 패턴(한글 숫자 전화번호, OCR 숫자 보정 포함), 자격 규칙 함수(경계값, 판정 순서), Verifier 대조 규칙 1~5·7·8, `render_final`, 입력 검사(`limits`) — 와 제출 도구 거부 규칙(`record_clean_note` 새 숫자, `submit_matches` 인용, `submit_draft` 구획 ID, 상태·단계 검사), `TOOL_ALLOWLIST`에서 만든 권한 처리기.
 - 최소 샘플에서 함께 확인할 것: `@response_handler` 안 `request_info` 재발행, 실행기의 합집합 출력 타입(`AgentResponseUpdate | UiEvent`), 스트림의 `function_result` 완결성, `available_tools`·`hooks` 통과 키 동작, `system_message` `replace`에서의 도구 호출, 한국어 빠른 전사·화자 분리. 실패 시 대안은 아키텍처 스파인의 Open Questions 표를 따른다.
 - 평가 실행(F10): 5건 전체 흐름. 지표에 가리기 검사(가린 뒤 남은 개인정보 형태 0건, 가리기 재현율, 정답에 없는 위치를 가린 오검출 수)를 포함한다. 배포 후 결과, trace ID 예시, 단계별 span p50/p95를 `docs/eval-result.md`에 기록한다.
 - 배포 후 확인: 로그인 없이 `/`에서 데모 사례 1건 전체 흐름, 승인·거부 두 경로, 평가 실행, Application Insights에서 trace 확인.
@@ -340,9 +364,11 @@ azure.yaml
 infra/main.bicep
 Dockerfile
 requirements.txt
-app/config.py          # Settings(환경변수), 제한값 상수
+requirements-dev.txt   # pytest, pytest-asyncio
+pytest.ini
+app/config.py          # Settings(환경변수·기능 플래그), 제한값 상수
 app/schemas.py         # 모든 경계 타입 — 병렬 작업 전에 먼저 병합
-app/rules.py           # 순수: 자격 규칙 함수 evaluate(scheme, profile)
+app/rules.py           # 순수: 자격 규칙 함수 evaluate(scheme, profile, catalog), FIELD_QUESTIONS
 app/masking.py         # 순수: 개인정보 가리기 mask(text, source, known)
 app/textnum.py         # 순수: OCR 숫자 보정, 한글 수사 정규화, new_numbers
 app/verify.py          # 순수: coverage_gaps, check_citations, verify
@@ -355,21 +381,29 @@ app/prompts.py         # 에이전트 지시문, <case_note> 프롬프트 빌더
 app/agents.py          # 공유 CopilotClient, GitHubCopilotAgent 6개, TOOL_ALLOWLIST, 권한 처리기, call_agent
 app/context.py         # VerifiedDecisionsProvider, StepTimingMiddleware
 app/ingest.py          # Azure 호출 함수(Document Intelligence, Speech 빠른 전사)
-app/workflow.py        # 모든 실행기(OCR·STT·ReferralGate 포함), build_workflow
-app/service.py         # RunService(실시간·재생·평가·승인·/ask), startup/shutdown, Readiness
+app/workflow.py        # build_workflow(간선만, 플래그에 따라 직렬·병렬, 사진·음성 경로)
+app/executors/core.py  # InputRouter, Intake, Profiler, Match, Verifier, Documenter 실행기
+app/executors/media.py # OCR·STT·NoteNormalizer 실행기
+app/executors/gate.py  # ReferralGate(승인·재승인)
+app/service.py         # RunService(진입점·상태 전이·승인 재개), startup/shutdown, Readiness
+app/replay.py          # 재생 파일 읽기·만들기, 재생 실행
+app/evaluation.py      # 평가 지표, 평가 실행
+app/ask.py             # 후속 질문(F9)
 app/telemetry.py       # Azure Monitor, MAF 계측
 app/main.py            # FastAPI 라우트, SSE, 입력 검사, 요청 제한
-app/static/            # index.html, app.js, style.css
+app/static/            # index.html, style.css, print.css, js/(app·api·timeline·results·drafts·eval·ask·media), dev/(가짜 이벤트)
 data/schemes.json
 data/eval_cases.json
 data/samples/          # 사례 2 손글씨 메모 사진, 사례 4 방문 녹음(합성)
 data/replays/          # 재생 파일(이벤트 + 상태 스냅샷)
 scripts/record_replay.py  # 로컬에서 재생 파일 생성
+scripts/sdd.py         # 태스크 조회·선점·검증(docs/sdd)
 docs/reference/        # Copilot SDK, MAF 명세 정리
+docs/sdd/              # 스프린트, 자동화 루프 지시문, 태스크 명세 25개
 docs/eval-result.md
 tests/
 ```
 
-모듈 의존 방향은 L0 `schemas`·`config` ← L1 순수 코어(`rules`·`masking`·`textnum`·`verify`·`render`·`limits`) ← L2 `runs`·`events` ← L3 `tools`·`prompts`·`telemetry` ← L4 `agents`·`context`·`ingest` ← L5 `workflow` ← L6 `service` ← L7 `main`이다. 아래층은 위층을 import하지 않고, 순수 코어는 네트워크·MAF를 쓰지 않는다.
+모듈 의존 방향은 L0 `schemas`·`config` ← L1 순수 코어(`rules`·`masking`·`textnum`·`verify`·`render`·`limits`) ← L2 `runs`·`events` ← L3 `tools`·`prompts`·`telemetry` ← L4 `agents`·`context`·`ingest` ← L5 `executors`·`workflow` ← L6 `service`·`replay`·`evaluation`·`ask` ← L7 `main`이다. 아래층은 위층을 import하지 않고, 순수 코어는 네트워크·MAF를 쓰지 않는다.
 
 `Dockerfile`은 비root 사용자로 실행하고, Copilot CLI 설정 디렉터리를 위해 쓰기 가능한 `HOME`을 지정한다. 런타임 캐시는 `COPILOT_CLI_EXTRACT_DIR=/opt/copilot-runtime`에 두고 실행 사용자가 읽을 수 있게 한다.

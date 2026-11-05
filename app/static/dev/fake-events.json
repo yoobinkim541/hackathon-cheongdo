@@ -1,0 +1,1347 @@
+[
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 1,
+  "ts": "2026-11-05T05:30:00.300Z",
+  "type": "step_started",
+  "step": "intake",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 300
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 2,
+  "ts": "2026-11-05T05:30:00.600Z",
+  "type": "masked",
+  "step": "intake",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "before": "김순자 어르신(78세) 혼자 사심. 연락처 010-2345-6789. 청도읍 화양리 123번지. 월 소득 기초연금 외 약 60만 원. 무릎 관절염, 자녀와 연락 끊김. 월세 15만 원.",
+   "after": "[이름1] 어르신(78세) 혼자 사심. 연락처 [전화1]. 청도읍 화양리 [주소1]. 월 소득 기초연금 외 약 60만 원. 무릎 관절염, 자녀와 연락 끊김. 월세 15만 원.",
+   "spans": []
+  },
+  "t_ms": 600
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 3,
+  "ts": "2026-11-05T05:30:00.900Z",
+  "type": "step_completed",
+  "step": "intake",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 40
+  },
+  "t_ms": 900
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 4,
+  "ts": "2026-11-05T05:30:01.200Z",
+  "type": "step_started",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 1200
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 5,
+  "ts": "2026-11-05T05:30:01.350Z",
+  "type": "token",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "78세 "
+  },
+  "t_ms": 1350
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 6,
+  "ts": "2026-11-05T05:30:01.500Z",
+  "type": "token",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "독거 "
+  },
+  "t_ms": 1500
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 7,
+  "ts": "2026-11-05T05:30:01.650Z",
+  "type": "token",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "가구로 "
+  },
+  "t_ms": 1650
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 8,
+  "ts": "2026-11-05T05:30:01.800Z",
+  "type": "token",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "정리합니다."
+  },
+  "t_ms": 1800
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 9,
+  "ts": "2026-11-05T05:30:02.100Z",
+  "type": "tool_call",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "record_case_profile",
+   "args": {}
+  },
+  "t_ms": 2100
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 10,
+  "ts": "2026-11-05T05:30:02.400Z",
+  "type": "tool_result",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "record_case_profile"
+  },
+  "t_ms": 2400
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 11,
+  "ts": "2026-11-05T05:30:02.700Z",
+  "type": "usage",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "input": 820,
+   "output": 210
+  },
+  "t_ms": 2700
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 12,
+  "ts": "2026-11-05T05:30:03.200Z",
+  "type": "step_completed",
+  "step": "profiler",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 4200
+  },
+  "t_ms": 3200
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 13,
+  "ts": "2026-11-05T05:30:03.250Z",
+  "type": "step_started",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 3250
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 14,
+  "ts": "2026-11-05T05:30:03.300Z",
+  "type": "step_started",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 3300
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 15,
+  "ts": "2026-11-05T05:30:03.350Z",
+  "type": "step_started",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 3350
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 16,
+  "ts": "2026-11-05T05:30:03.470Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "search_schemes",
+   "args": {
+    "domain": "living"
+   }
+  },
+  "t_ms": 3470
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 17,
+  "ts": "2026-11-05T05:30:03.570Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "livelihood_benefit"
+   }
+  },
+  "t_ms": 3570
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 18,
+  "ts": "2026-11-05T05:30:03.650Z",
+  "type": "tool_result",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d1"
+  },
+  "t_ms": 3650
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 19,
+  "ts": "2026-11-05T05:30:03.750Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "housing_benefit"
+   }
+  },
+  "t_ms": 3750
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 20,
+  "ts": "2026-11-05T05:30:03.830Z",
+  "type": "tool_result",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d2"
+  },
+  "t_ms": 3830
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 21,
+  "ts": "2026-11-05T05:30:03.930Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "emergency_livelihood"
+   }
+  },
+  "t_ms": 3930
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 22,
+  "ts": "2026-11-05T05:30:04.010Z",
+  "type": "tool_result",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d3"
+  },
+  "t_ms": 4010
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 23,
+  "ts": "2026-11-05T05:30:04.110Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "energy_voucher"
+   }
+  },
+  "t_ms": 4110
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 24,
+  "ts": "2026-11-05T05:30:04.190Z",
+  "type": "tool_result",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d4"
+  },
+  "t_ms": 4190
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 25,
+  "ts": "2026-11-05T05:30:04.290Z",
+  "type": "tool_call",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "submit_matches",
+   "args": {}
+  },
+  "t_ms": 4290
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 26,
+  "ts": "2026-11-05T05:30:04.340Z",
+  "type": "usage",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "input": 1500,
+   "output": 400
+  },
+  "t_ms": 4340
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 27,
+  "ts": "2026-11-05T05:30:04.460Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "search_schemes",
+   "args": {
+    "domain": "health"
+   }
+  },
+  "t_ms": 4460
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 28,
+  "ts": "2026-11-05T05:30:04.560Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "medical_benefit"
+   }
+  },
+  "t_ms": 4560
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 29,
+  "ts": "2026-11-05T05:30:04.640Z",
+  "type": "tool_result",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d5"
+  },
+  "t_ms": 4640
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 30,
+  "ts": "2026-11-05T05:30:04.740Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "copay_reduction"
+   }
+  },
+  "t_ms": 4740
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 31,
+  "ts": "2026-11-05T05:30:04.820Z",
+  "type": "tool_result",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d6"
+  },
+  "t_ms": 4820
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 32,
+  "ts": "2026-11-05T05:30:04.920Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "disability_pension"
+   }
+  },
+  "t_ms": 4920
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 33,
+  "ts": "2026-11-05T05:30:05.000Z",
+  "type": "tool_result",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d7"
+  },
+  "t_ms": 5000
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 34,
+  "ts": "2026-11-05T05:30:05.100Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "health_checkup_visit"
+   }
+  },
+  "t_ms": 5100
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 35,
+  "ts": "2026-11-05T05:30:05.180Z",
+  "type": "tool_result",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d8"
+  },
+  "t_ms": 5180
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 36,
+  "ts": "2026-11-05T05:30:05.280Z",
+  "type": "tool_call",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "submit_matches",
+   "args": {}
+  },
+  "t_ms": 5280
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 37,
+  "ts": "2026-11-05T05:30:05.330Z",
+  "type": "usage",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "input": 1500,
+   "output": 400
+  },
+  "t_ms": 5330
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 38,
+  "ts": "2026-11-05T05:30:05.450Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "search_schemes",
+   "args": {
+    "domain": "care"
+   }
+  },
+  "t_ms": 5450
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 39,
+  "ts": "2026-11-05T05:30:05.550Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "basic_pension"
+   }
+  },
+  "t_ms": 5550
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 40,
+  "ts": "2026-11-05T05:30:05.630Z",
+  "type": "tool_result",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d9"
+  },
+  "t_ms": 5630
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 41,
+  "ts": "2026-11-05T05:30:05.730Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "elderly_care_service"
+   }
+  },
+  "t_ms": 5730
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 42,
+  "ts": "2026-11-05T05:30:05.810Z",
+  "type": "tool_result",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d10"
+  },
+  "t_ms": 5810
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 43,
+  "ts": "2026-11-05T05:30:05.910Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "emergency_safety_service"
+   }
+  },
+  "t_ms": 5910
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 44,
+  "ts": "2026-11-05T05:30:05.990Z",
+  "type": "tool_result",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d11"
+  },
+  "t_ms": 5990
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 45,
+  "ts": "2026-11-05T05:30:06.090Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "senior_job_public"
+   }
+  },
+  "t_ms": 6090
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 46,
+  "ts": "2026-11-05T05:30:06.170Z",
+  "type": "tool_result",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d12"
+  },
+  "t_ms": 6170
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 47,
+  "ts": "2026-11-05T05:30:06.270Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "args": {
+    "scheme_id": "lonely_death_prevention"
+   }
+  },
+  "t_ms": 6270
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 48,
+  "ts": "2026-11-05T05:30:06.350Z",
+  "type": "tool_result",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "check_eligibility",
+   "decision_id": "d13"
+  },
+  "t_ms": 6350
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 49,
+  "ts": "2026-11-05T05:30:06.450Z",
+  "type": "tool_call",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "submit_matches",
+   "args": {}
+  },
+  "t_ms": 6450
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 50,
+  "ts": "2026-11-05T05:30:06.500Z",
+  "type": "usage",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "input": 1500,
+   "output": 400
+  },
+  "t_ms": 6500
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 51,
+  "ts": "2026-11-05T05:30:06.700Z",
+  "type": "step_completed",
+  "step": "match_living",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 9000
+  },
+  "t_ms": 6700
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 52,
+  "ts": "2026-11-05T05:30:06.900Z",
+  "type": "step_completed",
+  "step": "match_health",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 9800
+  },
+  "t_ms": 6900
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 53,
+  "ts": "2026-11-05T05:30:07.100Z",
+  "type": "step_completed",
+  "step": "match_care",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 10600
+  },
+  "t_ms": 7100
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 54,
+  "ts": "2026-11-05T05:30:07.200Z",
+  "type": "step_started",
+  "step": "verifier",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 7200
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 55,
+  "ts": "2026-11-05T05:30:07.400Z",
+  "type": "verified",
+  "step": "verifier",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "eligible": [
+    {
+     "decision": {
+      "decision_id": "d1",
+      "scheme_id": "livelihood_benefit",
+      "domain": "living",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "livelihood_benefit.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d2",
+      "scheme_id": "housing_benefit",
+      "domain": "living",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "housing_benefit.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d4",
+      "scheme_id": "energy_voucher",
+      "domain": "living",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "energy_voucher.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d5",
+      "scheme_id": "medical_benefit",
+      "domain": "health",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "medical_benefit.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d6",
+      "scheme_id": "copay_reduction",
+      "domain": "health",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "copay_reduction.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d8",
+      "scheme_id": "health_checkup_visit",
+      "domain": "health",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "health_checkup_visit.age",
+        "met": true,
+        "used_values": {
+         "age": 78
+        },
+        "note": null
+       },
+       {
+        "id": "health_checkup_visit.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d9",
+      "scheme_id": "basic_pension",
+      "domain": "care",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "basic_pension.age",
+        "met": true,
+        "used_values": {
+         "age": 78
+        },
+        "note": null
+       },
+       {
+        "id": "basic_pension.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d10",
+      "scheme_id": "elderly_care_service",
+      "domain": "care",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "elderly_care_service.age",
+        "met": true,
+        "used_values": {
+         "age": 78
+        },
+        "note": null
+       },
+       {
+        "id": "elderly_care_service.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d11",
+      "scheme_id": "emergency_safety_service",
+      "domain": "care",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "emergency_safety_service.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d12",
+      "scheme_id": "senior_job_public",
+      "domain": "care",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "senior_job_public.age",
+        "met": true,
+        "used_values": {
+         "age": 78
+        },
+        "note": null
+       },
+       {
+        "id": "senior_job_public.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    },
+    {
+     "decision": {
+      "decision_id": "d13",
+      "scheme_id": "lonely_death_prevention",
+      "domain": "care",
+      "decision": "eligible",
+      "conditions": [
+       {
+        "id": "lonely_death_prevention.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000,
+         "household_size": 1
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "월 소득이 기준액 이하이고 혼자 사는 고령 가구라 우선 검토 대상입니다.",
+     "follow_up_questions": [],
+     "priority": null
+    }
+   ],
+   "needs_check": [
+    {
+     "decision": {
+      "decision_id": "d3",
+      "scheme_id": "emergency_livelihood",
+      "domain": "living",
+      "decision": "unknown",
+      "conditions": [
+       {
+        "id": "emergency_livelihood.income",
+        "met": true,
+        "used_values": {
+         "monthly_income_krw": 600000
+        },
+        "note": null
+       },
+       {
+        "id": "emergency_livelihood.crisis",
+        "met": null,
+        "used_values": {},
+        "note": "위기 사유는 담당자 확인"
+       }
+      ],
+      "missing_fields": [
+       "crisis_events"
+      ],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "최근 위기 사유가 메모에 없어 판정하지 못했습니다.",
+     "follow_up_questions": [
+      "최근 6개월 안에 실직·질병·사고 같은 위기 사유가 있었나요?"
+     ],
+     "priority": null
+    }
+   ],
+   "ineligible": [
+    {
+     "decision": {
+      "decision_id": "d7",
+      "scheme_id": "disability_pension",
+      "domain": "health",
+      "decision": "ineligible",
+      "conditions": [
+       {
+        "id": "disability_pension.disability",
+        "met": false,
+        "used_values": {
+         "disability": "없음"
+        },
+        "note": null
+       }
+      ],
+      "missing_fields": [],
+      "source_url": "https://www.bokjiro.go.kr",
+      "source": "tool"
+     },
+     "explanation": "등록 장애가 없어 대상이 아닙니다.",
+     "follow_up_questions": [],
+     "priority": null
+    }
+   ],
+   "removed": [
+    {
+     "scheme_id": "housing_benefit",
+     "decision_id": "d99",
+     "reason": "판정 기록에 없는 decision_id d99를 인용했습니다"
+    }
+   ],
+   "failed_domains": [],
+   "supplemented": [
+    "lonely_death_prevention"
+   ],
+   "audit_rule_skipped": []
+  },
+  "t_ms": 7400
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 56,
+  "ts": "2026-11-05T05:30:07.450Z",
+  "type": "step_completed",
+  "step": "verifier",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 15
+  },
+  "t_ms": 7450
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 57,
+  "ts": "2026-11-05T05:30:07.750Z",
+  "type": "step_started",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {},
+  "t_ms": 7750
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 58,
+  "ts": "2026-11-05T05:30:07.900Z",
+  "type": "token",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "상담기록지와 "
+  },
+  "t_ms": 7900
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 59,
+  "ts": "2026-11-05T05:30:08.050Z",
+  "type": "token",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "의뢰서 "
+  },
+  "t_ms": 8050
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 60,
+  "ts": "2026-11-05T05:30:08.200Z",
+  "type": "token",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "초안을 "
+  },
+  "t_ms": 8200
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 61,
+  "ts": "2026-11-05T05:30:08.350Z",
+  "type": "token",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "text": "작성합니다."
+  },
+  "t_ms": 8350
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 62,
+  "ts": "2026-11-05T05:30:08.650Z",
+  "type": "tool_call",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "lookup_decision",
+   "args": {
+    "decision_id": "d1"
+   }
+  },
+  "t_ms": 8650
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 63,
+  "ts": "2026-11-05T05:30:08.950Z",
+  "type": "tool_call",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "tool": "submit_draft",
+   "args": {}
+  },
+  "t_ms": 8950
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 64,
+  "ts": "2026-11-05T05:30:09.250Z",
+  "type": "draft",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "sections": {
+    "record.basic_info": "[이름1](78세), 독거, 월세 거주(월 15만 원), 연락처 [전화1]",
+    "record.summary": "무릎 관절염으로 거동이 불편하고 자녀와 연락이 끊겨 돌볼 사람이 없음. 월 소득 약 60만 원.",
+    "record.needs": "생계·주거 지원, 건강 관리, 고립 예방 돌봄",
+    "record.linked_schemes": "생계급여, 주거급여, 의료급여, 기초연금, 노인맞춤돌봄서비스, 응급안전안심서비스",
+    "record.follow_up": "긴급복지 생계지원: 최근 위기 사유 확인 필요",
+    "referral.agency": "청도군 노인맞춤돌봄서비스 수행기관",
+    "referral.subject": "78세 독거 어르신, 무릎 관절염, 가족 돌봄 없음",
+    "referral.schemes": "노인맞춤돌봄서비스(elderly_care_service.age, elderly_care_service.tier), 응급안전안심서비스(emergency_safety_service.living_alone)",
+    "referral.officer": "청도읍 맞춤형복지팀 담당자"
+   },
+   "follow_up_questions": {
+    "emergency_livelihood": [
+     "최근 6개월 안에 실직·질병·사고 같은 위기 사유가 있었나요?"
+    ]
+   }
+  },
+  "t_ms": 9250
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 65,
+  "ts": "2026-11-05T05:30:09.550Z",
+  "type": "usage",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "input": 2400,
+   "output": 900
+  },
+  "t_ms": 9550
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 66,
+  "ts": "2026-11-05T05:30:09.850Z",
+  "type": "step_completed",
+  "step": "documenter",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "ms": 11000
+  },
+  "t_ms": 9850
+ },
+ {
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "seq": 67,
+  "ts": "2026-11-05T05:30:10.150Z",
+  "type": "approval_required",
+  "step": "referral_gate",
+  "mode": "live",
+  "trace_id": "0af7651916cd43dd8448eb211c80319c",
+  "data": {
+   "request_id": "req-1",
+   "scheme_ids": [
+    "livelihood_benefit",
+    "housing_benefit",
+    "energy_voucher",
+    "medical_benefit",
+    "copay_reduction",
+    "health_checkup_visit",
+    "basic_pension",
+    "elderly_care_service",
+    "emergency_safety_service",
+    "senior_job_public",
+    "lonely_death_prevention",
+    "emergency_livelihood"
+   ],
+   "documents_summary": "상담기록지 5개 구획, 의뢰서 4개 구획"
+  },
+  "t_ms": 10150
+ }
+]

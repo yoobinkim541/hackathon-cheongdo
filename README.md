@@ -5,7 +5,9 @@
 - 제품 요구사항: [PRD.md](./PRD.md)
 - 기술 설계: [TRD.md](./TRD.md)
 - 구현 명세 요약: [SPEC.md](./SPEC.md)
+- 단계별 개발 명세(스프린트, 태스크, 자동화 루프): [docs/sdd](./docs/sdd/README.md)
 - UI 시안: [Figma — 청도 해커톤 UI 시안](https://www.figma.com/design/1jSoQXwAjX8pv01kjulZYf/%EC%B2%AD%EB%8F%84-%ED%95%B4%EC%BB%A4%ED%86%A4-UI-%EC%8B%9C%EC%95%88?node-id=0-1)
+- 모바일 UI 목업(서버 없이 동작, 합성 데이터): [docs/mockup](./docs/mockup/index.html). 로컬에서는 `docs/mockup/index.html`을 브라우저로 열고, GitHub Pages는 저장소 설정에서 `main` 브랜치의 `/docs` 폴더를 지정하면 열린다. 주소 뒤에 `#result`, `#check`, `#approve`, `#eval`, `?theme=dark`를 붙여 화면과 테마를 고를 수 있다.
 - 라이브러리 명세 정리: [GitHub Copilot SDK](./docs/reference/copilot-sdk.md), [Microsoft Agent Framework](./docs/reference/agent-framework.md)
 
 ## 구성

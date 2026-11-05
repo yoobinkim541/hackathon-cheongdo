@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>동행노트</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/print.css" media="print">
+</head>
+<body>
+  <header class="banner" role="note">
+    <strong>합성 데이터 전용</strong> · 실제 개인정보를 입력하지 마세요. AI 생성 초안이며 담당자 검토가 필요합니다.
+    <span id="replay-badge" class="badge badge-replay" hidden>저장된 실행 재생</span>
+  </header>
+  <details class="help">
+    <summary>개인정보 가리기 안내</summary>
+    <p>가리기는 정규식 기반이라 이름·주소를 완전히 걸러내지 못할 수 있습니다. 합성 데이터만 입력하세요. 제도 데이터는 예시이며, 실제 적용 전 공식 지침 확인이 필요합니다. 소득인정액은 월 소득으로 단순화해 계산합니다.</p>
+  </details>
+
+  <div class="intro">
+    <h1>동행노트</h1>
+    <p class="lede">방문 상담 메모를 근거 있는 연계 문서 초안으로</p>
+  </div>
+
+  <main class="layout">
+    <section id="input" class="panel" aria-labelledby="input-title">
+      <h2 id="input-title">입력</h2>
+      <button id="start-demo" class="btn btn-primary" type="button">데모 사례로 시작</button>
+      <ul id="case-list" class="case-list" aria-label="데모 사례"></ul>
+
+      <div class="secondary-actions">
+        <button id="toggle-direct" class="btn" type="button" aria-expanded="false" aria-controls="direct-form">직접 입력</button>
+        <button id="start-eval" class="btn" type="button">평가 실행</button>
+      </div>
+
+      <div id="input-tabs" class="tabs" role="tablist" hidden></div>
+
+      <form id="direct-form" class="direct-form" hidden>
+        <label for="note">상담 메모</label>
+        <textarea id="note" name="note" rows="8" maxlength="4000" placeholder="예: 김순자 어르신(78세) 혼자 거주, 월 소득 약 60만 원..."></textarea>
+        <div class="form-row">
+          <span id="note-count" class="muted">0 / 4,000자</span>
+          <button class="btn btn-primary" type="submit">정리 시작</button>
+        </div>
+      </form>
+      <div id="media-panel"></div>
+      <p id="input-error" class="error-text" role="alert"></p>
+    </section>
+
+    <section id="timeline" class="panel" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">진행</h2>
+      <p id="connection" class="notice" hidden>연결이 끊겨 다시 연결하는 중</p>
+      <p id="run-status" class="status" aria-live="polite">데모 사례를 고르거나 상담 메모를 입력하세요.</p>
+      <div id="masked-view"></div>
+      <ol id="steps" class="steps"></ol>
+    </section>
+
+    <section id="results" class="panel" aria-labelledby="results-title">
+      <h2 id="results-title" tabindex="-1">결과</h2>
+      <div id="verified-view"><p class="muted">아직 결과가 없습니다.</p></div>
+      <div id="draft-view"></div>
+      <div id="final-view"></div>
+    </section>
+  </main>
+
+  <section id="eval" class="panel eval-panel" aria-labelledby="eval-title" hidden>
+    <h2 id="eval-title" tabindex="-1">평가 실행</h2>
+    <div id="eval-view"></div>
+  </section>
+
+  <dialog id="approval-dialog" aria-modal="true" aria-labelledby="approval-title">
+    <form method="dialog">
+      <h2 id="approval-title">의뢰서 확정</h2>
+      <p>아래 문서를 확정합니다. 확정 뒤에는 인쇄용 문서가 만들어집니다.</p>
+      <div id="approval-body"></div>
+      <div class="dialog-actions">
+        <button id="approval-reject" class="btn" value="reject" type="button">거부</button>
+        <button id="approval-accept" class="btn btn-primary" value="approve" type="button">승인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+fastapi==0.162.0
+uvicorn==0.54.0
+pydantic==2.14.2
+agent-framework-core==1.24.0
+agent-framework-github-copilot==2.1.1
+github-copilot-sdk==1.0.28
+opentelemetry-sdk==1.45.2
+azure-monitor-opentelemetry==1.8.11
+azure-ai-documentintelligence==1.0.2
+azure-identity==1.27.0
+httpx==0.28.1
+python-multipart==0.0.33

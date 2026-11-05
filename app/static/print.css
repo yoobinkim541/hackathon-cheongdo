@@ -1,0 +1,11 @@
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .banner, .help, .intro, #input, #timeline, #eval, #verified-view, #draft-view, dialog, .no-print { display: none !important; }
+  .layout { display: block; padding: 0; }
+  #results { border: none; padding: 0; }
+  #results-title { display: none; }
+  .final-doc { border: none; padding: 0; }
+  .final-doc h2 { font-size: 16pt; border-bottom: 2px solid #000; padding-bottom: 4pt; }
+  .final-doc h3 { font-size: 12pt; margin-top: 10pt; }
+  .final-doc .page-break { break-before: page; }
+}
