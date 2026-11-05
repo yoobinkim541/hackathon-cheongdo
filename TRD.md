@@ -180,11 +180,11 @@ def build_workflow(run: RunState) -> Workflow:
 - 대상 장면: 담당자는 방문 중 종이에 메모하거나 휴대폰으로 상담을 녹음한다. 사무실로 돌아와 이를 다시 입력하는 일이 표 1(PRD)의 "메모 정리" 단계다. 사진과 음성을 바로 받으면 이 단계의 재입력을 없앤다.
 - OCR 실행기: Document Intelligence `prebuilt-read` 모델(API 2024-11-30, `azure-ai-documentintelligence` SDK)을 `DefaultAzureCredential`(Container Apps에서는 사용자 할당 관리 ID)로 호출한다. Read 모델은 한국어 손글씨 인식을 지원한다[문헌: https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/language-support/ocr?view=doc-intel-4.0.0]. 결과의 단어별 신뢰도가 0.8 미만인 단어는 불확실 구간으로 표시한다. 형식은 JPEG·PNG, 5MB 이하.
 - STT 실행기: Speech 빠른 전사 REST API(`/speechtotext/transcriptions:transcribe?api-version=2025-10-15`)를 Entra 토큰(범위 `https://cognitiveservices.azure.com/.default`)으로 호출한다[문헌: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/fast-transcription-create]. 정의는 `locales: ["ko-KR"]`, 화자 분리(최대 2명: 담당자·대상자), 구문 목록(제도 이름 13개와 "차상위", "기준 중위소득", "맞춤형급여" 같은 용어)을 쓴다. 구문 목록은 제도 이름 오인식을 줄이기 위해서다. 형식은 WAV·MP3·WebM(브라우저 `MediaRecorder` 기본 형식 포함), 2분·10MB 이하. 한국어 빠른 전사 지원과 화자 분리 동작은 최소 샘플에서 확인하고, 안 되면 화자 분리를 빼고 이 문서를 고친다.
-- 원본 처리: 사진·음성 원본은 요청 처리 중 메모리에만 두고 디스크·로그에 남기지 않는다. 원본은 팀 구독의 Azure AI Services로만 가고 Copilot 모델로 가지 않는다. 인식 텍스트는 Intake에서 텍스트 입력과 같은 규칙으로 가린 뒤에야 NoteNormalizer로 간다.
+- 원본 처리: 사진·음성 원본은 요청 처리 중 메모리에만 두고 디스크·로그에 남기지 않는다. 원본은 팀 구독의 Azure AI Services로만 가고 Copilot 모델로 가지 않는다. Azure AI Services 쪽의 데이터 보존 기간은 이 문서 작성 중 확인하지 못했으며, 그래서 합성 데이터만 입력하도록 안내한다. 인식 텍스트는 Intake에서 텍스트 입력과 같은 규칙으로 가린 뒤에야 NoteNormalizer로 간다.
 - NoteNormalizer: 가린 인식 텍스트를 받아 말 반복·끊김·맞춤법을 정리하고 화자 표시를 "담당자:"·"대상자:"로 바꾼다. 원문에 없는 사실과 숫자를 더하지 않는다. `record_clean_note`가 원문에 없는 숫자가 생긴 정리본을 거부하므로, 모델이 금액·나이를 지어내도 다음 단계로 가지 않는다. 거부는 1회까지 다시 시도하고, 두 번째도 거부되면 정리를 건너뛰고 가린 인식 텍스트를 그대로 Profiler에 넘기며 화면에 "정리 생략"을 표시한다. 바꾼 구간(`edits[]`)과 불확실 구간은 화면에서 원문과 나란히 보인다.
 - 데모: 사례 2는 손글씨 메모 사진, 사례 4는 방문 녹음으로 제공한다. 둘 다 합성 내용이며, 사진은 팀원이 합성 메모를 손으로 써서 찍고 음성은 팀원이 합성 대본을 읽어 녹음한다. 이 제작은 코딩과 병렬로 13:45–14:30에 끝낸다. 심사 에이전트는 마이크나 카메라 없이 데모 사례 버튼만으로 OCR·STT 경로를 실행할 수 있다. 사례 2·4의 저장된 실행 재생 파일(F11)에는 OCR·STT 결과와 정리본도 들어 있어, 호출 한도 초과 때도 사진·음성 경로의 결과를 보여 준다.
 - 관측: OCR·STT 호출의 성공 여부, 소요 시간, 인식 글자 수, 불확실 구간 수를 span 속성으로 남긴다. `/readyz`는 시작 시 Azure AI Services용 Entra 토큰 발급 성공 여부를 함께 캐시해 보인다(인식 호출은 하지 않는다).
-- 한계: OCR은 숫자 0과 영문 O, 하이픈 빠짐을 혼동할 수 있고, 화자 분리된 발화 속 이름은 호칭 패턴이 없으면 가려지지 않을 수 있다. 이 한계를 화면 도움말에 적고 합성 데이터만 쓰도록 안내한다.
+- 한계와 보정: OCR은 숫자 0과 영문 O, l과 1을 혼동하거나 하이픈을 빠뜨릴 수 있다. 그래서 Intake는 OCR 텍스트를 가리기 전에 숫자 사이의 O·o·l을 숫자로 바꾸고, 하이픈 없이 이어진 10~11자리 숫자도 전화번호 규칙으로 찾는다. 화자 분리된 발화 속 이름은 호칭 패턴이 없으면 가려지지 않을 수 있다. 이 한계를 화면 도움말에 적고 합성 데이터만 쓰도록 안내한다.
 
 ## 4. 데이터
 
@@ -285,7 +285,7 @@ def build_workflow(run: RunState) -> Workflow:
 ## 9. UI
 
 - 첫 화면은 위에서부터 고정 배너 → 한 줄 소개("방문 상담 메모를 근거 있는 연계 문서 초안으로") → 주 버튼 "데모 사례로 시작"과 사례 5건 목록 → 보조 버튼 "직접 입력", "평가 실행" 순으로 둔다. 주 버튼은 하나다.
-- 세 구획: 입력(데모 사례 선택, 입력 방식 탭 "텍스트"·"사진"·"음성"; 음성 탭은 브라우저 녹음과 파일 올리기를 함께 둔다) / 단계 타임라인(실시간 진행, 도구 호출과 결과, 단계별 시간·토큰) / 결과(제도 분류, 근거 패널, 문서 초안, 승인 버튼). 모바일 폭에서는 세로로 쌓는다.
+- 세 구획: 입력(데모 사례 선택, 입력 방식 탭 "텍스트"·"사진"·"음성"; 음성 탭은 브라우저 녹음과 파일 올리기를 함께 둔다) / 단계 타임라인(실시간 진행, 도구 호출과 결과, 단계별 시간·토큰) / 결과(제도 분류, 근거 패널, 문서 초안, 승인 버튼). 화면 폭 768px 이하에서는 세 구획을 세로로 쌓고, 버튼과 탭의 터치 영역은 44px 이상으로 둔다.
 - 인식 결과 확인: 사진·음성 입력이면 타임라인 아래에 인식 원문(가린 뒤)과 정리본을 나란히 보이고, 불확실 구간은 밑줄과 "확인 필요" 글자로, 모델이 바꾼 구간은 바꾸기 전 글을 함께 보인다. 담당자는 정리본을 고친 뒤 다시 실행할 수 있다.
 - 상단 고정 배너: 합성 데이터 전용, AI 초안, 담당자 검토 필요. 배너 아래 도움말에 가리기의 한계를 적는다.
 - 접근성: 진행 상태는 `aria-live="polite"`, 모든 동작은 키보드로 가능, 명도 대비 4.5:1 이상, 배지는 색과 글자를 함께 쓴다.
@@ -318,7 +318,7 @@ Dockerfile
 requirements.txt
 app/main.py            # FastAPI, SSE, 실행 상태, 승인 응답
 app/workflow.py        # Executor, build_workflow, ReferralGate
-app/agents.py          # 공유 CopilotClient, GitHubCopilotAgent 5개, 권한 처리기
+app/agents.py          # 공유 CopilotClient, GitHubCopilotAgent 6개, 권한 처리기
 app/tools.py           # 함수 도구
 app/context.py         # VerifiedDecisionsProvider, StepTimingMiddleware
 app/rules.py           # 자격 규칙 함수
