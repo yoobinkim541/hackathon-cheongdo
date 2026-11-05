@@ -983,7 +983,7 @@ function renderDoc(title, sections, stamp) {
   return el("article", { class: "doc" },
     el("h4", { text: title }),
     stamp ? el("p", { class: "doc-meta", text: `확정 시각 ${stamp} · 합성 데이터` }) : null,
-    sortSections(sections).map((s) => [el("h5", { text: s.title || s.id }), el("p", { text: s.text || "" })]));
+    sortSections(sections).flatMap((s) => [el("h5", { text: s.title || s.id }), el("p", { text: s.text || "" })]));
 }
 
 function onApprovalKept(run) {
