@@ -1305,7 +1305,7 @@ function onCaseCompleted(d) {
   if (!row) { row = el("tr", { id: evalRowId(d.case_id) }); $("eval-body").append(row); }
   clear(row);
   row.className = d.replayed ? "replayed" : "";
-  const missing = d.missing_fields || [];
+  const missing = typeof d.missing_fields === "number" ? d.missing_fields : (d.missing_fields || []).length;
   row.append(
     el("th", { scope: "row", text: d.title || d.case_id }),
     el("td", {}, d.replayed ? [badge("재생", "badge-warn"), el("span", { class: "stage-ms", text: " 평균 제외" })] : badge("라이브", "badge-ok")),
@@ -1318,7 +1318,7 @@ function onCaseCompleted(d) {
     el("td", { text: fmtPct(d.mask_recall) }),
     el("td", { text: typeof d.mask_false_positive === "number" && d.mask_false_positive <= 1 && !Number.isInteger(d.mask_false_positive) ? fmtPct(d.mask_false_positive) : fmtNumber(d.mask_false_positive) }),
     el("td", { text: d.cer === null || d.cer === undefined ? "-" : fmtPct(d.cer, 1) }),
-    el("td", {}, String(countOf(d.auto_filled)), missing.length ? el("span", { class: "stage-ms", text: ` (모름: ${missing.map(fieldLabel).join(", ")})` }) : null),
+    el("td", {}, String(countOf(d.auto_filled)), missing ? el("span", { class: "stage-ms", text: ` (모름 ${missing}개)` }) : null),
     el("td", { text: String(countOf(d.verifier_filled)) }));
 }
 

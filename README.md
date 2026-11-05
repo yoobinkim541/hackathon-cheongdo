@@ -3,7 +3,8 @@
 읍·면 행정복지센터 맞춤형복지팀 담당자가 가정 방문 상담 메모를 입력하거나 손글씨 메모 사진·상담 녹음을 올리면, 이를 텍스트로 바꾸고 개인정보를 가린 뒤 연계 가능한 복지 제도를 근거와 함께 찾고 상담기록지와 서비스 연계 의뢰서 초안을 만드는 웹 앱이다. 의뢰서는 담당자가 승인해야만 확정된다. 2026 청도 바이브코딩 해커톤 출품작이다.
 
 - 제품 요구사항: [PRD.md](./PRD.md)
-- 기술 설계: [TRD.md](./TRD.md)
+- 기술 설계: [TRD.md](./TRD.md), 요약 명세: [SPEC.md](./SPEC.md)
+- API·SSE·보안 명세: [docs/api.md](./docs/api.md)
 - 라이브러리 명세 정리: [GitHub Copilot SDK](./docs/reference/copilot-sdk.md), [Microsoft Agent Framework](./docs/reference/agent-framework.md)
 
 ## 구성
@@ -12,6 +13,51 @@
 - 모든 에이전트(6개)는 `GitHubCopilotAgent`이며, 공유 `CopilotClient` 하나로 GitHub Copilot SDK 세션을 연다.
 - 자격 판정은 규칙 함수(도구)가 하고, 모델은 인식 결과 정리, 판정 입력값 추출, 검사 우선순위 판단, 추가 질문 작성, 문서 초안에만 쓴다.
 - Azure Container Apps, Container Registry, Key Vault, Application Insights, Azure AI Services(Document Intelligence·Speech)에 `azd up`으로 배포한다. 사진·음성 원본은 Azure AI Services에서만 인식하고, 모델에는 가린 텍스트만 보낸다.
+
+## 사용 기술
+
+| 영역 | 기술 |
+|---|---|
+| 서버 | Python 3.12, FastAPI 0.162.0, Uvicorn 0.54.0, Pydantic 2.14.2, python-multipart, httpx |
+| 에이전트 | Microsoft Agent Framework(`agent-framework-core` 1.24.0, `agent-framework-github-copilot` 2.1.1), GitHub Copilot SDK 1.0.28(Copilot CLI 런타임 1.0.105), 모델 `claude-sonnet-5.5`(`COPILOT_MODEL`) |
+| 사진·음성 인식 | Azure AI Services: Document Intelligence `prebuilt-read`(`azure-ai-documentintelligence`), Speech 빠른 전사 REST API, `azure-identity`(관리 ID) |
+| 관측 | OpenTelemetry, `azure-monitor-opentelemetry`, Application Insights |
+| 프런트엔드 | 정적 HTML, 바닐라 JavaScript, CSS, Server-Sent Events |
+| 배포 | Docker, Azure Container Apps, Azure Container Registry, Azure Key Vault, Azure Developer CLI(`azd`), Bicep |
+| 테스트 | pytest(`requirements.txt`에 없으므로 따로 설치, `tests/`는 MAF·네트워크 없이 순수 코어를 검사) |
+
+## 실행·배포
+
+로컬 실행(Python 3.12):
+
+```bash
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+export COPILOT_GITHUB_TOKEN=github_pat_...   # Copilot Requests 권한이 있는 fine-grained PAT
+export COPILOT_MODEL=claude-sonnet-5.5
+uvicorn app.main:app --port 8000
+```
+
+- 브라우저에서 `http://127.0.0.1:8000/`을 연다. `GET /readyz`로 Copilot·AI Services 준비 상태를 확인한다.
+- 토큰 없이 `DISABLE_COPILOT=1`로 실행하면 데모 사례 5건은 저장된 실행 재생으로 동작하고, 직접 입력은 409로 거부된다.
+- 사진·음성 입력을 쓰려면 `ENABLE_AI_SERVICES=true`와 `AZURE_AI_ENDPOINT`를 정하고, `DefaultAzureCredential`이 쓸 수 있는 자격 증명(예: `az login`)에 해당 리소스의 `Cognitive Services User` 역할이 있어야 한다.
+- 단위 테스트: `python -m pytest`.
+- 재생 파일 다시 만들기: `python -m scripts.record_replay [case_id ...]`(Copilot 준비 필요, `data/replays/`에 씀).
+
+Azure 배포:
+
+```bash
+azd env new dongheng-prod
+azd env set COPILOT_GITHUB_TOKEN github_pat_...
+azd env set COPILOT_MODEL claude-sonnet-5.5
+azd env set ENABLE_AI_SERVICES true
+azd env set ALERT_EMAIL team@example.com      # 선택: 비우면 경고만 만들고 메일 작업 그룹은 만들지 않는다
+azd up
+```
+
+- 지역 기본값은 `koreacentral`이다(`AZURE_LOCATION`, AI Services는 `AZURE_AI_SERVICES_LOCATION`으로 따로 정할 수 있다).
+- `azd up`은 리소스 그룹 `rg-<환경 이름>`에 Container Apps, ACR, Key Vault(토큰 보관), Application Insights, AI Services를 만들고, 이미지를 ACR에서 원격 빌드해 배포한다. 현재 배포는 `rg-dongheng-prod`의 Container App `ca-web-7fdjs3dl7icwm`이다.
+- 역할 할당 전파 지연으로 첫 배포가 실패하면 `azd up`을 한 번 더 실행한다.
 
 ## 사용 데이터
 

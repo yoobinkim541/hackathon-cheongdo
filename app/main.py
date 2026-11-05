@@ -209,6 +209,8 @@ async def create_run(request: Request):
     if ctype.startswith("multipart/form-data"):
         if not SERVICE.readiness.ai_services_token_ok:
             return error(400, "media_invalid", "지금은 사진·음성 인식을 쓸 수 없습니다. 텍스트로 입력해 주세요.")
+        if not SERVICE.readiness.copilot_ready:
+            return error(409, "state_conflict", "지금은 AI 연결이 준비되지 않았습니다. 데모 사례의 저장된 실행을 이용해 주세요.")
         form = await request.form()
         kind = form.get("kind")
         upload = form.get("file")
