@@ -15,7 +15,7 @@ companions: [.memlog.md, reviews/]
 
 # Architecture Spine — 동행노트 백엔드
 
-TRD가 기술 설계의 기준이고, 이 스파인은 여러 사람(또는 Copilot 세션)이 모듈을 나눠 만들 때 어긋나면 안 되는 규칙만 고정한다. 스파인이 TRD를 바꾸는 지점은 맨 끝 "TRD 개정 목록"에 모두 적었고, 이 목록은 구현과 같은 커밋에서 TRD에 반영한다.
+TRD가 기술 설계의 기준이고, 이 스파인은 여러 사람(또는 Copilot 세션)이 모듈을 나눠 만들 때 어긋나면 안 되는 규칙만 고정한다. 스파인이 TRD를 바꾸는 지점은 맨 끝 "TRD 개정 목록"에 모두 적었고, TRD.md·SPEC.md에 반영했다.
 
 ## Design Paradigm
 

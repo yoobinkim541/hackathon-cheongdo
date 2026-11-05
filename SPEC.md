@@ -54,16 +54,21 @@
 
 ## 6. 워크플로와 도구
 
-`Intake`(가리기, 코드) → `Profiler`(AI) → 매칭 ×3(AI+도구, fan-out) → `Verifier`(코드, fan-in) → `Documenter`(AI) → `ReferralGate`(승인 대기, `request_info`)
+`InputRouter`(switch-case) → [`OCR`·`STT`(Azure AI)] → `Intake`(가리기, 코드) → [`NoteNormalizer`(AI, 사진·음성일 때)] → `Profiler`(AI) → 매칭 ×3(AI+도구, fan-out) → `Verifier`(코드, fan-in) → `Documenter`(AI) → `ReferralGate`(승인 대기, `request_info`). 단계 순서·분기·병렬·승인은 MAF 워크플로 간선으로만 표현하고, 에이전트 호출은 모두 `call_agent` 래퍼(시간 제한 45초, 단계당 최대 2회 시도, 오류 분류, 감사 기록)를 거친다.
 
 | 도구 | 사용처 | 동작 |
 |---|---|---|
+| `record_clean_note` | NoteNormalizer | 정리본 저장. 원문에 없는 숫자가 생기면 거부 |
 | `record_case_profile` | Profiler | 프로필 저장, 누락 필드 반환 |
-| `search_schemes` | 매칭 | 분야별 제도 목록 |
+| `search_schemes` | 매칭 | 분야별 제도 목록(호출 단계의 분야만) |
 | `check_eligibility` | 매칭 | 서버가 실행 상태의 프로필로 규칙 판정(`eligible`/`ineligible`/`unknown`, `decision_id`) |
+| `submit_matches` | 매칭 | 추천 목록 제출. 인용 검사 후 저장 |
 | `lookup_decision` | Documenter | 같은 실행의 판정 기록 읽기 전용 조회 |
+| `submit_draft` | Documenter | 문서 초안 제출(구획 ID 고정) |
 
-**Verifier 규칙:** (1) `scheme_id`·`decision_id` 필수 (2) 판정 기록과 일치 (3) `condition_ids`가 기록의 조건에 존재 (4) 불일치 시 제거 후 `removed`에 이유 기록 (5) `unknown`은 "확인 필요" (6) 에이전트가 건너뛴 제도는 규칙 함수로 직접 채움 (7) 모델이 실제로 받지 않은 `decision_id` 인용 시 제거(감사 기록이 비면 생략).
+구조화 결과는 제출 도구 인자로만 받는다. 판정 순서는 불충족 → `ineligible`, 필수 필드 누락 → `unknown`, 나머지 → `eligible`이다.
+
+**Verifier 규칙:** (1) `scheme_id`·`decision_id` 필수 (2) 판정 기록과 일치 (3) `condition_ids`가 기록의 조건에 존재 (4) 불일치 시 제거 후 `removed`에 이유 기록 (5) `unknown`은 "확인 필요" (6) 에이전트가 건너뛴 제도는 규칙 함수로 직접 채움(실패 분야 포함) (7) 모델이 실제로 받지 않은 `decision_id` 인용 시 제거(`call_agent`의 감사 기록이 불완전한 단계는 생략).
 
 ## 7. API
 
@@ -72,28 +77,28 @@
 | `GET /` | UI |
 | `GET /api/cases` | 데모 사례 목록 |
 | `POST /api/runs` | `{note \| case_id, mode}` → `{run_id}` |
-| `GET /api/runs/{id}/events` | SSE, `Last-Event-ID` 재접속, 15초 heartbeat |
-| `POST /api/runs/{id}/approval` | `{request_id, approved, edited_sections}` |
-| `POST /api/runs/{id}/ask` | 후속 질문(SSE) |
+| `GET /api/runs/{id}/events` | SSE, `Last-Event-ID` 재접속, 15초 heartbeat 주석 줄, `done` 뒤에만 종료 |
+| `POST /api/runs/{id}/approval` | `{request_id, approved, edited_sections, scheme_ids?}`. 이중 제출은 409 |
+| `POST /api/runs/{id}/ask` | 후속 질문 → `202 {ask_id}`, 답변은 실행 SSE로. 승인 대기·확정 상태에서만 |
 | `POST /api/eval` | `{eval_id}` 반환 |
 | `GET /api/eval/{id}/events` | 평가 진행 SSE |
 | `GET /healthz`, `GET /readyz` | 상태(`/readyz`는 시작 시 결과 캐시) |
 
-SSE 이벤트: `masked`, `step_started`, `step_completed`, `token`, `tool_call`, `tool_result`, `usage`, `verified`, `draft`, `approval_required`, `finalized`, `error`, `heartbeat`, `done`.
+SSE 이벤트: `masked`, `transcribed`, `normalized`, `step_started`, `step_completed`, `step_failed`, `step_retry`, `token`, `tool_call`, `tool_result`, `usage`, `verified`, `draft`, `approval_required`, `approval_kept`, `finalized`, `replaced`, `queued`, `error`, `done`. 평가 SSE: `case_started`, `case_completed`, `eval_summary`.
 
 ## 8. 비기능 요구사항
 
-- **성능:** 1건 90초 이내, 모델 호출 45초 제한 후 1회 재시도, 동시 실행 4건.
+- **성능:** 1건 90초 이내, 모델 호출 45초 제한(넘으면 세션 삭제 후 새 세션으로 재시도, 단계당 최대 2회 시도), 동시 실행 4건(평가 포함).
 - **성공 지표:** 재현율 ≥90%, 정밀도 ≥90%, 근거 일치율 100%, 가리기 잔존 0건·가리기 재현율 100%.
-- **신뢰성:** 429·할당량 초과 시 저장된 실행 재생(`data/replays/*.json`). 직접 입력은 재생 없이 오류·재시도 버튼.
-- **보안:** IP별 분당 5회, 입력 4,000자 제한, `/api/eval` 전역 동시 1건·분당 1회, 내장 도구 숨김 + 권한 허용 목록, 메모는 `<case_note>` 데이터로만 취급, 토큰은 Key Vault, 저장 없음(30분 후 삭제).
+- **신뢰성:** 데모 사례에서 Profiler 실패·429·할당량 초과 시 새 실행으로 저장된 실행 재생(`data/replays/*.json`). 직접 입력은 재생 없이 오류·재시도 버튼.
+- **보안:** IP별 분당 5회(실행·`/ask`), 입력 4,000자 제한, `/api/eval` 전역 동시 1건·분당 1회, 내장 도구 숨김 + 단계별 권한 허용 목록, 메모는 `<case_note>` 데이터로만 취급, 토큰은 Key Vault(사용자 할당 관리 ID, `AZURE_CLIENT_ID`), 상담 데이터 저장 없음(30분 후 삭제, Copilot CLI 세션 파일도 함께 삭제).
 - **접근성:** `aria-live="polite"`, 키보드 조작, 명도 대비 4.5:1 이상, 색+글자 배지.
 - **책임 있는 AI:** 상단 배너(합성 데이터 전용, AI 초안, 담당자 검토 필요), 모든 AI 문장에 "AI 초안" 표시, 제도 데이터는 예시임을 표시.
 
 ## 9. 기술 스택과 배포
 
-- Python 3.12, FastAPI, Uvicorn, `agent-framework-core==1.24.0`, `agent-framework-github-copilot==2.1.1`, `github-copilot-sdk==1.0.28`, OpenTelemetry, 정적 HTML/바닐라 JS, SSE.
-- Azure Container Apps(최소·최대 복제본 1), ACR, Key Vault, Application Insights. `azd up` + Bicep.
+- Python 3.12, FastAPI 0.162.0, Uvicorn 0.54.0, Pydantic 2.14.2, `agent-framework-core==1.24.0`, `agent-framework-github-copilot==2.1.1`, `github-copilot-sdk==1.0.28`(Copilot CLI 런타임 1.0.105), OpenTelemetry, Azure AI Services(Document Intelligence·Speech), 정적 HTML/바닐라 JS, SSE.
+- Azure Container Apps(단일 리비전, 최소·최대 복제본 1), ACR, Key Vault, AI Services, Application Insights. `azd up` + Bicep.
 - 구조화 출력은 `response_format` 미지원이므로 도구 인자(Pydantic)로만 받는다.
 
 ## 10. 구현 순서
@@ -106,17 +111,25 @@ SSE 이벤트: `masked`, `step_started`, `step_completed`, `token`, `tool_call`,
 6. 평가 실행(F10)
 7. 문서 확정, PRD/TRD 동기화 (최종 제출 16:20)
 
-**자르는 순서(시간 부족 시):** 가용성 테스트 → 세션 훅 → `VerifiedDecisionsProvider` → 거부 후 재승인 → F9 → 병렬화. F1~F8, F10, F11은 유지한다.
+**자르는 순서(시간 부족 시, TRD 10절):** 가용성 테스트 → 브라우저 녹음 → STT 화자 분리 → 거부 후 재승인 → F9 → 세션 훅 → `VerifiedDecisionsProvider` → 매칭 병렬화 → F13 → F12·F14. F1~F8, F10, F11은 유지한다.
 
 ## 11. 저장소 구조
 
 ```text
-app/{main,workflow,agents,tools,context,rules,masking,telemetry}.py
+app/{config,schemas}.py                                  # L0 계약 (schemas.py 먼저 병합)
+app/{rules,masking,textnum,verify,render,limits}.py      # L1 순수 코어
+app/{runs,events}.py                                     # L2 실행 상태, 이벤트 로그
+app/{tools,prompts,telemetry}.py                         # L3
+app/{agents,context,ingest}.py                           # L4
+app/workflow.py, app/service.py, app/main.py             # L5–L7
 app/static/{index.html,app.js,style.css}
-data/{schemes.json,eval_cases.json,replays/}
+data/{schemes.json,eval_cases.json,samples/,replays/}
+scripts/record_replay.py
 docs/{reference/,eval-result.md}
 infra/main.bicep, azure.yaml, Dockerfile, requirements.txt
 tests/
 ```
 
-테스트: 가리기 패턴, 규칙 함수 경계값, Verifier 대조 규칙, 권한 처리기 허용 목록.
+아래층은 위층을 import하지 않는다. 모듈별 불변 규칙은 `_bmad-output/planning-artifacts/architecture/architecture-동행노트-2026-11-05/ARCHITECTURE-SPINE.md`(AD-1~AD-15)를 따른다.
+
+테스트(MAF·네트워크 없이): 가리기·OCR 숫자 보정 패턴, 규칙 함수 경계값·판정 순서, Verifier 대조 규칙 1~7, 확정 문서 생성, 입력 검사, 제출 도구 거부 규칙, 권한 처리기 허용 목록.
