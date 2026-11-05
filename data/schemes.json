@@ -1,0 +1,245 @@
+[
+  {
+    "id": "livelihood_benefit",
+    "name": "생계급여",
+    "domain": "living",
+    "summary": "가구 월 소득이 2026년 기준 중위소득 32% 이하인 가구에 생계비를 지원한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct",
+    "params": {
+      "percent": 32
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw"
+    ],
+    "source_url": "https://www.law.go.kr/LSW//admRulInfoP.do?admRulSeq=2100000262584",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "housing_benefit",
+    "name": "주거급여",
+    "domain": "living",
+    "summary": "가구 월 소득이 기준 중위소득 48% 이하이고 전세·월세로 사는 가구에 임차료를 지원한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct_housing",
+    "params": {
+      "percent": 48,
+      "housing": [
+        "전세",
+        "월세"
+      ]
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw",
+      "housing"
+    ],
+    "source_url": "https://www.law.go.kr/법령/주거급여법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "emergency_livelihood",
+    "name": "긴급복지 생계지원",
+    "domain": "living",
+    "summary": "실직·질병 같은 위기 사유가 생긴 가구 중 월 소득이 기준 중위소득 75% 이하인 가구에 생계비를 긴급 지원한다. 위기 사유는 담당자가 확인하고 규칙은 소득과 가구원 수만 본다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct",
+    "params": {
+      "percent": 75
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw"
+    ],
+    "source_url": "https://www.law.go.kr/법령/긴급복지지원법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "energy_voucher",
+    "name": "에너지바우처",
+    "domain": "living",
+    "summary": "가구 월 소득이 기준 중위소득 48% 이하(수급 가구 기준을 단순화)이고 65세 이상 또는 장애인이 있는 가구에 냉난방 에너지 비용을 지원한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct_vulnerable",
+    "params": {
+      "percent": 48,
+      "age_min": 65,
+      "optional_fields": [
+        "disability"
+      ]
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw",
+      "age"
+    ],
+    "source_url": "https://www.energyv.or.kr",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "medical_benefit",
+    "name": "의료급여",
+    "domain": "health",
+    "summary": "가구 월 소득이 기준 중위소득 40% 이하인 가구의 의료비 본인부담을 줄여 준다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct",
+    "params": {
+      "percent": 40
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw"
+    ],
+    "source_url": "https://www.law.go.kr/법령/의료급여법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "copay_reduction",
+    "name": "본인부담 경감(차상위)",
+    "domain": "health",
+    "summary": "가구 월 소득이 기준 중위소득 40% 초과 50% 이하인 차상위 가구의 건강보험 본인부담을 줄여 준다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "income_pct_range",
+    "params": {
+      "percent": 50,
+      "lower_percent": 40
+    },
+    "required_fields": [
+      "household_size",
+      "monthly_income_krw"
+    ],
+    "source_url": "https://www.law.go.kr/법령/국민건강보험법시행령",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "disability_pension",
+    "name": "장애인연금",
+    "domain": "health",
+    "summary": "18세 이상 중증장애인 중 월 소득이 2026년 선정기준액(단독 140만 원, 부부 224만 원) 이하인 사람에게 연금을 지급한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "disability_pension",
+    "params": {
+      "age_min": 18,
+      "single_max": 1400000,
+      "couple_max": 2240000
+    },
+    "required_fields": [
+      "disability",
+      "age",
+      "monthly_income_krw",
+      "household_type"
+    ],
+    "source_url": "https://eiec.kdi.re.kr/policy/materialView.do?num=275642",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "health_checkup_visit",
+    "name": "건강검진·방문건강관리",
+    "domain": "health",
+    "summary": "65세 이상 어르신의 건강검진 안내와 보건소 방문건강관리를 연계한다.",
+    "rule": "age",
+    "params": {
+      "age_min": 65
+    },
+    "required_fields": [
+      "age"
+    ],
+    "source_url": "https://www.law.go.kr/법령/지역보건법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "basic_pension",
+    "name": "기초연금",
+    "domain": "care",
+    "summary": "65세 이상 어르신 중 월 소득이 2026년 선정기준액(단독 247만 원, 부부 395만 2천 원) 이하인 사람에게 연금을 지급한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "age_income",
+    "params": {
+      "age_min": 65,
+      "single_max": 2470000,
+      "couple_max": 3952000
+    },
+    "required_fields": [
+      "age",
+      "monthly_income_krw",
+      "household_type"
+    ],
+    "source_url": "https://eiec.kdi.re.kr/policy/materialView.do?num=275606",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "elderly_care_service",
+    "name": "노인맞춤돌봄서비스",
+    "domain": "care",
+    "summary": "혼자 사는 65세 이상 어르신 중 월 소득이 기초연금 선정기준액(단독 247만 원) 이하인 사람에게 안부 확인과 생활 지원을 제공한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "age_alone_income",
+    "params": {
+      "age_min": 65,
+      "single_max": 2470000
+    },
+    "required_fields": [
+      "age",
+      "household_type",
+      "monthly_income_krw"
+    ],
+    "source_url": "https://www.law.go.kr/법령/노인복지법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "emergency_safety_service",
+    "name": "응급안전안심서비스",
+    "domain": "care",
+    "summary": "혼자 사는 65세 이상 어르신 집에 화재·활동 감지기를 달아 응급 상황에 119와 연결한다.",
+    "rule": "age_alone",
+    "params": {
+      "age_min": 65
+    },
+    "required_fields": [
+      "age",
+      "household_type"
+    ],
+    "source_url": "https://www.law.go.kr/법령/노인복지법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "senior_job_public",
+    "name": "노인일자리(공익활동)",
+    "domain": "care",
+    "summary": "65세 이상 어르신 중 월 소득이 기초연금 선정기준액(단독 247만 원, 부부 395만 2천 원) 이하인 사람에게 공익활동 일자리를 연계한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).",
+    "rule": "age_income",
+    "params": {
+      "age_min": 65,
+      "single_max": 2470000,
+      "couple_max": 3952000
+    },
+    "required_fields": [
+      "age",
+      "monthly_income_krw",
+      "household_type"
+    ],
+    "source_url": "https://www.law.go.kr/법령/노인복지법",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  },
+  {
+    "id": "lonely_death_prevention",
+    "name": "고독사 예방 안부 확인",
+    "domain": "care",
+    "summary": "혼자 사는 50세 이상 주민에게 정기 안부 확인과 지역 돌봄 자원을 연계한다.",
+    "rule": "age_alone",
+    "params": {
+      "age_min": 50
+    },
+    "required_fields": [
+      "household_type",
+      "age"
+    ],
+    "source_url": "https://www.law.go.kr/법령/고독사예방및관리에관한법률",
+    "checked_at": "2026-11-05",
+    "is_example": true
+  }
+]
