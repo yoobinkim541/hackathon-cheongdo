@@ -442,23 +442,43 @@ function renderStep(id) {
   if (s.retries) node.append(el("p", { class: "step-meta", text: `재시도 ${s.retries}회` }));
   if (s.chips.length) {
     node.append(el("ul", { class: "chips", "aria-label": "도구 호출" },
-      s.chips.map((c) => el("li", {}, el("span", { class: `chip ${c.kind === "call" ? "chip-tool" : "chip-result"}`, title: c.detail, text: c.label })))));
+      s.chips.map((c) => el("li", {}, el("span", { class: `chip ${c.cls}`, title: c.detail, text: c.label })))));
   }
   if (s.usage) node.append(el("p", { class: "step-meta", text: `토큰 입력 ${fmtNumber(s.usage.input)} · 출력 ${fmtNumber(s.usage.output)}` }));
   if (s.tokens) {
-    const details = el("details", {}, el("summary", { text: `모델 출력 보기 (${fmtNumber(s.tokens.length)}자)` }), el("pre", { text: s.tokens }));
+    const details = el("details", {}, el("summary", { text: "에이전트 설명 보기" }), el("div", { class: "agent-note" }, renderNote(s.tokens)));
     details.open = wasOpen;
     node.append(details);
   }
 }
 
+// Minimal Markdown (bold, bullet/numbered lists, inline code) rendered as DOM nodes; never innerHTML.
+function renderNote(text) {
+  const inline = (line) => line.split(/(\*\*[^*]+\*\*|`[^`]+`)/).filter(Boolean).map((part) =>
+    part.startsWith("**") && part.endsWith("**") ? el("strong", { text: part.slice(2, -2) })
+      : part.startsWith("`") && part.endsWith("`") ? el("code", { text: part.slice(1, -1) }) : part);
+  const out = [];
+  let list = null;
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    const item = line.match(/^(?:[-*]|\d+\.)\s+(.*)$/);
+    if (item) {
+      if (!list) { list = el("ul"); out.push(list); }
+      list.append(el("li", {}, inline(item[1])));
+      continue;
+    }
+    list = null;
+    if (line) out.push(el("p", {}, inline(line)));
+  }
+  return out;
+}
+
 function updateTokens(id) {
   const node = $(`step-${id}`);
   const s = app.run.steps[id];
-  const pre = node ? node.querySelector("details pre") : null;
-  if (!pre) { renderStep(id); return; }
-  pre.textContent = s.tokens;
-  node.querySelector("details summary").textContent = `모델 출력 보기 (${fmtNumber(s.tokens.length)}자)`;
+  const box = node ? node.querySelector("details .agent-note") : null;
+  if (!box) { renderStep(id); return; }
+  clear(box).append(...renderNote(s.tokens));
 }
 
 function tickElapsed() {
@@ -602,28 +622,59 @@ function onToken(run, data, step) {
   if (hadTokens) updateTokens(step); else renderStep(step);
 }
 
+const TOOL_TEXT = {
+  search_schemes: () => "제도 목록 조회",
+  check_eligibility: (a) => `규칙 판정 · ${schemeName(a.scheme_id)}`,
+  submit_matches: (a) => `추천 ${((a.submission || a).recommendations || []).length}건 제출`,
+  record_clean_note: () => "정리본 제출",
+  record_case_profile: () => "가구 정보 기록",
+  submit_draft: () => "문서 초안 제출",
+};
+
+function parseMaybeJson(value) {
+  if (typeof value !== "string") return value;
+  try { return JSON.parse(value); } catch { return value; }
+}
+
 function onToolCall(run, data, step) {
   const s = ensureStep(step);
   if (!s) return;
-  s.chips.push({ kind: "call", label: `호출 ${data.tool}`, detail: shortJson(data.args, 400) });
+  const args = parseMaybeJson(data.args) || {};
+  const label = (TOOL_TEXT[data.tool] || (() => data.tool))(typeof args === "object" ? args : {});
+  s.chips.push({ tool: data.tool, key: args.scheme_id || null, done: false, cls: "chip-tool", label: `${label} …`, detail: label });
   renderStep(step);
 }
 
 function onToolResult(run, data, step) {
-  collectDecisions(run, data.result, 0);
+  const result = parseMaybeJson(data.result);
+  collectDecisions(run, result, 0);
   const s = ensureStep(step);
   if (!s) return;
-  s.chips.push({ kind: "result", label: `결과 ${data.tool}${resultHint(data.result)}`, detail: shortJson(data.result, 400) });
+  const key = result && typeof result === "object" && !Array.isArray(result) ? result.scheme_id || null : null;
+  let chip = s.chips.find((c) => !c.done && c.tool === data.tool && (key === null || c.key === key));
+  if (!chip) { chip = { tool: data.tool, key, detail: data.tool }; s.chips.push(chip); }
+  chip.done = true;
+  Object.assign(chip, describeResult(data.tool, result, chip.detail));
   renderStep(step);
 }
 
-function resultHint(result) {
-  if (result && typeof result === "object" && !Array.isArray(result)) {
-    if (result.status) return ` · ${statusText(result.status)}`;
-    if (result.ok === false) return " · 실패";
+function describeResult(tool, result, base) {
+  if (tool === "check_eligibility" && typeof result === "string") {
+    // Results longer than the event limit arrive truncated, so read the leading fields directly.
+    const name = result.match(/"scheme_name"\s*:\s*"([^"]+)"/);
+    const status = result.match(/"status"\s*:\s*"(eligible|unknown|ineligible)"/);
+    if (status) result = { scheme_name: name ? name[1] : null, status: status[1] };
   }
-  if (Array.isArray(result)) return ` · ${result.length}건`;
-  return "";
+  if (tool === "check_eligibility" && result && result.status) {
+    const cls = { eligible: "chip-result", unknown: "chip-warn", ineligible: "chip-neutral" }[result.status] || "chip-result";
+    return { cls, label: `${result.scheme_name || schemeName(result.scheme_id)} → ${statusText(result.status)}` };
+  }
+  if (tool === "search_schemes" && Array.isArray(result)) return { cls: "chip-result", label: `제도 ${result.length}개 받음` };
+  const text = typeof result === "string" ? result : "";
+  const rejected = (result && result.ok === false) || /거부|오류|않|없습니다|필요/.test(text) && !/^제출했습니다/.test(text);
+  return rejected
+    ? { cls: "chip-warn", label: `${base} · 다시 요청`, detail: text || base }
+    : { cls: "chip-result", label: `${base} · 완료` };
 }
 
 function collectDecisions(run, obj, depth) {

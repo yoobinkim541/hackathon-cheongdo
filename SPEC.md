@@ -47,9 +47,9 @@
 
 ## 5. 데이터 모델
 
-`CaseProfile`: `age`, `household_type`(독거/부부/조손/한부모/기타), `household_size`, `monthly_income_krw`, `assets_krw`, `disability`(없음/경증/중증), `chronic_illness`, `housing`, `monthly_rent_krw`, `caregiver_available`, `isolation_signals`, `crisis_events`, `missing_fields`.
+`CaseProfile`: `age`, `household_type`(독거/부부/조손/한부모/기타), `household_size`, `monthly_income_krw`, `assets_krw`, `disability`(없음/경증/중증), `chronic_illness`, `housing`, `monthly_rent_krw`, `caregiver_available`, `isolation_signals`, `crisis_events`, `current_benefits`(메모에 받고 있다고 적힌 제도 이름), `missing_fields`.
 
-규칙 함수 필수 필드 6개: `age`, `household_type`, `household_size`, `monthly_income_krw`, `disability`, `housing`. 판정 순서는 불충족 → `ineligible`, 필수 필드 누락·미판정 조건 → `unknown`, 나머지 → `eligible`이다.
+규칙 함수 필수 필드 6개: `age`, `household_type`, `household_size`, `monthly_income_krw`, `disability`, `housing`. 판정 순서는 불충족 → `ineligible`, 필수 필드 누락·미판정 조건 → `unknown`, 나머지 → `eligible`이다. `current_benefits`에 제도 이름이 맞는 항목이 있으면 그 제도에 조건 "이미 받는 중이 아님"(불충족)을 붙여 `ineligible`("해당 없음")로 둔다.
 
 평가 사례(`data/eval_cases.json`) 5건: ① 저소득 독거노인 ② 고령 부부·소득 누락(손글씨 메모 사진) ③ 장애인 가구 ④ 실직 위기 가구(방문 녹음) ⑤ 인젝션 포함 사례. 필드: `id`, `title`, `household`, `note`, `expected_profile`, `expected_eligible/unknown/ineligible`, `pii_spans`, `names`, `input_type`, `media_path`, `reference_text`. 사례 2·4를 OCR·STT로 실제 처리하면 인식 텍스트와 정답 원문의 문자 오류율(CER)을 계산한다.
 
@@ -96,7 +96,7 @@ SSE 이벤트: `run_started`, `masked`, `transcribed`, `normalized`, `profile`, 
 ## 8. 비기능 요구사항
 
 - **성능:** 1건 90초 이내, 모델 호출 45초 제한(시간 초과·오류 시 세션 삭제 후 새 세션으로 재시도, 단계당 최대 2회 시도, `rate_limit`은 재시도 없음), 동시 실행 4건(평가 포함, 넘으면 자리가 날 때 시작).
-- **성공 지표(PRD 표 3):** 재현율 ≥90%("확인 필요"도 찾은 것으로 셈), 정밀도 ≥90%("규칙상 충족"만 대상), 둘 다 사례별 값의 5건 평균. 근거 일치율 100%(모델이 인용한 판정과 규칙 함수 결과의 일치이며 정답 자격 정확도가 아님). 처리 시간 90초 이내. 가리기 잔존 0건·가리기 재현율 100%. CER 사진 ≤0.10, 녹음 ≤0.15. 배포 앱 실측(2026-11-05 14:56 KST, 라이브 5건): 재현율·정밀도·근거 일치율 1.00, 평균 41.4초(31.6~53.2초), 잔존 0건, CER 사진 0.000·녹음 0.117(`docs/eval-result.md`).
+- **성공 지표(PRD 표 3):** 재현율 ≥90%("확인 필요"도 찾은 것으로 셈), 정밀도 ≥90%("규칙상 충족"만 대상), 둘 다 사례별 값의 5건 평균. 근거 일치율 100%(모델이 인용한 판정과 규칙 함수 결과의 일치이며 정답 자격 정확도가 아님). 처리 시간 90초 이내. 가리기 잔존 0건·가리기 재현율 100%. CER 사진 ≤0.10, 녹음 ≤0.15. 배포 앱 실측(2026-11-05 15:27–15:29 KST, 커밋 `2674bead`, 라이브 5건): 재현율·정밀도·근거 일치율 1.00, 평균 42.7초(31.0~55.8초), 잔존 0건, CER 사진 0.000·녹음 0.117. 이전 리비전(`5bb3c20`)에서는 사례 4 정밀도 0.00이 배포 앱에서 2회 재현되었고(STT 오인식), `2674bead`에서 고쳤다(`docs/eval-result.md`).
 - **신뢰성:** 서버는 진행 중인 실행을 재생으로 바꾸지 않는다. 데모 사례 실행이 실패로 끝나면 UI가 같은 사례로 `mode:"replay"` 새 실행을 시작하고 "저장된 실행 재생" 배지를 보인다(`data/replays/case1~case5.json`). 직접 입력은 재생 없이 오류·재시도 버튼.
 - **보안:** 세션 쿠키 `dh_sid`(HttpOnly, SameSite=Strict, https에서 Secure)로 실행·평가를 만든 브라우저에 묶음, POST에 `X-Requested-With: dongheng` 필수, CSP 등 보안 헤더와 `no-store`, OpenAPI 문서 끔, IP별 분당 5회(`POST /api/runs`), 입력 4,000자 제한, 본문 JSON 64KB, 사진 5MB·음성 10MB·WAV 2분 제한(내용 시그니처 검사), `/api/eval` 전역 동시 1건·분당 1회, 내장 도구 숨김 + 단계별 권한 허용 목록, 메모는 `<case_note>` 데이터로만 취급, 토큰은 Key Vault(사용자 할당 관리 ID, `AZURE_CLIENT_ID`), 사진·음성 원본은 Azure AI Services(키 없는 관리 ID 인증)로만 보내고 모델에는 가린 텍스트만 전달, 상담 데이터 저장 없음(마지막 활동 뒤 30분, 생성 후 최대 45분에 삭제, Copilot CLI 세션 파일도 함께 삭제). 상세와 한계는 `docs/api.md` 3절.
 - **관측:** Application Insights trace(예: `4c4b94fd281063f0ccf0fb2da3e2c707`, 루트 span `dongheng.run`), `/healthz` 가용성 테스트와 경고 3개(가용성 실패, 5xx, `rate_limit`). `ALERT_EMAIL`을 정했을 때만 메일 작업 그룹을 연결한다. 확정 이벤트에 담당자 검토 시간 `review_seconds`와 고친 구획 수 `edited_sections`를 기록한다.
