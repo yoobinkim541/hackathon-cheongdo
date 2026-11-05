@@ -207,7 +207,7 @@ def finalize_referral(scheme_ids: list[str], note: str) -> str:
 |---|---|---|---|---|
 | 공유 클라이언트 | `GitHubCopilotAgent(..., client=copilot_client)` | 여러 에이전트가 CLI 프로세스 하나를 공유. 에이전트 `stop()`은 공유 클라이언트를 멈추지 않음 | 아래 3.2.1 | S2 698-699행, 806-817행 |
 | 도구 변환 | `FunctionTool` → `copilot.tools.Tool(name, description, handler, parameters=ai_func.parameters())`. `CopilotTool` 인스턴스와 dict는 그대로 통과. `MCPTool`은 `TypeError` | 핸들러가 `FunctionInvocationContext(function, arguments, session=agent_session, kwargs=function_invocation_kwargs)`를 만들어 `ai_func.invoke(...)` 호출. 예외는 `ToolResult(result_type="failure", text_result_for_llm="Error: ...")`로 모델에 돌려준다. 텍스트 외 결과(`data`, `uri`)는 버려진다 | — | S2 1364-1495행 |
-| `skip_permission` | 변환된 `Tool`은 `skip_permission=False`(SDK 기본값) | SDK는 `skip_permission=False` 사용자 도구 호출마다 `PermissionRequestCustomTool(kind="custom-tool")`를 `on_permission_request`에 보낸다(CopilotSdkSpec 확인: SDK e2e `test_invokes_custom_tool_with_permission_handler`). 기본 처리기(`_deny_all_permissions`)는 이를 거부한다 | — | S2 227-232행, 1490-1495행, S25 `tools.py` 110행, `session_events.py` 8340행 |
+| `skip_permission` | 변환된 `Tool`은 `skip_permission=False`(SDK 기본값) | SDK는 `skip_permission=False` 사용자 도구 호출마다 `PermissionRequestCustomTool(kind="custom-tool")`를 `on_permission_request`에 보낸다(`copilot-sdk.md` 확인: SDK e2e `test_invokes_custom_tool_with_permission_handler`). 기본 처리기(`_deny_all_permissions`)는 이를 거부한다 | — | S2 227-232행, 1490-1495행, S25 `tools.py` 110행, `session_events.py` 8340행 |
 | 승인 hook | 기본 `on_pre_tool_use`: `always_require` 도구에 `{"permissionDecision": "ask", ...}`, 나머지는 `None` | `"ask"`는 `on_permission_request`로 간다. 사용자 `on_pre_tool_use`나 `hooks={"on_pre_tool_use": ...}`가 있으면 기본 hook을 설치하지 않고 경고만 남긴다 | — | S2 1497-1583행, S3 |
 | 권한 결정 정규화 | 처리기가 `PermissionDecisionApproveForSession()`을 범위 없이 돌려주면 요청 종류에 맞춰 범위를 채우거나 `PermissionDecisionApproveOnce()`로 좁힌다 | CLI 충돌(`commandIdentifiers`) 방지 | — | S2 309-401행 |
 | 스트리밍 이벤트 매핑 | `ASSISTANT_MESSAGE_DELTA` → 텍스트 `AgentResponseUpdate`; `ASSISTANT_USAGE` → usage 콘텐츠; `TOOL_EXECUTION_START` → `Content.from_function_call(..., hosted=True)`; `TOOL_EXECUTION_COMPLETE` → `role="tool"`, `Content.from_function_result(...)`; `SESSION_IDLE` → 스트림 종료; `SESSION_ERROR` → `AgentException` | 비스트리밍 경로는 최종 `ASSISTANT_MESSAGE` 하나만 메시지로 만든다 | `for c in u.contents: if c.type == "function_call": ...` | S2 1141-1250행, 1047-1076행 |
@@ -373,7 +373,7 @@ enable_instrumentation(enable_sensitive_data=False)
 3. `FunctionInvocationContext.tools`는 Copilot 경로에서 `None`이다. `ctx.add_tools()`(점진적 도구 노출)를 쓸 수 없다(S2 1456-1462행에서 `tools=`를 넘기지 않음).
 4. 스트리밍 실행에는 제한 시간이 없다. `timeout`(기본 60초)은 비스트리밍 `send_and_wait`에만 적용된다. `_stream_updates`는 `SESSION_IDLE`까지 큐를 기다린다(S2 1236-1250행). 스트리밍에서 제한 시간이 필요하면 호출자가 `asyncio.timeout(...)`으로 감싸야 한다. 취소 시 프레임워크는 이벤트 구독만 해제하며, CLI 쪽 진행 중인 턴을 중단하는 코드는 없다 `[추론]`. 중단 API는 Copilot SDK 명세를 따른다.
 5. 스트리밍 usage 집계 버그: 여러 모델 호출이 있는 스트리밍 실행은 마지막 호출 usage만 남는다(이슈 #10087 open). 비스트리밍은 합산이 맞다(S2 1003-1022행).
-6. 사용자 도구도 Copilot 권한 요청 대상이다. MAF가 만든 `Tool`은 `skip_permission=False`이므로 기본 거부 처리기에서는 앱의 도구가 모두 거부된다. 처리기는 `kind == "custom-tool"`이고 `tool_name`이 허용 목록에 있을 때 승인해야 한다(S2 227-232행, S25; CopilotSdkSpec이 SDK e2e 테스트로 확인).
+6. 사용자 도구도 Copilot 권한 요청 대상이다. MAF가 만든 `Tool`은 `skip_permission=False`이므로 기본 거부 처리기에서는 앱의 도구가 모두 거부된다. 처리기는 `kind == "custom-tool"`이고 `tool_name`이 허용 목록에 있을 때 승인해야 한다(S2 227-232행, S25; `copilot-sdk.md`의 SDK e2e 테스트 확인).
 7. 사용자 `on_pre_tool_use`를 넣으면 `always_require` 자동 보호가 꺼진다(S2 1549-1557행, S3).
 8. 핸드오프 오케스트레이션은 `Agent` 전용이다(S16 `_handoff.py` 775행).
 9. 한 `Workflow` 인스턴스는 동시 실행을 막는다. 실행기 인스턴스도 상태를 가지므로(`AgentExecutor`는 메시지 캐시와 세션을 보유, S14 309-352행) 동시 상담마다 워크플로와 실행기를 새로 만들어야 한다.
@@ -387,7 +387,7 @@ enable_instrumentation(enable_sensitive_data=False)
 
 ## 5. 동행노트 설계(TRD) 검증
 
-TRD: `/Users/hajung/Hackerton/Cheongdo-Vibecoding-Hackathon-2026/TRD.md`.
+TRD: [`TRD.md`](../../TRD.md).
 
 ### 5.1 TRD 가정별 판정
 
@@ -447,7 +447,7 @@ class MatchExecutor(Executor):
 - `Agent`(채팅 클라이언트 경로): 함수 호출 루프가 `function_approval_request` 콘텐츠를 응답에 넣고 멈춘다. 호출자가 승인 응답을 다음 `run`에 넣어 재개한다(S4 1766-1769행 “this only applies to the auto-invocation flow”).
 - `GitHubCopilotAgent`: `on_pre_tool_use`를 직접 주지 않으면 기본 hook이 `always_require` 도구에 `{"permissionDecision": "ask"}`를 돌려주고 결정이 `on_permission_request`로 간다(S2 1497-1583행, 실행 확인: `finalize`에는 `ask`, `check`에는 `None`). 처리기가 없으면 기본 거부(`PermissionDecisionUserNotAvailable`)다. 승인 대기는 처리기 콜백 안에서 일어나므로, 도구 호출 중인 SDK 턴이 끝나지 않은 채 기다린다. 실행 상태가 프로세스 메모리에만 있고 체크포인트할 수 없다.
 - 사용 중단된 `on_function_approval` 콜백도 있으나 `DeprecationWarning`을 내고 `on_pre_tool_use`와 함께 쓸 수 없다(S2 594-607행, 717-732행).
-- `[미확인]`: `"ask"` 경로에서 `on_permission_request`가 받는 객체가 `PermissionRequestHook(kind="hook", tool_name, hook_message, tool_args, tool_call_id)`인지 `PermissionRequestCustomTool`인지 문서·테스트로 확인하지 못했다(CopilotSdkSpec도 미확인으로 회신). 처리기는 두 종류 모두에서 `tool_name == "finalize_referral"`을 검사하도록 작성한다.
+- `[미확인]`: `"ask"` 경로에서 `on_permission_request`가 받는 객체가 `PermissionRequestHook(kind="hook", tool_name, hook_message, tool_args, tool_call_id)`인지 `PermissionRequestCustomTool`인지 문서·테스트로 확인하지 못했다(`copilot-sdk.md`에서도 미확인). 처리기는 두 종류 모두에서 `tool_name == "finalize_referral"`을 검사하도록 작성한다.
 - AG-UI/DevUI에서 Copilot 도구 승인을 대화형으로 띄우는 기능은 없다(이슈 #8753 open).
 
 ### 5.4 GitHubCopilotAgent의 `response_format`/구조화 출력
