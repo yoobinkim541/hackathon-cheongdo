@@ -133,7 +133,7 @@ async def read_json(request: Request) -> dict[str, Any] | None:
 
 # ---------- health ----------
 
-@app.get("/healthz")
+@app.api_route("/healthz", methods=["GET", "HEAD"])
 async def healthz():
     return {"ok": True}
 
@@ -359,7 +359,7 @@ def sse_response(request: Request, event_log: EventLog) -> StreamingResponse:
 
 # ---------- static ----------
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def index():
     return FileResponse(config.STATIC_DIR / "index.html")
 
