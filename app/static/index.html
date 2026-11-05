@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>동행노트 - 방문 상담 메모를 근거 있는 연계 문서 초안으로</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="banner" role="banner">
+  <div class="banner-main">
+    <strong class="brand">동행노트</strong>
+    <span class="banner-text">합성 데이터 전용 · 실제 개인정보를 입력하지 마세요 · AI 초안이며 담당자 검토가 필요합니다</span>
+    <span id="replay-badge" class="badge badge-replay" hidden>저장된 실행 재생</span>
+  </div>
+  <details class="banner-help">
+    <summary>개인정보 가리기의 한계</summary>
+    <p>개인정보 가리기는 정해진 형태(주민등록번호, 전화번호, 계좌번호, 주소, 호칭이 붙은 이름)를 찾는 규칙 기반 방식입니다. 사진 인식에서 숫자 0과 영문 O가 섞이면 번호를 찾지 못할 수 있고, 호칭 없이 쓴 이름은 남을 수 있습니다. 결과를 반드시 직접 확인하세요.</p>
+  </details>
+</header>
+
+<main id="main">
+  <p id="ready-notice" class="notice" role="status" hidden></p>
+
+  <!-- Home -->
+  <section id="home" class="screen" aria-labelledby="home-title">
+    <h1 id="home-title" class="intro">방문 상담 메모를 근거 있는 연계 문서 초안으로</h1>
+    <div class="home-actions">
+      <button type="button" id="btn-demo" class="btn btn-primary">데모 사례로 시작</button>
+    </div>
+    <ul id="case-list" class="case-list" aria-label="데모 사례 목록"></ul>
+    <p id="case-error" class="msg msg-error" role="alert" hidden></p>
+    <div class="home-secondary">
+      <button type="button" id="btn-direct" class="btn btn-secondary">직접 입력</button>
+      <button type="button" id="btn-eval" class="btn btn-secondary">평가 실행</button>
+    </div>
+  </section>
+
+  <!-- Direct input -->
+  <section id="direct" class="screen panel" aria-labelledby="direct-title" hidden>
+    <div class="panel-head">
+      <h2 id="direct-title">직접 입력</h2>
+      <button type="button" class="btn btn-link" data-go="home">처음으로</button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="입력 방식">
+      <button type="button" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" class="tab">텍스트</button>
+      <button type="button" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" class="tab" tabindex="-1">사진</button>
+      <button type="button" role="tab" id="tab-audio" aria-controls="pane-audio" aria-selected="false" class="tab" tabindex="-1">음성</button>
+    </div>
+    <div id="pane-text" role="tabpanel" aria-labelledby="tab-text" class="tabpane">
+      <label for="note-input">상담 메모</label>
+      <textarea id="note-input" rows="10" maxlength="8000" aria-describedby="note-count note-msg"></textarea>
+      <div class="row-between">
+        <span id="note-msg" class="msg" aria-live="polite"></span>
+        <span id="note-count" class="counter">0 / 4,000자</span>
+      </div>
+    </div>
+    <div id="pane-image" role="tabpanel" aria-labelledby="tab-image" class="tabpane" hidden>
+      <label for="image-input">메모 사진 (JPEG, PNG · 5MB 이하)</label>
+      <input type="file" id="image-input" accept="image/jpeg,image/png">
+      <img id="image-preview" class="preview-img" alt="선택한 메모 사진 미리보기" hidden>
+      <p id="image-msg" class="msg" aria-live="polite"></p>
+    </div>
+    <div id="pane-audio" role="tabpanel" aria-labelledby="tab-audio" class="tabpane" hidden>
+      <div class="rec-row">
+        <button type="button" id="btn-rec" class="btn btn-secondary">녹음 시작</button>
+        <button type="button" id="btn-rec-stop" class="btn btn-secondary" disabled>녹음 중지</button>
+        <span id="rec-time" class="counter" aria-live="off">0초 / 120초</span>
+      </div>
+      <label for="audio-input">또는 녹음 파일 올리기 (WAV, MP3, WebM · 10MB 이하)</label>
+      <input type="file" id="audio-input" accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,audio/webm,.wav,.mp3,.webm">
+      <audio id="audio-preview" controls hidden></audio>
+      <p id="audio-msg" class="msg" aria-live="polite"></p>
+    </div>
+    <div class="row-end">
+      <button type="button" id="btn-submit" class="btn btn-primary">실행</button>
+    </div>
+  </section>
+
+  <!-- Run -->
+  <section id="run" class="screen" aria-label="실행" hidden>
+    <div class="panel-head">
+      <h2 class="sr-only">실행 화면</h2>
+      <div class="run-status-row">
+        <span id="run-status" class="badge badge-neutral">대기</span>
+        <span id="run-kept" class="msg" hidden>확정 취소됨</span>
+      </div>
+      <button type="button" class="btn btn-link" data-go="home">처음으로</button>
+    </div>
+    <p id="reconnect" class="notice notice-warn" role="status" hidden>연결이 끊겨 다시 연결하는 중</p>
+    <div id="run-error" class="msg-box msg-error" role="alert" hidden>
+      <p id="run-error-text"></p>
+      <button type="button" id="btn-retry" class="btn btn-secondary" hidden>다시 시도</button>
+    </div>
+    <div class="run-grid">
+      <section class="panel" aria-labelledby="input-title">
+        <h2 id="input-title">입력</h2>
+        <div id="input-summary"></div>
+        <div id="mask-view" hidden>
+          <h3>개인정보 가리기</h3>
+          <div class="two-col">
+            <div><h4>가리기 전</h4><pre id="mask-before" class="textbox"></pre></div>
+            <div><h4>가린 뒤</h4><pre id="mask-after" class="textbox"></pre></div>
+          </div>
+          <ul id="mask-spans" class="chips" aria-label="가린 항목"></ul>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="timeline-title">
+        <h2 id="timeline-title">단계 타임라인</h2>
+        <p id="live-region" class="sr-only" aria-live="polite"></p>
+        <ol id="timeline" class="timeline"></ol>
+        <div id="recog-view" hidden>
+          <h3>인식 결과 확인</h3>
+          <p id="recog-meta" class="msg"></p>
+          <div class="two-col">
+            <div><h4>인식 원문(가린 뒤)</h4><div id="recog-raw" class="textbox"></div></div>
+            <div>
+              <h4>정리본 <span id="norm-skipped" class="badge badge-neutral" hidden>정리 생략</span></h4>
+              <div id="recog-clean" class="textbox"></div>
+            </div>
+          </div>
+          <ul id="norm-edits" class="edit-list" aria-label="바꾼 구간"></ul>
+          <details class="rerun">
+            <summary>정리본을 고쳐 다시 실행</summary>
+            <label for="rerun-text" class="sr-only">고친 정리본</label>
+            <textarea id="rerun-text" rows="6"></textarea>
+            <button type="button" id="btn-rerun" class="btn btn-secondary">고친 정리본으로 다시 실행</button>
+            <p id="rerun-msg" class="msg" aria-live="polite"></p>
+          </details>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="result-title">
+        <h2 id="result-title" tabindex="-1">결과</h2>
+        <p id="result-empty" class="msg">검증이 끝나면 제도 분류가 표시됩니다.</p>
+        <div id="verified-view" hidden>
+          <p id="verified-warn" class="msg-box msg-warn" hidden></p>
+          <p id="verified-meta" class="msg"></p>
+          <div class="groups">
+            <div class="group"><h3><span class="badge badge-ok">자격 충족</span></h3><ul id="grp-eligible" class="item-list"></ul></div>
+            <div class="group"><h3><span class="badge badge-warn">확인 필요</span></h3><ul id="grp-unknown" class="item-list"></ul></div>
+            <div class="group"><h3><span class="badge badge-neutral">해당 없음</span></h3><ul id="grp-ineligible" class="item-list"></ul></div>
+          </div>
+          <div id="removed-view" hidden>
+            <h3>검증에서 제외됨</h3>
+            <ul id="removed-list" class="item-list"></ul>
+          </div>
+        </div>
+        <aside id="evidence" class="evidence" aria-labelledby="evidence-title" hidden>
+          <div class="row-between">
+            <h3 id="evidence-title" tabindex="-1">근거</h3>
+            <button type="button" id="btn-evidence-close" class="btn btn-link">닫기</button>
+          </div>
+          <div id="evidence-body"></div>
+        </aside>
+        <div id="draft-view" hidden>
+          <h3>문서 초안</h3>
+          <div class="watermark-wrap">
+            <div class="watermark" aria-hidden="true">AI 초안</div>
+            <div id="draft-sections"></div>
+          </div>
+          <div id="draft-followup"></div>
+          <div class="row-end">
+            <button type="button" id="btn-approve-open" class="btn btn-primary" disabled>의뢰서 확정</button>
+          </div>
+        </div>
+        <div id="final-view" hidden>
+          <div class="row-between no-print">
+            <h3>확정 문서</h3>
+            <button type="button" id="btn-print" class="btn btn-secondary">인쇄</button>
+          </div>
+          <div id="final-docs" class="print-area"></div>
+        </div>
+      </section>
+    </div>
+    <footer class="run-footer">실행 ID <span id="run-id-text">-</span> · 추적 ID <span id="trace-id">-</span></footer>
+  </section>
+
+  <!-- Eval -->
+  <section id="eval" class="screen panel" aria-labelledby="eval-title" hidden>
+    <div class="panel-head">
+      <h2 id="eval-title">평가 실행</h2>
+      <button type="button" class="btn btn-link" data-go="home">처음으로</button>
+    </div>
+    <p id="eval-status" class="msg" aria-live="polite"></p>
+    <p class="msg">재생으로 처리된 사례는 "재생"으로 표시하며 평균에서 제외합니다.</p>
+    <div class="table-wrap">
+      <table class="eval-table">
+        <thead>
+          <tr>
+            <th scope="col">사례</th><th scope="col">실행</th><th scope="col">재현율</th><th scope="col">정밀도</th>
+            <th scope="col">근거 일치율</th><th scope="col">시간(ms)</th><th scope="col">단계별 시간(ms)</th>
+            <th scope="col">가리기 잔존</th><th scope="col">가리기 재현율</th><th scope="col">가리기 오검출</th>
+            <th scope="col">CER</th><th scope="col">자동 채움 필드</th><th scope="col">Verifier 보완</th>
+          </tr>
+        </thead>
+        <tbody id="eval-body"></tbody>
+        <tfoot id="eval-foot"></tfoot>
+      </table>
+    </div>
+    <footer class="run-footer">평가 ID <span id="eval-id-text">-</span> · 추적 ID <span id="eval-trace-id">-</span></footer>
+  </section>
+</main>
+
+<dialog id="approve-dialog" aria-labelledby="approve-title">
+  <form method="dialog" id="approve-form">
+    <h2 id="approve-title">의뢰서 확정</h2>
+    <p>승인하면 다음 작업을 실행합니다.</p>
+    <ol class="exec-list">
+      <li>상담기록지 확정</li>
+      <li>서비스 연계 의뢰서 확정</li>
+    </ol>
+    <fieldset>
+      <legend>의뢰서에 포함할 제도</legend>
+      <div id="approve-schemes"></div>
+    </fieldset>
+    <ul id="approve-summary" class="msg"></ul>
+    <p id="approve-edited" class="msg"></p>
+    <p id="approve-msg" class="msg msg-error" role="alert"></p>
+    <div class="row-end">
+      <button type="button" id="btn-reject" class="btn btn-secondary">거부</button>
+      <button type="button" id="btn-approve" class="btn btn-primary">승인</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
