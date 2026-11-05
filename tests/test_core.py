@@ -4,7 +4,8 @@ import pytest
 
 from app import limits
 from app.config import MAX_AUDIO_BYTES, MAX_IMAGE_BYTES, MAX_TEXT_CHARS
-from app.masking import find_residual, mask
+from app.masking import find_residual, mask, mask_fragments
+from app.prompts import normalizer_prompt
 from app.render import render_final
 from app.schemas import (
     AuditEntry,
@@ -79,6 +80,21 @@ def test_mask_keeps_amounts_and_dates():
     r = mask("2026-11-05 방문. 병원비로 30만 원, 월세 25만 원.")
     assert "30만 원" in r.text and "2026-11-05" in r.text
     assert r.spans == []
+
+
+def test_low_confidence_fragments_are_masked_before_the_model_prompt():
+    names = ["최영호"]
+    known: dict[str, str] = {}
+    note = "담당자: 최영호 씨 맞으시죠? 연락처는 010-5532-7719 그대로 쓰시나요? 주민번호 800101-1234567"
+    masked = mask(note, source="audio", known=known, names=names)
+    fragments = mask_fragments(["최영호 씨 맞으시죠?", "연락처는 010-5532-7719 그대로 쓰시나요?", "저까지 네 식구예요."],
+                               "audio", known, names)
+    prompt = normalizer_prompt(masked.text, "audio", fragments)
+    for raw in ("최영호", "010-5532-7719", "800101-1234567"):
+        assert raw not in prompt
+    assert fragments[0] == "[이름1] 씨 맞으시죠?" and "[전화1]" in fragments[1]
+    assert fragments[2] == "저까지 네 식구예요."
+    assert not find_residual(prompt)
 
 
 def test_find_residual():

@@ -138,12 +138,12 @@ scripts/record_replay.py
 docs/{api.md,reference/}
 infra/main.bicep, infra/main.parameters.json, infra/modules/{resources,ai,alerts,fetch-image}.bicep
 azure.yaml, Dockerfile, requirements.txt
-tests/{test_core.py,test_rules.py}   # 단위 테스트 43개
+tests/{test_core.py,test_rules.py}   # 단위 테스트 44개
 .github/workflows/ci.yml              # CI: pytest, az bicep build
 ```
 
 아래층은 위층을 import하지 않는다. 모듈별 불변 규칙은 TRD 본문(3.2절 상태 쓰기 주체와 이벤트 경로, 3.3절 ID 계약과 단일 판정 원천, 3.5절 승인 뒤 코드 확정, 11절 모듈 의존 방향)을 따른다.
 
-테스트(MAF·네트워크 없이, `python -m pytest` 43개 통과): 가리기·OCR 숫자 보정 패턴, 한글 수사 정규화, 규칙 함수 경계값·판정 순서·평가 사례 기대값(긴급복지 위기 사유 조건, 이미 받는 제도 조건 포함), Verifier 대조 규칙과 보완·규칙 7 생략, 확정 문서 생성, 입력 검사. 제출 도구 거부 규칙과 권한 처리기는 테스트가 없다. GitHub Actions CI(`.github/workflows/ci.yml`)가 push·PR마다 pytest와 `az bicep build`를 실행한다.
+테스트(MAF·네트워크 없이, `python -m pytest` 44개 통과): 가리기·OCR 숫자 보정 패턴, 한글 수사 정규화, 규칙 함수 경계값·판정 순서·평가 사례 기대값(긴급복지 위기 사유 조건, 이미 받는 제도 조건 포함), Verifier 대조 규칙과 보완·규칙 7 생략, 확정 문서 생성, 입력 검사. 제출 도구 거부 규칙과 권한 처리기는 테스트가 없다. GitHub Actions CI(`.github/workflows/ci.yml`)가 push·PR마다 pytest와 `az bicep build`를 실행한다.
 
 배포 앱 E2E 확인(브라우저로 데모 사례를 승인까지 진행): 확정 문서 구획이 `[object HTMLHeadingElement]`로 찍히던 결함을 찾아 고쳤다(`el()`이 중첩 배열 자식을 끝까지 펼치도록 `children.flat(Infinity)`). 확정 뒤 상태 배지가 "확정 처리 중"에 머무는 결함도 고쳤다(SSE `finalized`·`approval_kept`가 승인 POST 응답보다 먼저 도착해 실행이 끝난 경우, 응답 처리가 끝난 상태를 덮어쓰지 않음). 두 결함은 단위 테스트 범위(서버 순수 코어) 밖이라 E2E 점검 항목으로 둔다(TRD 10절).

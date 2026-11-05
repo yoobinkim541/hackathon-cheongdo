@@ -120,6 +120,8 @@ class IntakeExecutor(Executor):
         for span in result.spans:
             run.pii_map.setdefault(text[span.start:span.end], span.placeholder)
         run.mask_spans = [s.model_dump() for s in result.spans]
+        # Low-confidence OCR/STT spans also go to the model, so they get the same masking.
+        run.transcript_uncertain = masking.mask_fragments(run.transcript_uncertain, source, run.pii_map, run.known_names)
         await ctx.yield_output(UiEvent(type="masked", step=self.id, data={
             "before": text, "after": result.text,
             "spans": [{"kind": s.kind, "placeholder": s.placeholder} for s in result.spans],

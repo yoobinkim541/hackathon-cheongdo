@@ -68,7 +68,7 @@ uvicorn app.main:app --port 8000
 - 브라우저에서 `http://127.0.0.1:8000/`을 연다. `GET /readyz`로 Copilot·AI Services 준비 상태를 확인한다.
 - 토큰 없이 `DISABLE_COPILOT=1`로 실행하면 데모 사례 5건은 저장된 실행 재생으로 동작하고, 직접 입력은 409로 거부된다.
 - 사진·음성 입력을 쓰려면 `ENABLE_AI_SERVICES=true`와 `AZURE_AI_ENDPOINT`를 정하고, `DefaultAzureCredential`이 쓸 수 있는 자격 증명(예: `az login`)에 해당 리소스의 `Cognitive Services User` 역할이 있어야 한다.
-- 단위 테스트: `python -m pytest`(43개, MAF·네트워크 없이 순수 코어 검사). GitHub Actions CI(`.github/workflows/ci.yml`)가 push·PR마다 pytest와 `az bicep build --file infra/main.bicep`을 실행한다. 화면 결함(확정 문서 구획 표시, 확정 후 상태 배지)은 배포 앱 E2E 점검으로 확인한다(TRD 10절).
+- 단위 테스트: `python -m pytest`(44개, MAF·네트워크 없이 순수 코어 검사). GitHub Actions CI(`.github/workflows/ci.yml`)가 push·PR마다 pytest와 `az bicep build --file infra/main.bicep`을 실행한다. 화면 결함(확정 문서 구획 표시, 확정 후 상태 배지)은 배포 앱 E2E 점검으로 확인한다(TRD 10절).
 - 재생 파일 다시 만들기: `python -m scripts.record_replay [case_id ...]`(Copilot 준비 필요, `data/replays/`에 씀).
 
 Azure 배포:

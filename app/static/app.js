@@ -1158,8 +1158,8 @@ function validateFile(file, kind) {
     if (!okType) return "지원하지 않는 파일 형식입니다. 허용 형식: JPEG, PNG";
     if (file.size > MAX_IMAGE) return `파일이 너무 큽니다 (${(file.size / 1048576).toFixed(1)}MB). 한도 5MB`;
   } else {
-    const okType = /^audio\/(wav|x-wav|wave|mpeg|mp3|webm)/.test(file.type) || /\.(wav|mp3|webm)$/i.test(file.name);
-    if (!okType) return "지원하지 않는 파일 형식입니다. 허용 형식: WAV, MP3, WebM";
+    const okType = /^audio\/(wav|x-wav|wave|mpeg|mp3|webm|ogg)/.test(file.type) || /\.(wav|mp3|webm|ogg)$/i.test(file.name);
+    if (!okType) return "지원하지 않는 파일 형식입니다. 허용 형식: WAV, MP3, WebM, OGG";
     if (file.size > MAX_AUDIO) return `파일이 너무 큽니다 (${(file.size / 1048576).toFixed(1)}MB). 한도 10MB`;
   }
   return "";

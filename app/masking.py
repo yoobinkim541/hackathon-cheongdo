@@ -148,3 +148,14 @@ def mask(
     parts.append(text[pos:])
     masked = "".join(parts)
     return MaskResult(text=masked, spans=spans, residual=find_residual(masked))
+
+
+def mask_fragments(fragments: list[str], source: str, known: dict[str, str], names: list[str]) -> list[str]:
+    """Mask short text fragments (e.g. low-confidence OCR/STT spans) with the shared placeholder map.
+    A fragment that still looks like personal data after masking is dropped."""
+    out: list[str] = []
+    for fragment in fragments:
+        result = mask(fragment, source=source, known=known, names=names)
+        if not result.residual:
+            out.append(result.text)
+    return out
