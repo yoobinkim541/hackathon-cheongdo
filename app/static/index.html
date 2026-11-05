@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>청도 AI 도우미</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 0 auto; padding: 16px; }
+  #log { display: flex; flex-direction: column; gap: 8px; min-height: 50vh; }
+  .msg { padding: 10px 12px; border-radius: 10px; white-space: pre-wrap; }
+  .user { background: #e8f0fe; align-self: flex-end; }
+  .ai { background: #f3f3f3; }
+  .ai::before { content: "AI 생성 · "; font-size: 12px; color: #666; }
+  form { display: flex; gap: 8px; margin-top: 12px; }
+  input { flex: 1; padding: 10px; font-size: 16px; }
+  button { padding: 10px 16px; font-size: 16px; }
+</style>
+</head>
+<body>
+<h1>청도 AI 도우미</h1>
+<div id="log" aria-live="polite"></div>
+<form id="f">
+  <label for="q" hidden>질문</label>
+  <input id="q" placeholder="예: 농업 분야 문제를 알려줘" autocomplete="off" required>
+  <button id="b">보내기</button>
+</form>
+<script>
+const log = document.getElementById('log'), q = document.getElementById('q'), b = document.getElementById('b');
+function add(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text; log.append(d); return d; }
+document.getElementById('f').onsubmit = async (e) => {
+  e.preventDefault();
+  const message = q.value.trim(); if (!message) return;
+  add('user', message); q.value = ''; b.disabled = true;
+  const out = add('ai', '생각 중…'); let text = '';
+  try {
+    const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) });
+    const reader = res.body.getReader(), dec = new TextDecoder(); let buf = '';
+    while (true) {
+      const { value, done } = await reader.read(); if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const parts = buf.split('\n\n'); buf = parts.pop();
+      for (const p of parts) {
+        const ev = JSON.parse(p.replace(/^data: /, ''));
+        if (ev.text) { text += ev.text; out.textContent = text; }
+        if (ev.error) out.textContent = ev.error;
+      }
+    }
+  } catch { out.textContent = '서버에 연결할 수 없습니다.'; }
+  b.disabled = false; q.focus();
+};
+</script>
+</body>
+</html>
