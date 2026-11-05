@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": { "value": "${AZURE_ENV_NAME}" },
+    "location": { "value": "${AZURE_LOCATION=koreacentral}" },
+    "aiServicesLocation": { "value": "${AZURE_AI_SERVICES_LOCATION=}" },
+    "enableAiServices": { "value": "${ENABLE_AI_SERVICES=false}" },
+    "copilotGithubToken": { "value": "${COPILOT_GITHUB_TOKEN}" },
+    "alertEmail": { "value": "${ALERT_EMAIL=}" },
+    "copilotModel": { "value": "${COPILOT_MODEL=claude-sonnet-5}" },
+    "webAppExists": { "value": "${SERVICE_WEB_RESOURCE_EXISTS=false}" }
+  }
+}

@@ -1,0 +1,12 @@
+.venv
+.git
+.azure
+hackathon
+.harness
+scratch
+tests
+**/__pycache__
+BUILD_PLAN.md
+CONCEPTS.md
+_bmad-output
+docs
