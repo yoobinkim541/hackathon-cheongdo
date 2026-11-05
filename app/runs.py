@@ -106,6 +106,8 @@ class RunState:
     final_documents: FinalDocuments | None = None
     pending_request_id: str | None = None
     approval_scheme_ids: list[str] = field(default_factory=list)
+    approval_shown_at: float | None = None
+    review: dict[str, Any] = field(default_factory=dict)
     sessions: dict[str, Any] = field(default_factory=dict)
     attempts: dict[str, int] = field(default_factory=dict)
     audit: dict[str, list[AuditEntry]] = field(default_factory=dict)

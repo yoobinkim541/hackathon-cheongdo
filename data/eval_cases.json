@@ -20,7 +20,6 @@
     "expected_eligible": [
       "livelihood_benefit",
       "housing_benefit",
-      "emergency_livelihood",
       "energy_voucher",
       "medical_benefit",
       "health_checkup_visit",
@@ -30,7 +29,7 @@
       "senior_job_public",
       "lonely_death_prevention"
     ],
-    "expected_unknown": [],
+    "expected_unknown": ["emergency_livelihood"],
     "expected_ineligible": [
       "copay_reduction",
       "disability_pension"
@@ -132,12 +131,11 @@
     },
     "expected_eligible": [
       "housing_benefit",
-      "emergency_livelihood",
       "energy_voucher",
       "medical_benefit",
       "disability_pension"
     ],
-    "expected_unknown": [],
+    "expected_unknown": ["emergency_livelihood"],
     "expected_ineligible": [
       "livelihood_benefit",
       "copay_reduction",
@@ -180,6 +178,7 @@
     "media_path": "data/samples/case4_visit.wav",
     "reference_text": "담당자: 안녕하세요, 이서면 행정복지센터 맞춤형복지팀에서 나왔습니다. 최영호 씨 맞으시죠?\n대상자: 네, 맞습니다. 들어오세요.\n담당자: 주소가 청도군 이서면 학산리 205-3번지 맞으시고요, 연락처는 010-5532-7719 그대로 쓰시나요?\n대상자: 네, 그 번호예요.\n담당자: 지금 몇 분이 같이 사세요?\n대상자: 저까지 네 식구예요. 아내하고 중학생 아이 둘이요. 저는 쉰두 살입니다.\n담당자: 일하시던 공장은 어떻게 되셨어요?\n대상자: 두 달 전에 공장이 문을 닫아서 그만뒀어요. 실업급여도 이번 달로 끝납니다.\n담당자: 지금 집안 수입은 얼마 정도 되세요?\n대상자: 아내가 식당에서 일해서 월 230만 원 정도 벌어요. 그게 다예요.\n담당자: 집은 어떻게 쓰고 계세요?\n대상자: 월세 45만 원인데 두 달째 밀렸어요. 아픈 데는 없고 장애도 없습니다.\n담당자: 알겠습니다. 긴급 지원부터 알아봐 드릴게요.",
     "expected_profile": {
+      "crisis_events": ["공장 폐업으로 실직"],
       "age": 52,
       "household_type": "기타",
       "household_size": 4,
@@ -243,7 +242,6 @@
     },
     "expected_eligible": [
       "livelihood_benefit",
-      "emergency_livelihood",
       "energy_voucher",
       "medical_benefit",
       "health_checkup_visit",
@@ -253,7 +251,7 @@
       "senior_job_public",
       "lonely_death_prevention"
     ],
-    "expected_unknown": [],
+    "expected_unknown": ["emergency_livelihood"],
     "expected_ineligible": [
       "housing_benefit",
       "copay_reduction",

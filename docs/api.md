@@ -176,7 +176,7 @@ AI Services 토큰 확인이 실패한 상태(`ai_services_token_ok=false`)면 �
 {"run_id": "…", "status": "awaiting_approval", "mode": "live", "case_id": "case1", "pending_request_id": "…"}
 ```
 
-`status`는 `running`, `replaying`, `awaiting_approval`, `resuming`, `finalized`, `drafted`, `failed` 가운데 하나다. 실행이 없거나 만료되면 404 `run_not_found`, 다른 세션이면 403 `run_forbidden`.
+`status`는 `running`, `replaying`, `awaiting_approval`, `resuming`, `finalized`, `drafted`, `failed` 가운데 하나다. 실행이 없거나 만료되면 404 `run_not_found`, 다른 세션이면 403 `run_forbidden`. 실행 상태는 단일 복제본의 프로세스 메모리에만 있으므로, 재배포·재시작 뒤에는 그 전에 만든 실행이 모두 404 `run_not_found`가 된다. 이때는 실행을 새로 시작한다.
 
 ### 2.8 `GET /api/runs/{run_id}/events`
 
@@ -299,6 +299,7 @@ AI Services 토큰 확인이 실패한 상태(`ai_services_token_ok=false`)면 �
 | Copilot 세션 파일 | `delete_session`이 실패하면 로그만 남긴다. 앱 시작 때 남은 세션 파일을 따로 지우지 않는다 |
 | 네트워크 격리 | Key Vault와 AI Services는 공용 네트워크 접근을 열어 두고 Entra RBAC로만 보호한다. VNet·사설 엔드포인트는 쓰지 않는다 |
 | 평가 실행 | 로그인 없이 누구나 분당 1회 시작할 수 있고, 실행마다 Copilot 호출을 소비한다 |
+| 실행 상태 보존 | 실행 상태·승인 대기·이벤트 로그가 단일 복제본의 메모리에 있어 재배포·재시작 때 사라진다(`run_not_found`). 데모 사례는 실패 시 저장된 실행 재생으로 자동 전환한다 |
 
 <p>표 7. 보호 범위 밖의 항목</p>
 
@@ -343,7 +344,7 @@ data: {"run_id": "…", "seq": 7, "ts": "2026-11-05T05:29:12.220Z", "type": "mas
 | `verified` | `verifier` | `eligible`, `unknown`, `ineligible`(각 `VerifiedItem`: `scheme_id`, `scheme_name`, `domain`, `status`, `decision_id`, `condition_ids`, `explanation`, `follow_up_questions`, `source`, `missing_fields`), `removed`(`scheme_id`, `decision_id`, `reason`), `failed_domains`, `verifier_filled`, `audit_rule_skipped` | Verifier 실행기 |
 | `draft` | `documenter` | `sections`(`id`, `title`, `text`, `cited_decisions`, 9개 구획 모두), `follow_up_questions` | Documenter 실행기 |
 | `approval_required` | `referral_gate` | `request_id`, `scheme_ids`, `documents_summary` | MAF `request_info` 이벤트(`RunService._consume`), 재생은 `_replay` |
-| `finalized` | `referral_gate` | `record`, `referral`(각 `id`, `title`, `text`), `scheme_ids`, `finalized_at` | ReferralGate 응답 처리기, 재생은 `RunService._respond_replay` |
+| `finalized` | `referral_gate` | `record`, `referral`(각 `id`, `title`, `text`), `scheme_ids`, `finalized_at`, `review_seconds`(서버가 `approval_required`를 보낸 뒤 승인 응답까지의 초, 소수 1자리), `edited_sections`(승인 응답에서 담당자가 고친 구획 수, 정수) | ReferralGate 응답 처리기, 재생은 `RunService._respond_replay`. `review_seconds`·`edited_sections`는 `RunService.respond`가 승인 응답을 받을 때 잰다 |
 | `approval_kept` | `referral_gate` | 없음 | 승인 거부 |
 | `error` | 실행기 ID 또는 `null` | `code`, `message` | 실행을 끝내는 실패 |
 | `done` | `null` | `status`(`finalized`·`drafted`·`failed`·`expired`) | `RunService._finish`, 만료 시 `_dispose` |
@@ -372,9 +373,9 @@ data: {"run_id": "…", "seq": 7, "ts": "2026-11-05T05:29:12.220Z", "type": "mas
 
 | 지표 | 계산 |
 |---|---|
-| `recall` | (정답 `expected_eligible` ∪ `expected_unknown`) 가운데 결과의 자격 충족·확인 필요에 든 비율 |
-| `precision` | 결과의 자격 충족 가운데 `expected_eligible`에 있는 비율. 결과의 자격 충족이 없으면 정답도 없을 때 1.0, 아니면 0.0 |
-| `evidence_match` | 화면에 보인 항목(자격 충족·확인 필요) 가운데 인용한 `decision_id`의 판정 기록과 제도·결과가 같은 비율. 판정 기록이 있는 실시간 사례만 |
+| `recall` | (정답 `expected_eligible` ∪ `expected_unknown`) 가운데 결과의 "규칙상 충족"(`eligible`)·"확인 필요"(`unknown`)에 든 비율. "확인 필요"로 분류한 것도 찾은 것으로 센다 |
+| `precision` | 결과의 "규칙상 충족" 가운데 `expected_eligible`에 있는 비율. 결과의 "규칙상 충족"이 없으면 정답도 없을 때 1.0, 아니면 0.0. `eligible`·`ineligible` 결정은 규칙 함수가 하므로, 이 값은 Profiler가 뽑은 값이 정답 프로필과 같은 판정을 낳는지를 잰다 |
+| `evidence_match` | 화면에 보인 항목("규칙상 충족"·"확인 필요") 가운데 모델이 인용한 `decision_id`의 판정 기록과 제도·결과가 같은 비율. 모델이 인용한 근거와 규칙 함수 결과의 일치를 재며, 정답 자격 정확도가 아니다. 판정 기록이 있는 실시간 사례만 |
 | `stage_ms` | 단계별 소요 시간(`run.timings`) |
 | `mask_residual` | 가린 메모에서 `find_residual`이 찾은 개수 |
 | `mask_recall` | 사례 `pii_spans`의 글 가운데 가린 메모에 남지 않은 비율 |
@@ -386,4 +387,4 @@ data: {"run_id": "…", "seq": 7, "ts": "2026-11-05T05:29:12.220Z", "type": "mas
 
 <p>표 10. 평가 지표</p>
 
-Copilot이 준비되지 않았거나, 실시간 실행이 승인 대기에 이르지 못했거나, 평가 전체 상한(360초)을 넘긴 사례는 `replayed=true`로 표시하고 저장된 실행의 스냅샷으로 `recall`·`precision`·`auto_filled`·`verifier_filled`만 계산한다. 저장된 실행이 없는 사례는 지표가 모두 `null`이다. `eval_summary`의 평균과 합계는 `replayed=false`인 사례만 쓴다.
+Copilot이 준비되지 않았거나, 실시간 실행이 승인 대기에 이르지 못했거나, 평가 전체 상한(360초)을 넘긴 사례는 `replayed=true`로 표시하고 저장된 실행의 스냅샷으로 `recall`·`precision`·`auto_filled`·`verifier_filled`만 계산한다. 저장된 실행이 없는 사례는 지표가 모두 `null`이다. `eval_summary`의 평균과 합계는 `replayed=false`인 사례만 쓴다. 평균은 사례별 값의 산술 평균(`service.summarize`)이며, 제도 전체를 합쳐 다시 계산한 비율이 아니다.

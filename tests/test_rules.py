@@ -84,6 +84,19 @@ def test_energy_voucher_optional_disability():
     assert r.status == "eligible"
 
 
+def test_emergency_livelihood_needs_legal_crisis_reason():
+    s = scheme("emergency_livelihood")
+    base = dict(household_size=1, monthly_income_krw=500_000)
+    r = rules.evaluate(s, CaseProfile(**base))
+    assert r.status == "unknown" and r.missing_fields == ["crisis_events"]
+    r = rules.evaluate(s, CaseProfile(**base, crisis_events=["만성 질환으로 병원비 부담"]))
+    assert r.status == "unknown"
+    r = rules.evaluate(s, CaseProfile(**base, crisis_events=["공장 폐업으로 실직"]))
+    assert r.status == "eligible"
+    r = rules.evaluate(s, CaseProfile(household_size=1, monthly_income_krw=5_000_000, crisis_events=["실직"]))
+    assert r.status == "ineligible"
+
+
 @pytest.mark.parametrize("s", rules.load_schemes(), ids=lambda s: s.id)
 def test_condition_id_format(s):
     for c in rules.evaluate(s, CaseProfile()).conditions:

@@ -121,6 +121,19 @@ def _living_alone(scheme: Scheme, profile: CaseProfile) -> ConditionResult:
         return ConditionResult(id=cid, label=label, met=None)
     return ConditionResult(id=cid, label=label, met=profile.household_type == "독거", used_value=f"가구 유형 {profile.household_type}")
 
+# 긴급복지지원법 제2조의 위기 사유를 가리키는 말. 모델이 뽑은 위기 사건 문구를 코드가 이 목록으로만 판정한다.
+CRISIS_KEYWORDS = ("실직", "폐업", "휴업", "사망", "화재", "학대", "폭력", "이혼", "가출", "구금", "단전", "단수", "퇴거", "입원", "중한 질병", "중한 부상")
+
+
+def _crisis_reason(scheme: Scheme, profile: CaseProfile) -> ConditionResult:
+    label = "위기 사유(실직·폐업·주소득자 사망·중한 질병 등)"
+    cid = _cid(scheme, "crisis")
+    hits = [e for e in profile.crisis_events if any(k in e for k in CRISIS_KEYWORDS)]
+    if not hits:
+        return ConditionResult(id=cid, label=label, met=None)
+    return ConditionResult(id=cid, label=label, met=True, used_value="위기 사건 " + ", ".join(hits))
+
+
 
 def _housing_rented(scheme: Scheme, profile: CaseProfile) -> ConditionResult:
     allowed = tuple(scheme.params.get("housing", ("전세", "월세")))
@@ -166,6 +179,10 @@ def rule_income_pct_range(scheme: Scheme, profile: CaseProfile) -> list[Conditio
     return [_income_pct(scheme, profile, int(scheme.params["percent"]), int(scheme.params["lower_percent"]))]
 
 
+def rule_income_pct_crisis(scheme: Scheme, profile: CaseProfile) -> list[ConditionResult]:
+    return [_income_pct(scheme, profile, int(scheme.params["percent"])), _crisis_reason(scheme, profile)]
+
+
 def rule_income_pct_housing(scheme: Scheme, profile: CaseProfile) -> list[ConditionResult]:
     return [_income_pct(scheme, profile, int(scheme.params["percent"])), _housing_rented(scheme, profile)]
 
@@ -205,6 +222,7 @@ def rule_age_alone_income(scheme: Scheme, profile: CaseProfile) -> list[Conditio
 RULES: dict[str, Rule] = {
     "income_pct": rule_income_pct,
     "income_pct_range": rule_income_pct_range,
+    "income_pct_crisis": rule_income_pct_crisis,
     "income_pct_housing": rule_income_pct_housing,
     "income_pct_vulnerable": rule_income_pct_vulnerable,
     "disability_pension": rule_disability_pension,
@@ -243,7 +261,7 @@ def evaluate(scheme: Scheme, profile: CaseProfile) -> EligibilityResult:
         status = "unknown"
         if not missing:
             # Undecided condition on an optional input (e.g. disability for energy_voucher).
-            missing = [f for f in scheme.params.get("optional_fields", []) if getattr(profile, f) is None]
+            missing = [f for f in scheme.params.get("optional_fields", []) if getattr(profile, f) in (None, [])]
     else:
         status = "eligible"
     return EligibilityResult(

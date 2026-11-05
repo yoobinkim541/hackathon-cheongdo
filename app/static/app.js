@@ -65,7 +65,7 @@ const ERROR_LABELS = {
   copilot_unavailable: "AI 실행 환경을 사용할 수 없습니다.",
   other: "처리 중 오류가 발생했습니다.",
   media_invalid: "지원하지 않는 파일 형식이거나 크기 한도를 넘었습니다.",
-  run_not_found: "실행을 찾을 수 없거나 만료되었습니다.",
+  run_not_found: "실행을 찾을 수 없습니다. 서버가 다시 시작되었거나 만료되었을 수 있으니 새로 시작하세요.",
   run_forbidden: "이 실행에 접근할 권한이 없습니다.",
   state_conflict: "현재 상태에서는 처리할 수 없습니다.",
   rate_limited: "요청이 많습니다. 잠시 뒤 다시 시도하세요.",
@@ -137,7 +137,7 @@ function el(tag, attrs, ...children) {
     else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
     else node.setAttribute(key, value === true ? "" : String(value));
   }
-  for (const child of children.flat()) {
+  for (const child of children.flat(Infinity)) {
     if (child === null || child === undefined || child === false) continue;
     node.append(child instanceof Node ? child : document.createTextNode(String(child)));
   }
@@ -764,7 +764,7 @@ function onProfile(run, data) {
 // ---------- verified / evidence ----------
 
 function statusText(status) {
-  return { eligible: "자격 충족", unknown: "확인 필요", ineligible: "해당 없음" }[status] || status;
+  return { eligible: "규칙상 충족", unknown: "확인 필요", ineligible: "해당 없음" }[status] || status;
 }
 
 function onVerified(run, data) {
@@ -795,7 +795,7 @@ function onVerified(run, data) {
   const filled = countOf(data.verifier_filled);
   const skipped = countOf(data.audit_rule_skipped);
   $("verified-meta").textContent = `Verifier 보완 ${filled}건${skipped ? ` · 감사 규칙 생략 ${skipped}건` : ""}`;
-  const counts = `자격 충족 ${(data.eligible || []).length}건, 확인 필요 ${(data.unknown || []).length}건, 해당 없음 ${(data.ineligible || []).length}건`;
+  const counts = `규칙상 충족 ${(data.eligible || []).length}건, 확인 필요 ${(data.unknown || []).length}건, 해당 없음 ${(data.ineligible || []).length}건`;
   announce(`근거 검증 완료. ${counts}`);
   $("result-title").focus();
 }
@@ -958,7 +958,7 @@ async function sendApproval(approved) {
     $("approve-dialog").close();
     run.pendingRequestId = null;
     $("btn-approve-open").disabled = true;
-    setRunStatus(approved ? "resuming" : "drafted");
+    if (!run.finished) setRunStatus(approved ? "resuming" : "drafted");
   } catch (e) {
     $("approve-msg").textContent = e.message;
   } finally {
@@ -968,12 +968,18 @@ async function sendApproval(approved) {
 }
 
 function onFinalized(run, data) {
+  run.finished = true;
   setRunStatus("finalized");
   $("btn-approve-open").disabled = true;
   $("draft-view").hidden = true;
   $("final-view").hidden = false;
   const box = clear($("final-docs"));
   const stamp = data.finalized_at ? new Date(data.finalized_at).toLocaleString("ko-KR") : "";
+  if (typeof data.review_seconds === "number") {
+    const sec = Math.round(data.review_seconds);
+    const spent = sec >= 60 ? `${Math.floor(sec / 60)}분 ${sec % 60}초` : `${sec}초`;
+    box.append(el("p", { class: "doc-meta", text: `담당자 검토 ${spent} · 고친 구획 ${data.edited_sections ?? 0}개 (초안 표시부터 확정까지)` }));
+  }
   box.append(renderDoc("상담기록지", data.record || [], stamp), renderDoc("서비스 연계 의뢰서", data.referral || [], stamp));
   announce("의뢰서가 확정되었습니다.");
   $("result-title").focus();
@@ -987,6 +993,7 @@ function renderDoc(title, sections, stamp) {
 }
 
 function onApprovalKept(run) {
+  run.finished = true;
   setRunStatus("drafted");
   $("run-kept").hidden = false;
   $("btn-approve-open").disabled = true;

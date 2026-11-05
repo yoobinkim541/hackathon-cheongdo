@@ -250,7 +250,7 @@ def fallback_draft(run: RunState) -> DraftDocuments:
     """Deterministic draft used when the documenter agent cannot submit one."""
     verified = run.verified or VerifiedResult()
     items = verified.eligible + verified.unknown
-    lines = [f"- {i.scheme_name}({'자격 충족' if i.status == 'eligible' else '확인 필요'}, 판정 {i.decision_id})" for i in items]
+    lines = [f"- {i.scheme_name}({'규칙상 충족' if i.status == 'eligible' else '확인 필요'}, 판정 {i.decision_id})" for i in items]
     questions = [q for i in verified.unknown for q in i.follow_up_questions]
     profile = run.profile
     basic = "가구 정보 없음" if profile is None else (

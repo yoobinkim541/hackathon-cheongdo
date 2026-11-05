@@ -16,6 +16,7 @@ from app.events import map_workflow_event
 from app.runs import REGISTRY, EvalState, RunState, now_iso
 from app.schemas import (
     PROFILE_RULE_FIELDS,
+    SECTION_IDS,
     ApprovalDecision,
     ApprovalRequest,
     EvalCase,
@@ -109,7 +110,8 @@ class RunService:
                 ev.log.close()
 
     async def _dispose(self, run: RunState, expired: bool = False) -> None:
-        if expired and run.status not in {"finalized", "drafted", "failed"}:
+        if expired and run.status not in {"finalized", "drafted", "failed", "expired"}:
+            run.set_status("expired")
             run.emit(UiEvent(type="done", data={"status": "expired"}))
         REGISTRY.remove_run(run.id)
         if run.task and not run.task.done():
@@ -189,6 +191,7 @@ class RunService:
                     run.pending_request_id = ev.request_id
                     run.approval_scheme_ids = list(getattr(request, "scheme_ids", []) or [])
                     run.set_status("awaiting_approval")
+                    run.approval_shown_at = time.monotonic()
                     run.emit(UiEvent(type="approval_required", step="referral_gate", data={
                         "request_id": ev.request_id,
                         "scheme_ids": run.approval_scheme_ids,
@@ -204,6 +207,8 @@ class RunService:
                     elif ui.type == "step_completed" and ui.step in started:
                         ui.data["ms"] = run.timings.get(ui.step) or int((time.monotonic() - started[ui.step]) * 1000)
                         run.timings.setdefault(ui.step, ui.data["ms"])
+                    if ui.type == "finalized":
+                        ui.data.update(run.review)
                     run.emit(ui)
                     if ui.type == "error":
                         self._finish(run, "failed")
@@ -236,6 +241,12 @@ class RunService:
         if decision.scheme_ids is not None and not set(decision.scheme_ids) <= allowed:
             return "input_invalid"
         run.pending_request_id = None
+        shown = run.approval_shown_at
+        run.review = {
+            "review_seconds": round(time.monotonic() - shown, 1) if shown is not None else None,
+            "edited_sections": len([k for k in decision.edited_sections if k in SECTION_IDS]) if decision.approved else 0,
+        }
+        log.info("approval review", extra={"run_id": run.id, **run.review, "approved": decision.approved})
         run.set_status("resuming")
         if run.mode == "replay" or run.workflow is None:
             run.task = asyncio.create_task(self._respond_replay(run, decision))
@@ -256,7 +267,7 @@ class RunService:
             self._finish(run, "failed", "input_invalid", str(exc))
             return
         run.final_documents = final
-        run.emit(UiEvent(type="finalized", step="referral_gate", data=final.model_dump()))
+        run.emit(UiEvent(type="finalized", step="referral_gate", data={**final.model_dump(), **run.review}))
         self._finish(run, "finalized")
 
     # ---------- replay ----------
@@ -281,6 +292,7 @@ class RunService:
         run.approval_scheme_ids = list(snap.approval_request.scheme_ids)
         run.pending_request_id = str(uuid.uuid4())
         run.set_status("awaiting_approval")
+        run.approval_shown_at = time.monotonic()
         run.emit(UiEvent(type="approval_required", step="referral_gate", data={
             "request_id": run.pending_request_id,
             "scheme_ids": run.approval_scheme_ids,
