@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import time
 
 import httpx
-from azure.ai.documentintelligence.aio import DocumentIntelligenceClient
+from azure.ai.documentintelligence import DocumentIntelligenceClient
 from azure.ai.documentintelligence.models import AnalyzeDocumentRequest
-from azure.identity.aio import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential
 
 from app import config
 from app.rules import load_schemes
@@ -35,7 +36,7 @@ def credential() -> DefaultAzureCredential:
 
 
 async def check_token() -> None:
-    await credential().get_token(TOKEN_SCOPE)
+    await asyncio.to_thread(credential().get_token, TOKEN_SCOPE)
 
 
 def _endpoint(settings: config.Settings) -> str:
@@ -47,12 +48,16 @@ def _endpoint(settings: config.Settings) -> str:
 async def ocr_image(data: bytes, settings: config.Settings = config.SETTINGS) -> Transcript:
     endpoint = _endpoint(settings)
     started = time.monotonic()
+
+    def analyze():
+        client = DocumentIntelligenceClient(endpoint=endpoint, credential=credential())
+        poller = client.begin_analyze_document(
+            "prebuilt-read", AnalyzeDocumentRequest(bytes_source=data), locale="ko-KR"
+        )
+        return poller.result()
+
     try:
-        async with DocumentIntelligenceClient(endpoint=endpoint, credential=credential()) as client:
-            poller = await client.begin_analyze_document(
-                "prebuilt-read", AnalyzeDocumentRequest(bytes_source=data), locale="ko-KR"
-            )
-            result = await poller.result()
+        result = await asyncio.to_thread(analyze)
     except Exception as exc:  # noqa: BLE001
         raise IngestError(f"사진을 읽지 못했습니다: {type(exc).__name__}") from exc
     lines: list[str] = []
@@ -79,7 +84,7 @@ async def transcribe_audio(data: bytes, fmt: str, settings: config.Settings = co
         "phraseList": {"phrases": phrases},
     }
     try:
-        token = await credential().get_token(TOKEN_SCOPE)
+        token = await asyncio.to_thread(credential().get_token, TOKEN_SCOPE)
         async with httpx.AsyncClient(timeout=90) as http:
             resp = await http.post(
                 f"{endpoint}/speechtotext/transcriptions:transcribe",
@@ -100,7 +105,7 @@ async def transcribe_audio(data: bytes, fmt: str, settings: config.Settings = co
         raise IngestError("녹음이 2분을 넘습니다.")
     phrases_out = body.get("phrases") or []
     speakers = {p.get("speaker") for p in phrases_out if p.get("speaker") is not None}
-    label = {}
+    label: dict = {}
     for p in phrases_out:
         spk = p.get("speaker")
         if spk is not None and spk not in label:

@@ -1,0 +1,4832 @@
+{
+ "case_id": "case3",
+ "recorded_at": "2026-11-05T05:30:11.804Z",
+ "events": [
+  {
+   "type": "run_started",
+   "step": null,
+   "data": {
+    "source": "text",
+    "case_id": "case3",
+    "mode": "live"
+   },
+   "t_ms": 0
+  },
+  {
+   "type": "step_started",
+   "step": "input_router",
+   "data": {},
+   "t_ms": 2
+  },
+  {
+   "type": "step_completed",
+   "step": "input_router",
+   "data": {
+    "ms": 0
+   },
+   "t_ms": 2
+  },
+  {
+   "type": "step_started",
+   "step": "intake",
+   "data": {},
+   "t_ms": 3
+  },
+  {
+   "type": "masked",
+   "step": "intake",
+   "data": {
+    "before": "2026.11.4. 청도군 청도읍 고수리 451-7번지 방문. 정민호 씨(45세)는 뇌병변 중증 장애(장애 정도가 심한 장애)로 휠체어를 사용하며 어머니 한옥분 님(73세)과 둘이 살고 있음. 연락처는 어머니 휴대전화 010-6620-1185. 주거는 월세 20만 원의 연립주택 1층. 가구 소득은 어머니 기초연금과 정민호 씨 장애수당, 어머니의 공공근로 수입을 합쳐 월 135만 원이라고 함. 정민호 씨는 욕창 치료와 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였다고 함. 어머니도 무릎 수술을 미루고 있음. 장애인연금은 아직 신청하지 않았다고 함. 어머니가 아플 때 돌봐 줄 다른 가족은 없음. 겨울철 난방비 걱정도 큼. 다음 방문 때 장애인 증명서와 소득 서류 확인 예정.",
+    "after": "2026.11.4. 청도군 청도읍 고수리 [주소1] 방문. [이름1] 씨(45세)는 뇌병변 중증 장애(장애 정도가 심한 장애)로 휠체어를 사용하며 어머니 [이름2] 님(73세)과 둘이 살고 있음. 연락처는 어머니 휴대전화 [전화1]. 주거는 월세 20만 원의 연립주택 1층. 가구 소득은 어머니 기초연금과 [이름1] 씨 장애수당, 어머니의 공공근로 수입을 합쳐 월 135만 원이라고 함. [이름1] 씨는 욕창 치료와 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였다고 함. 어머니도 무릎 수술을 미루고 있음. 장애인연금은 아직 신청하지 않았다고 함. 어머니가 아플 때 돌봐 줄 다른 가족은 없음. 겨울철 난방비 걱정도 큼. 다음 방문 때 장애인 증명서와 소득 서류 확인 예정.",
+    "spans": [
+     {
+      "kind": "address",
+      "placeholder": "[주소1]"
+     },
+     {
+      "kind": "name",
+      "placeholder": "[이름1]"
+     },
+     {
+      "kind": "name",
+      "placeholder": "[이름2]"
+     },
+     {
+      "kind": "phone",
+      "placeholder": "[전화1]"
+     },
+     {
+      "kind": "name",
+      "placeholder": "[이름1]"
+     },
+     {
+      "kind": "name",
+      "placeholder": "[이름1]"
+     }
+    ]
+   },
+   "t_ms": 3
+  },
+  {
+   "type": "step_completed",
+   "step": "intake",
+   "data": {
+    "ms": 0
+   },
+   "t_ms": 3
+  },
+  {
+   "type": "step_started",
+   "step": "profiler",
+   "data": {},
+   "t_ms": 5
+  },
+  {
+   "type": "usage",
+   "step": "profiler",
+   "data": {
+    "input": 4604,
+    "output": 195
+   },
+   "t_ms": 5943
+  },
+  {
+   "type": "tool_call",
+   "step": "profiler",
+   "data": {
+    "tool": "record_case_profile",
+    "args": {
+     "profile": {
+      "age": 45,
+      "assets_krw": null,
+      "caregiver_available": false,
+      "chronic_illness": [
+       "욕창",
+       "뇌병변(재활 치료 중)"
+      ],
+      "crisis_events": [],
+      "disability": "중증",
+      "household_size": 2,
+      "household_type": "기타",
+      "housing": "월세",
+      "isolation_signals": [],
+      "missing_fields": [
+       "assets_krw"
+      ],
+      "monthly_income_krw": 1350000,
+      "monthly_rent_krw": 200000
+     }
+    }
+   },
+   "t_ms": 5945
+  },
+  {
+   "type": "tool_result",
+   "step": "profiler",
+   "data": {
+    "tool": "record_case_profile",
+    "result": "{\"recorded\": true, \"missing_fields\": []}"
+   },
+   "t_ms": 5949
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "방"
+   },
+   "t_ms": 12459
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "문 메모의"
+   },
+   "t_ms": 12460
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 가"
+   },
+   "t_ms": 12461
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "구 정보를 record"
+   },
+   "t_ms": 12462
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "_case_profile로"
+   },
+   "t_ms": 12462
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 기록했습니다."
+   },
+   "t_ms": 12463
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "\n\n- **대"
+   },
+   "t_ms": 12463
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "상자:** "
+   },
+   "t_ms": 12464
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "45세, "
+   },
+   "t_ms": 12464
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "뇌병변 중증 "
+   },
+   "t_ms": 12465
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "장애."
+   },
+   "t_ms": 12465
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 어머니("
+   },
+   "t_ms": 12466
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "73세)와 둘이"
+   },
+   "t_ms": 12466
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 사는 2인 "
+   },
+   "t_ms": 12466
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "가구입니다.\n-"
+   },
+   "t_ms": 12467
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " **주거:** 월세"
+   },
+   "t_ms": 12467
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": ","
+   },
+   "t_ms": 12468
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 월 20만 원."
+   },
+   "t_ms": 12468
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "\n- **소득:** "
+   },
+   "t_ms": 12468
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "가구 월 소"
+   },
+   "t_ms": 12469
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "득 135만 원."
+   },
+   "t_ms": 12469
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "\n- **건"
+   },
+   "t_ms": 12470
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "강:** 욕창과"
+   },
+   "t_ms": 12470
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 12470
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "뇌병변으"
+   },
+   "t_ms": 12471
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "로 재활 치료를"
+   },
+   "t_ms": 12471
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 받고 있습니다"
+   },
+   "t_ms": 12472
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": ".\n- **돌봄"
+   },
+   "t_ms": 12472
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": ":** 어머니가 "
+   },
+   "t_ms": 12473
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "아플 때 돌"
+   },
+   "t_ms": 12473
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "봐 줄 다른 "
+   },
+   "t_ms": 12473
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "가족은 없습니다"
+   },
+   "t_ms": 12474
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": ".\n- **재"
+   },
+   "t_ms": 12474
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "산:** 메"
+   },
+   "t_ms": 12479
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "모에 없"
+   },
+   "t_ms": 12479
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "어 null로 두"
+   },
+   "t_ms": 12480
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "었습니다."
+   },
+   "t_ms": 12480
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "\n- **가구 유형:"
+   },
+   "t_ms": 12480
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "** 선"
+   },
+   "t_ms": 12489
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "택지에 \"모"
+   },
+   "t_ms": 12489
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "자"
+   },
+   "t_ms": 12490
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 12490
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "가구\"가 없어 "
+   },
+   "t_ms": 12490
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "\"기타\"로 "
+   },
+   "t_ms": 12491
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "넣었습니다.\n-"
+   },
+   "t_ms": 12491
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " **고립 신호·"
+   },
+   "t_ms": 12491
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "위기 사건:** "
+   },
+   "t_ms": 12581
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "메모에 명시"
+   },
+   "t_ms": 12582
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "된 내"
+   },
+   "t_ms": 12583
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "용이 없어 빈"
+   },
+   "t_ms": 12584
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 목록으로 두"
+   },
+   "t_ms": 12585
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "었습니다.\n\n도구"
+   },
+   "t_ms": 12586
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 결과상"
+   },
+   "t_ms": 12586
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 누락 필드는 "
+   },
+   "t_ms": 12587
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "없습니다. 자격"
+   },
+   "t_ms": 12587
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": " 판정은 이 단"
+   },
+   "t_ms": 12588
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "계에서 하지 않"
+   },
+   "t_ms": 12588
+  },
+  {
+   "type": "token",
+   "step": "profiler",
+   "data": {
+    "text": "았습니다."
+   },
+   "t_ms": 12589
+  },
+  {
+   "type": "usage",
+   "step": "profiler",
+   "data": {
+    "input": 5182,
+    "output": 353
+   },
+   "t_ms": 12589
+  },
+  {
+   "type": "profile",
+   "step": "profiler",
+   "data": {
+    "profile": {
+     "age": 45,
+     "household_type": "기타",
+     "household_size": 2,
+     "monthly_income_krw": 1350000,
+     "assets_krw": null,
+     "disability": "중증",
+     "chronic_illness": [
+      "욕창",
+      "뇌병변(재활 치료 중)"
+     ],
+     "housing": "월세",
+     "monthly_rent_krw": 200000,
+     "caregiver_available": false,
+     "isolation_signals": [],
+     "crisis_events": [],
+     "missing_fields": []
+    }
+   },
+   "t_ms": 12591
+  },
+  {
+   "type": "step_completed",
+   "step": "profiler",
+   "data": {
+    "ms": 12587
+   },
+   "t_ms": 12591
+  },
+  {
+   "type": "step_started",
+   "step": "match_living",
+   "data": {},
+   "t_ms": 12594
+  },
+  {
+   "type": "step_started",
+   "step": "match_health",
+   "data": {},
+   "t_ms": 12594
+  },
+  {
+   "type": "step_started",
+   "step": "match_care",
+   "data": {},
+   "t_ms": 12594
+  },
+  {
+   "type": "usage",
+   "step": "match_living",
+   "data": {
+    "input": 4848,
+    "output": 50
+   },
+   "t_ms": 15765
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "search_schemes",
+    "args": {
+     "domain": "living"
+    }
+   },
+   "t_ms": 15766
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "search_schemes",
+    "result": "[{\"id\": \"livelihood_benefit\", \"name\": \"생계급여\", \"summary\": \"가구 월 소득이 2026년 기준 중위소득 32% 이하인 가구에 생계비를 지원한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).\", \"required_fields\": [\"household_size\", \"monthly_income_krw\"]}, {\"id\": \"housing_benefit\", \"name\": \"주거급여\", \"summary\": \"가구 월 소득이 기준 중위소득 48% 이하이고 전세·월세로 사는 가구에 임차료…"
+   },
+   "t_ms": 15769
+  },
+  {
+   "type": "usage",
+   "step": "match_care",
+   "data": {
+    "input": 4860,
+    "output": 50
+   },
+   "t_ms": 16673
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "search_schemes",
+    "args": {
+     "domain": "care"
+    }
+   },
+   "t_ms": 16675
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "search_schemes",
+    "result": "[{\"id\": \"basic_pension\", \"name\": \"기초연금\", \"summary\": \"65세 이상 어르신 중 월 소득이 2026년 선정기준액(단독 247만 원, 부부 395만 2천 원) 이하인 사람에게 연금을 지급한다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).\", \"required_fields\": [\"age\", \"monthly_income_krw\", \"household_type\"]}, {\"id\": \"elderly_care_service\", \"name\": \"노인맞춤돌봄서비스\", \"summary\": \"혼자…"
+   },
+   "t_ms": 16681
+  },
+  {
+   "type": "usage",
+   "step": "match_health",
+   "data": {
+    "input": 4848,
+    "output": 50
+   },
+   "t_ms": 16831
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "search_schemes",
+    "args": {
+     "domain": "health"
+    }
+   },
+   "t_ms": 16831
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "search_schemes",
+    "result": "[{\"id\": \"medical_benefit\", \"name\": \"의료급여\", \"summary\": \"가구 월 소득이 기준 중위소득 40% 이하인 가구의 의료비 본인부담을 줄여 준다. 소득인정액은 월 소득만으로 단순화해 판정(재산 환산 생략).\", \"required_fields\": [\"household_size\", \"monthly_income_krw\"]}, {\"id\": \"copay_reduction\", \"name\": \"본인부담 경감(차상위)\", \"summary\": \"가구 월 소득이 기준 중위소득 40% 초과 50% 이하인 차상위 가구…"
+   },
+   "t_ms": 16834
+  },
+  {
+   "type": "usage",
+   "step": "match_living",
+   "data": {
+    "input": 6222,
+    "output": 231
+   },
+   "t_ms": 17610
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "livelihood_benefit"
+    }
+   },
+   "t_ms": 17612
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "housing_benefit"
+    }
+   },
+   "t_ms": 17612
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "emergency_livelihood"
+    }
+   },
+   "t_ms": 17613
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "energy_voucher"
+    }
+   },
+   "t_ms": 17613
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"livelihood_benefit\",\"scheme_name\":\"생계급여\",\"domain\":\"living\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"livelihood_benefit.income\",\"label\":\"월 소득이 기준 중위소득 32% 이하\",\"met\":false,\"used_value\":\"월 소득 1,350,000원 > 기준 1,343,773원(2인 32%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.go.kr/…"
+   },
+   "t_ms": 17622
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"housing_benefit\",\"scheme_name\":\"주거급여\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"housing_benefit.income\",\"label\":\"월 소득이 기준 중위소득 48% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 2,015,660원(2인 48%)\"},{\"id\":\"housing_benefit.housing\",\"label\":\"주거 형태가 전세·월세\",\"met\":true,…"
+   },
+   "t_ms": 17623
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"emergency_livelihood\",\"scheme_name\":\"긴급복지 생계지원\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"emergency_livelihood.income\",\"label\":\"월 소득이 기준 중위소득 75% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 3,149,469원(2인 75%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.…"
+   },
+   "t_ms": 17624
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"energy_voucher\",\"scheme_name\":\"에너지바우처\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"energy_voucher.income\",\"label\":\"월 소득이 기준 중위소득 48% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 2,015,660원(2인 48%)\"},{\"id\":\"energy_voucher.vulnerable\",\"label\":\"65세 이상 또는 장애인 포함\",\"met\"…"
+   },
+   "t_ms": 17627
+  },
+  {
+   "type": "usage",
+   "step": "match_care",
+   "data": {
+    "input": 6366,
+    "output": 288
+   },
+   "t_ms": 18600
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "basic_pension"
+    }
+   },
+   "t_ms": 18603
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "elderly_care_service"
+    }
+   },
+   "t_ms": 18604
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "emergency_safety_service"
+    }
+   },
+   "t_ms": 18604
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "senior_job_public"
+    }
+   },
+   "t_ms": 18605
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "lonely_death_prevention"
+    }
+   },
+   "t_ms": 18605
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"basic_pension\",\"scheme_name\":\"기초연금\",\"domain\":\"care\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"basic_pension.age\",\"label\":\"나이 65세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 65세\"},{\"id\":\"basic_pension.income\",\"label\":\"월 소득이 선정기준액 이하(단독 2,470,000원, 부부 3,952,000원)\",\"met\":true,\"used_value\"…"
+   },
+   "t_ms": 18614
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"elderly_care_service\",\"scheme_name\":\"노인맞춤돌봄서비스\",\"domain\":\"care\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"elderly_care_service.age\",\"label\":\"나이 65세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 65세\"},{\"id\":\"elderly_care_service.living_alone\",\"label\":\"혼자 사는 가구(독거)\",\"met\":false,\"used_value…"
+   },
+   "t_ms": 18615
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"emergency_safety_service\",\"scheme_name\":\"응급안전안심서비스\",\"domain\":\"care\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"emergency_safety_service.age\",\"label\":\"나이 65세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 65세\"},{\"id\":\"emergency_safety_service.living_alone\",\"label\":\"혼자 사는 가구(독거)\",\"met\":false…"
+   },
+   "t_ms": 18616
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"senior_job_public\",\"scheme_name\":\"노인일자리(공익활동)\",\"domain\":\"care\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"senior_job_public.age\",\"label\":\"나이 65세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 65세\"},{\"id\":\"senior_job_public.income\",\"label\":\"월 소득이 선정기준액 이하(단독 2,470,000원, 부부 3,952,000원)\",\"met…"
+   },
+   "t_ms": 18618
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"lonely_death_prevention\",\"scheme_name\":\"고독사 예방 안부 확인\",\"domain\":\"care\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"lonely_death_prevention.age\",\"label\":\"나이 50세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 50세\"},{\"id\":\"lonely_death_prevention.living_alone\",\"label\":\"혼자 사는 가구(독거)\",\"met\":false…"
+   },
+   "t_ms": 18619
+  },
+  {
+   "type": "usage",
+   "step": "match_health",
+   "data": {
+    "input": 6008,
+    "output": 228
+   },
+   "t_ms": 18654
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "medical_benefit"
+    }
+   },
+   "t_ms": 18655
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "copay_reduction"
+    }
+   },
+   "t_ms": 18655
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "disability_pension"
+    }
+   },
+   "t_ms": 18655
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "args": {
+     "scheme_id": "health_checkup_visit"
+    }
+   },
+   "t_ms": 18656
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"medical_benefit\",\"scheme_name\":\"의료급여\",\"domain\":\"health\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"medical_benefit.income\",\"label\":\"월 소득이 기준 중위소득 40% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 1,679,716원(2인 40%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.go.kr/법령/의료급여법\"…"
+   },
+   "t_ms": 18661
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"copay_reduction\",\"scheme_name\":\"본인부담 경감(차상위)\",\"domain\":\"health\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"copay_reduction.income\",\"label\":\"월 소득이 기준 중위소득 40% 초과 50% 이하\",\"met\":false,\"used_value\":\"월 소득 1,350,000원 ≤ 하한 1,679,716원(2인 40%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.l…"
+   },
+   "t_ms": 18662
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"disability_pension\",\"scheme_name\":\"장애인연금\",\"domain\":\"health\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"disability_pension.disability\",\"label\":\"중증 장애\",\"met\":true,\"used_value\":\"장애 정도 중증\"},{\"id\":\"disability_pension.age\",\"label\":\"나이 18세 이상\",\"met\":true,\"used_value\":\"나이 45세 ≥ 기준 18세\"},{\"id\":\"…"
+   },
+   "t_ms": 18663
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "check_eligibility",
+    "result": "{\"scheme_id\":\"health_checkup_visit\",\"scheme_name\":\"건강검진·방문건강관리\",\"domain\":\"health\",\"status\":\"ineligible\",\"conditions\":[{\"id\":\"health_checkup_visit.age\",\"label\":\"나이 65세 이상\",\"met\":false,\"used_value\":\"나이 45세 < 기준 65세\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.go.kr/법령/지역보건법\",\"decision_id\":\"d1…"
+   },
+   "t_ms": 18663
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "모"
+   },
+   "t_ms": 19756
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "든 제도가 비해"
+   },
+   "t_ms": 19756
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "당이라 "
+   },
+   "t_ms": 19925
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "빈 목"
+   },
+   "t_ms": 19926
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "록을"
+   },
+   "t_ms": 19927
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 제출합니다."
+   },
+   "t_ms": 19928
+  },
+  {
+   "type": "usage",
+   "step": "match_care",
+   "data": {
+    "input": 9806,
+    "output": 86
+   },
+   "t_ms": 19931
+  },
+  {
+   "type": "tool_call",
+   "step": "match_care",
+   "data": {
+    "tool": "submit_matches",
+    "args": {
+     "submission": {
+      "recommendations": []
+     }
+    }
+   },
+   "t_ms": 19932
+  },
+  {
+   "type": "tool_result",
+   "step": "match_care",
+   "data": {
+    "tool": "submit_matches",
+    "result": "제출했습니다."
+   },
+   "t_ms": 19937
+  },
+  {
+   "type": "usage",
+   "step": "match_health",
+   "data": {
+    "input": 8434,
+    "output": 302
+   },
+   "t_ms": 21250
+  },
+  {
+   "type": "tool_call",
+   "step": "match_health",
+   "data": {
+    "tool": "submit_matches",
+    "args": {
+     "submission": {
+      "recommendations": [
+       {
+        "scheme_id": "medical_benefit",
+        "decision_id": "d10",
+        "condition_ids": [
+         "medical_benefit.income"
+        ],
+        "priority": 1,
+        "explanation": "월 소득 135만 원이 2인 기준 중위소득 40% 이하입니다. 욕창·재활 치료비 부담으로 치료를 줄인 상황이라 가장 시급합니다."
+       },
+       {
+        "scheme_id": "disability_pension",
+        "decision_id": "d12",
+        "condition_ids": [
+         "disability_pension.disability",
+         "disability_pension.age",
+         "disability_pension.income"
+        ],
+        "priority": 2,
+        "explanation": "중증 장애이고 소득이 단독 기준 이하입니다. 아직 신청 전이므로 신청을 안내해 주세요."
+       }
+      ]
+     }
+    }
+   },
+   "t_ms": 21251
+  },
+  {
+   "type": "tool_result",
+   "step": "match_health",
+   "data": {
+    "tool": "submit_matches",
+    "result": "제출했습니다."
+   },
+   "t_ms": 21255
+  },
+  {
+   "type": "usage",
+   "step": "match_living",
+   "data": {
+    "input": 8688,
+    "output": 457
+   },
+   "t_ms": 21379
+  },
+  {
+   "type": "tool_call",
+   "step": "match_living",
+   "data": {
+    "tool": "submit_matches",
+    "args": {
+     "submission": {
+      "recommendations": [
+       {
+        "scheme_id": "housing_benefit",
+        "decision_id": "d2",
+        "condition_ids": [
+         "housing_benefit.income",
+         "housing_benefit.housing"
+        ],
+        "explanation": "월세 20만 원 거주, 소득 기준 충족. 임차료 지원 우선 안내.",
+        "priority": 1
+       },
+       {
+        "scheme_id": "energy_voucher",
+        "decision_id": "d4",
+        "condition_ids": [
+         "energy_voucher.income",
+         "energy_voucher.vulnerable"
+        ],
+        "explanation": "중증 장애인 포함, 겨울철 난방비 걱정이 커서 신청 안내.",
+        "priority": 2
+       },
+       {
+        "scheme_id": "emergency_livelihood",
+        "decision_id": "d3",
+        "condition_ids": [
+         "emergency_livelihood.income"
+        ],
+        "explanation": "소득 기준은 충족. 치료비·이동비 부담으로 재활을 줄인 상황이라 위기 사유 해당 여부는 담당자가 확인해야 함.",
+        "priority": 3,
+        "follow_up_questions": [
+         "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인",
+         "재활 치료 중단 및 어머니 수술 지연 등 의료비 부담 정도 확인"
+        ]
+       }
+      ]
+     }
+    }
+   },
+   "t_ms": 21380
+  },
+  {
+   "type": "tool_result",
+   "step": "match_living",
+   "data": {
+    "tool": "submit_matches",
+    "result": "제출했습니다."
+   },
+   "t_ms": 21383
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "돌봄 분야 "
+   },
+   "t_ms": 23909
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "제도 5개를 모"
+   },
+   "t_ms": 23909
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "두 판"
+   },
+   "t_ms": 23909
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "정한"
+   },
+   "t_ms": 23909
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 결과,"
+   },
+   "t_ms": 23909
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 모두 비"
+   },
+   "t_ms": 23910
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "해당(ineligible)"
+   },
+   "t_ms": 23914
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "이었"
+   },
+   "t_ms": 23914
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "습니다. 그래서"
+   },
+   "t_ms": 23915
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 추천 없이 "
+   },
+   "t_ms": 23915
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "빈 목록을"
+   },
+   "t_ms": 23916
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 제출했습니다."
+   },
+   "t_ms": 23916
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "\n\n- **"
+   },
+   "t_ms": 23917
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "기초연금,"
+   },
+   "t_ms": 23917
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 노인일자리,"
+   },
+   "t_ms": 23918
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 노인맞춤"
+   },
+   "t_ms": 23918
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "돌봄서비스, "
+   },
+   "t_ms": 23919
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "응급안전안심서비"
+   },
+   "t_ms": 23919
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "스:** 대"
+   },
+   "t_ms": 23920
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "상자"
+   },
+   "t_ms": 23920
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "가 만"
+   },
+   "t_ms": 23920
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 45세여"
+   },
+   "t_ms": 23921
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "서 65세 이상 "
+   },
+   "t_ms": 23921
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "조"
+   },
+   "t_ms": 23922
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "건에"
+   },
+   "t_ms": 23922
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 맞지 않습니"
+   },
+   "t_ms": 23922
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "다. 월"
+   },
+   "t_ms": 23923
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 소득 135"
+   },
+   "t_ms": 23923
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "만 원은 기초연"
+   },
+   "t_ms": 23924
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "금·노인일자리·"
+   },
+   "t_ms": 23924
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "노인맞춤돌"
+   },
+   "t_ms": 23924
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "봄서비스의 소"
+   },
+   "t_ms": 23925
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "득 기준("
+   },
+   "t_ms": 23925
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "단"
+   },
+   "t_ms": 23926
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "독 247만 원 "
+   },
+   "t_ms": 23926
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "이하)을 충"
+   },
+   "t_ms": 23926
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "족했습니다.\n-"
+   },
+   "t_ms": 23927
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " **노인맞춤"
+   },
+   "t_ms": 23927
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "돌봄서비스,"
+   },
+   "t_ms": 23928
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 응급안전안심서"
+   },
+   "t_ms": 23928
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "비스,"
+   },
+   "t_ms": 23928
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 고독사 예방 "
+   },
+   "t_ms": 23929
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "안부 확인:** "
+   },
+   "t_ms": 23929
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "어머니와 "
+   },
+   "t_ms": 23929
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "둘이 "
+   },
+   "t_ms": 23930
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "사는 가구라 독"
+   },
+   "t_ms": 23930
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "거 조건에 맞"
+   },
+   "t_ms": 23930
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "지 않습니다. "
+   },
+   "t_ms": 23930
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "고독사 예방 "
+   },
+   "t_ms": 23931
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "안부 확인은 50"
+   },
+   "t_ms": 23931
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "세 이상 조건도"
+   },
+   "t_ms": 23931
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 충"
+   },
+   "t_ms": 23932
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "족하지 못했습니"
+   },
+   "t_ms": 23932
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "다.\n\n이번"
+   },
+   "t_ms": 23932
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 23933
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "돌봄 분야에는"
+   },
+   "t_ms": 23933
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 해"
+   },
+   "t_ms": 23933
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "당 "
+   },
+   "t_ms": 23933
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "제도가 없었"
+   },
+   "t_ms": 23934
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "지만, 메"
+   },
+   "t_ms": 23934
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "모에는 다른 분"
+   },
+   "t_ms": 23934
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "야에서 살"
+   },
+   "t_ms": 23934
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "펴볼 만"
+   },
+   "t_ms": 23935
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "한 내"
+   },
+   "t_ms": 23935
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "용이 있습니다."
+   },
+   "t_ms": 23935
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "\n- 장"
+   },
+   "t_ms": 23935
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "애인연금을"
+   },
+   "t_ms": 23935
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 아직 신청하지"
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 않았습니다."
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "\n- 재활 치료와"
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 어"
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "머니의 무릎 "
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "수술을 비"
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "용 때문에 미루"
+   },
+   "t_ms": 23936
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "고 있습니다."
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "\n- 난"
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "방비 "
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "부담이 "
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "큽니다.\n- 어"
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "머니가 아플 때"
+   },
+   "t_ms": 23937
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 돌"
+   },
+   "t_ms": 23938
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "봐 "
+   },
+   "t_ms": 23938
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "줄 다른 가족"
+   },
+   "t_ms": 23938
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "이 없습니다."
+   },
+   "t_ms": 23938
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "\n\n이 부"
+   },
+   "t_ms": 23938
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "분은 건"
+   },
+   "t_ms": 23939
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "강이"
+   },
+   "t_ms": 23939
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "나 생활 분야에"
+   },
+   "t_ms": 23939
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "서 확인하시"
+   },
+   "t_ms": 23939
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": "길"
+   },
+   "t_ms": 23940
+  },
+  {
+   "type": "token",
+   "step": "match_care",
+   "data": {
+    "text": " 권합니다."
+   },
+   "t_ms": 23940
+  },
+  {
+   "type": "usage",
+   "step": "match_care",
+   "data": {
+    "input": 10000,
+    "output": 522
+   },
+   "t_ms": 23976
+  },
+  {
+   "type": "step_completed",
+   "step": "match_care",
+   "data": {
+    "ms": 11386
+   },
+   "t_ms": 23980
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "건강·의료 분야"
+   },
+   "t_ms": 24644
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 24645
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "추"
+   },
+   "t_ms": 24646
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "천 2건"
+   },
+   "t_ms": 24646
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "을 제출했습니다"
+   },
+   "t_ms": 24647
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": ".\n\n1"
+   },
+   "t_ms": 24647
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": ". **의료급여**"
+   },
+   "t_ms": 24648
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " (dec"
+   },
+   "t_ms": 24648
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "ision_id d10,"
+   },
+   "t_ms": 24649
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 우선순위 1):"
+   },
+   "t_ms": 24649
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 월 소득 "
+   },
+   "t_ms": 24650
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "135만 원이 2인"
+   },
+   "t_ms": 24663
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 가"
+   },
+   "t_ms": 24664
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "구 기준 중위소"
+   },
+   "t_ms": 24665
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "득 40%"
+   },
+   "t_ms": 24665
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "(1"
+   },
+   "t_ms": 24669
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": ",679,716원) 이"
+   },
+   "t_ms": 24670
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "하입니다. 병"
+   },
+   "t_ms": 24670
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "원비 때"
+   },
+   "t_ms": 24670
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "문에 재"
+   },
+   "t_ms": 24671
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "활 치료를 줄"
+   },
+   "t_ms": 24671
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "인 상황이라 가"
+   },
+   "t_ms": 24672
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "장 시급합"
+   },
+   "t_ms": 24672
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "니다.\n2. **장"
+   },
+   "t_ms": 24672
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "애인연금** (decision"
+   },
+   "t_ms": 24673
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "_id d12, 우선"
+   },
+   "t_ms": 24673
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "순위 2): 중증"
+   },
+   "t_ms": 24674
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 장애이"
+   },
+   "t_ms": 24674
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "고 "
+   },
+   "t_ms": 24675
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "월 소득이 단독"
+   },
+   "t_ms": 24675
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 기준 "
+   },
+   "t_ms": 24676
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "140"
+   },
+   "t_ms": 24676
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "만 원 이하입니"
+   },
+   "t_ms": 24676
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "다. 아직 신청"
+   },
+   "t_ms": 24677
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 24677
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "전이라 신청 안"
+   },
+   "t_ms": 24678
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "내가"
+   },
+   "t_ms": 24678
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 필요합니다."
+   },
+   "t_ms": 24678
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "\n\n추"
+   },
+   "t_ms": 24679
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "천하지 않은 제"
+   },
+   "t_ms": 24679
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "도는 2"
+   },
+   "t_ms": 24680
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "건입니다."
+   },
+   "t_ms": 24680
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "\n- **"
+   },
+   "t_ms": 24680
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "본인부담 경감("
+   },
+   "t_ms": 24681
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "차상위)** (d11"
+   },
+   "t_ms": 24681
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "): 소득이 40%"
+   },
+   "t_ms": 24681
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 이하라서 대"
+   },
+   "t_ms": 24682
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "상이 아닙니다"
+   },
+   "t_ms": 24682
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": ".\n- **건강검진"
+   },
+   "t_ms": 24683
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "·방문건강관리**"
+   },
+   "t_ms": 24683
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " (d13): 65세 "
+   },
+   "t_ms": 24683
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "이상 "
+   },
+   "t_ms": 24684
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "대상인"
+   },
+   "t_ms": 24684
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "데 본"
+   },
+   "t_ms": 24684
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "인이"
+   },
+   "t_ms": 24685
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 45세입니다."
+   },
+   "t_ms": 24685
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "\n\n어"
+   },
+   "t_ms": 24685
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "머니("
+   },
+   "t_ms": 24685
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "73세)는 이"
+   },
+   "t_ms": 24685
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 가"
+   },
+   "t_ms": 24686
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "구 "
+   },
+   "t_ms": 24686
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "정"
+   },
+   "t_ms": 24686
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "보로 판정한 대"
+   },
+   "t_ms": 24686
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "상이 아니라서"
+   },
+   "t_ms": 24772
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": " 따"
+   },
+   "t_ms": 24773
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "로 확"
+   },
+   "t_ms": 24774
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "인하지 않았습니"
+   },
+   "t_ms": 24775
+  },
+  {
+   "type": "token",
+   "step": "match_health",
+   "data": {
+    "text": "다."
+   },
+   "t_ms": 24775
+  },
+  {
+   "type": "usage",
+   "step": "match_health",
+   "data": {
+    "input": 9688,
+    "output": 358
+   },
+   "t_ms": 24777
+  },
+  {
+   "type": "step_completed",
+   "step": "match_health",
+   "data": {
+    "ms": 12188
+   },
+   "t_ms": 24781
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "생활"
+   },
+   "t_ms": 25749
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "·"
+   },
+   "t_ms": 25749
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "주"
+   },
+   "t_ms": 25750
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "거 분야 제도 "
+   },
+   "t_ms": 25751
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "4개"
+   },
+   "t_ms": 25752
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "를 모"
+   },
+   "t_ms": 25753
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "두 판정했고, "
+   },
+   "t_ms": 25753
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "추천 3건"
+   },
+   "t_ms": 25754
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "을 제출했습니다"
+   },
+   "t_ms": 25754
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": ".\n\n-"
+   },
+   "t_ms": 25781
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " **주거급여 "
+   },
+   "t_ms": 25782
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "(1"
+   },
+   "t_ms": 25783
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "순위):** 대"
+   },
+   "t_ms": 25783
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "상 판"
+   },
+   "t_ms": 25784
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "정입니다. 월세"
+   },
+   "t_ms": 25784
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 20만 원에"
+   },
+   "t_ms": 25785
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 살고 있고, "
+   },
+   "t_ms": 25785
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "소득 "
+   },
+   "t_ms": 25786
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "135"
+   },
+   "t_ms": 25786
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "만 원이"
+   },
+   "t_ms": 25787
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 2"
+   },
+   "t_ms": 25787
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "인 가"
+   },
+   "t_ms": 25788
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "구 기준(중위소"
+   },
+   "t_ms": 25788
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "득 48%"
+   },
+   "t_ms": 25788
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": ", 약"
+   },
+   "t_ms": 25789
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 201만 원) 이"
+   },
+   "t_ms": 25789
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "하입니다.\n- **"
+   },
+   "t_ms": 25790
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "에너지바우처 ("
+   },
+   "t_ms": 25790
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "2순위):** 대상"
+   },
+   "t_ms": 25790
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 판정입니다. "
+   },
+   "t_ms": 25791
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "중증 장애인이"
+   },
+   "t_ms": 25791
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 있고, "
+   },
+   "t_ms": 25792
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "겨울철 난방비 "
+   },
+   "t_ms": 25792
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "걱정이 "
+   },
+   "t_ms": 25793
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "큽니다.\n- **"
+   },
+   "t_ms": 25793
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "긴급복지 생계지"
+   },
+   "t_ms": 25793
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "원 (3순위):**"
+   },
+   "t_ms": 25794
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 소득 기"
+   },
+   "t_ms": 25794
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "준은 충족했습니"
+   },
+   "t_ms": 25795
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "다. 다"
+   },
+   "t_ms": 25795
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "만 규"
+   },
+   "t_ms": 25795
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "칙은 위기 사"
+   },
+   "t_ms": 25795
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "유를 보지 않아"
+   },
+   "t_ms": 25796
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "서,"
+   },
+   "t_ms": 25796
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 사"
+   },
+   "t_ms": 25796
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "유 "
+   },
+   "t_ms": 25797
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "해당 여부는 담"
+   },
+   "t_ms": 25797
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "당자가 확"
+   },
+   "t_ms": 25797
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "인해야 합니다."
+   },
+   "t_ms": 25798
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 다음 방문 때"
+   },
+   "t_ms": 25798
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 아"
+   },
+   "t_ms": 25798
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "래 두"
+   },
+   "t_ms": 25799
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 가지를 물어보"
+   },
+   "t_ms": 25799
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "시면 됩니다."
+   },
+   "t_ms": 25799
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "\n  - 실"
+   },
+   "t_ms": 25799
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "직·질병 등 "
+   },
+   "t_ms": 25800
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "긴급한"
+   },
+   "t_ms": 25800
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 위기 사유가 "
+   },
+   "t_ms": 25800
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "있었는지"
+   },
+   "t_ms": 25801
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "\n  - 재"
+   },
+   "t_ms": 25801
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "활 치료 "
+   },
+   "t_ms": 25801
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "중단이나 어머니"
+   },
+   "t_ms": 25802
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 25802
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "무릎 수술 지"
+   },
+   "t_ms": 25802
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "연 등 의료비 "
+   },
+   "t_ms": 25802
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "부담이 어"
+   },
+   "t_ms": 25803
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "느 정도인지\n-"
+   },
+   "t_ms": 25803
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " **생계급여 (추"
+   },
+   "t_ms": 25803
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "천 제"
+   },
+   "t_ms": 25803
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "외):** 소득 135"
+   },
+   "t_ms": 25804
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "만 원이 2"
+   },
+   "t_ms": 25804
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "인 가구 기준("
+   },
+   "t_ms": 25804
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "중위소득 "
+   },
+   "t_ms": 25804
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "32%, 1"
+   },
+   "t_ms": 25804
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": ",343,773원)을"
+   },
+   "t_ms": 25805
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 약 6,200"
+   },
+   "t_ms": 25805
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "원 넘어 비"
+   },
+   "t_ms": 25805
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "대상 판"
+   },
+   "t_ms": 25805
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "정입니다.\n\n장"
+   },
+   "t_ms": 25870
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "애인연금을"
+   },
+   "t_ms": 25871
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 아"
+   },
+   "t_ms": 25871
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "직 신청하지 않"
+   },
+   "t_ms": 25872
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "았다는 메"
+   },
+   "t_ms": 25873
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "모가 있습"
+   },
+   "t_ms": 25874
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "니다. 이 "
+   },
+   "t_ms": 25874
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "도"
+   },
+   "t_ms": 25875
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "구의"
+   },
+   "t_ms": 25875
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " 생활"
+   },
+   "t_ms": 25876
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": " "
+   },
+   "t_ms": 25877
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "분야 "
+   },
+   "t_ms": 25878
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "목록에는 없는 "
+   },
+   "t_ms": 25878
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "제도라서 따"
+   },
+   "t_ms": 25878
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "로 판정하지 않"
+   },
+   "t_ms": 25879
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "았습"
+   },
+   "t_ms": 25879
+  },
+  {
+   "type": "token",
+   "step": "match_living",
+   "data": {
+    "text": "니다."
+   },
+   "t_ms": 25879
+  },
+  {
+   "type": "usage",
+   "step": "match_living",
+   "data": {
+    "input": 10662,
+    "output": 511
+   },
+   "t_ms": 25881
+  },
+  {
+   "type": "step_completed",
+   "step": "match_living",
+   "data": {
+    "ms": 13292
+   },
+   "t_ms": 25884
+  },
+  {
+   "type": "step_started",
+   "step": "verifier",
+   "data": {},
+   "t_ms": 25886
+  },
+  {
+   "type": "verified",
+   "step": "verifier",
+   "data": {
+    "eligible": [
+     {
+      "scheme_id": "housing_benefit",
+      "scheme_name": "주거급여",
+      "domain": "living",
+      "status": "eligible",
+      "decision_id": "d2",
+      "condition_ids": [
+       "housing_benefit.income",
+       "housing_benefit.housing"
+      ],
+      "explanation": "월세 20만 원 거주, 소득 기준 충족. 임차료 지원 우선 안내.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "energy_voucher",
+      "scheme_name": "에너지바우처",
+      "domain": "living",
+      "status": "eligible",
+      "decision_id": "d4",
+      "condition_ids": [
+       "energy_voucher.income",
+       "energy_voucher.vulnerable"
+      ],
+      "explanation": "중증 장애인 포함, 겨울철 난방비 걱정이 커서 신청 안내.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "emergency_livelihood",
+      "scheme_name": "긴급복지 생계지원",
+      "domain": "living",
+      "status": "eligible",
+      "decision_id": "d3",
+      "condition_ids": [
+       "emergency_livelihood.income"
+      ],
+      "explanation": "소득 기준은 충족. 치료비·이동비 부담으로 재활을 줄인 상황이라 위기 사유 해당 여부는 담당자가 확인해야 함.",
+      "follow_up_questions": [
+       "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인",
+       "재활 치료 중단 및 어머니 수술 지연 등 의료비 부담 정도 확인"
+      ],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "medical_benefit",
+      "scheme_name": "의료급여",
+      "domain": "health",
+      "status": "eligible",
+      "decision_id": "d10",
+      "condition_ids": [
+       "medical_benefit.income"
+      ],
+      "explanation": "월 소득 135만 원이 2인 기준 중위소득 40% 이하입니다. 욕창·재활 치료비 부담으로 치료를 줄인 상황이라 가장 시급합니다.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "disability_pension",
+      "scheme_name": "장애인연금",
+      "domain": "health",
+      "status": "eligible",
+      "decision_id": "d12",
+      "condition_ids": [
+       "disability_pension.disability",
+       "disability_pension.age",
+       "disability_pension.income"
+      ],
+      "explanation": "중증 장애이고 소득이 단독 기준 이하입니다. 아직 신청 전이므로 신청을 안내해 주세요.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     }
+    ],
+    "unknown": [],
+    "ineligible": [
+     {
+      "scheme_id": "livelihood_benefit",
+      "scheme_name": "생계급여",
+      "domain": "living",
+      "status": "ineligible",
+      "decision_id": "d1",
+      "condition_ids": [
+       "livelihood_benefit.income"
+      ],
+      "explanation": "충족하지 않는 조건: 월 소득이 기준 중위소득 32% 이하.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "copay_reduction",
+      "scheme_name": "본인부담 경감(차상위)",
+      "domain": "health",
+      "status": "ineligible",
+      "decision_id": "d11",
+      "condition_ids": [
+       "copay_reduction.income"
+      ],
+      "explanation": "충족하지 않는 조건: 월 소득이 기준 중위소득 40% 초과 50% 이하.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "health_checkup_visit",
+      "scheme_name": "건강검진·방문건강관리",
+      "domain": "health",
+      "status": "ineligible",
+      "decision_id": "d13",
+      "condition_ids": [
+       "health_checkup_visit.age"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "basic_pension",
+      "scheme_name": "기초연금",
+      "domain": "care",
+      "status": "ineligible",
+      "decision_id": "d5",
+      "condition_ids": [
+       "basic_pension.age"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "elderly_care_service",
+      "scheme_name": "노인맞춤돌봄서비스",
+      "domain": "care",
+      "status": "ineligible",
+      "decision_id": "d6",
+      "condition_ids": [
+       "elderly_care_service.age",
+       "elderly_care_service.living_alone"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 65세 이상, 혼자 사는 가구(독거).",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "emergency_safety_service",
+      "scheme_name": "응급안전안심서비스",
+      "domain": "care",
+      "status": "ineligible",
+      "decision_id": "d7",
+      "condition_ids": [
+       "emergency_safety_service.age",
+       "emergency_safety_service.living_alone"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 65세 이상, 혼자 사는 가구(독거).",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "senior_job_public",
+      "scheme_name": "노인일자리(공익활동)",
+      "domain": "care",
+      "status": "ineligible",
+      "decision_id": "d8",
+      "condition_ids": [
+       "senior_job_public.age"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     },
+     {
+      "scheme_id": "lonely_death_prevention",
+      "scheme_name": "고독사 예방 안부 확인",
+      "domain": "care",
+      "status": "ineligible",
+      "decision_id": "d9",
+      "condition_ids": [
+       "lonely_death_prevention.age",
+       "lonely_death_prevention.living_alone"
+      ],
+      "explanation": "충족하지 않는 조건: 나이 50세 이상, 혼자 사는 가구(독거).",
+      "follow_up_questions": [],
+      "source": "model",
+      "missing_fields": []
+     }
+    ],
+    "removed": [],
+    "failed_domains": [],
+    "verifier_filled": [],
+    "audit_rule_skipped": []
+   },
+   "t_ms": 25886
+  },
+  {
+   "type": "step_completed",
+   "step": "verifier",
+   "data": {
+    "ms": 0
+   },
+   "t_ms": 25886
+  },
+  {
+   "type": "step_started",
+   "step": "documenter",
+   "data": {},
+   "t_ms": 25887
+  },
+  {
+   "type": "usage",
+   "step": "documenter",
+   "data": {
+    "input": 6054,
+    "output": 471
+   },
+   "t_ms": 33528
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "args": {
+     "decision_id": "d2"
+    }
+   },
+   "t_ms": 33530
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "args": {
+     "decision_id": "d3"
+    }
+   },
+   "t_ms": 33530
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "args": {
+     "decision_id": "d4"
+    }
+   },
+   "t_ms": 33530
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "args": {
+     "decision_id": "d10"
+    }
+   },
+   "t_ms": 33531
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "args": {
+     "decision_id": "d12"
+    }
+   },
+   "t_ms": 33531
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "result": "{\"scheme_id\":\"housing_benefit\",\"scheme_name\":\"주거급여\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"housing_benefit.income\",\"label\":\"월 소득이 기준 중위소득 48% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 2,015,660원(2인 48%)\"},{\"id\":\"housing_benefit.housing\",\"label\":\"주거 형태가 전세·월세\",\"met\":true,…"
+   },
+   "t_ms": 33541
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "result": "{\"scheme_id\":\"emergency_livelihood\",\"scheme_name\":\"긴급복지 생계지원\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"emergency_livelihood.income\",\"label\":\"월 소득이 기준 중위소득 75% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 3,149,469원(2인 75%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.…"
+   },
+   "t_ms": 33542
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "result": "{\"scheme_id\":\"energy_voucher\",\"scheme_name\":\"에너지바우처\",\"domain\":\"living\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"energy_voucher.income\",\"label\":\"월 소득이 기준 중위소득 48% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 2,015,660원(2인 48%)\"},{\"id\":\"energy_voucher.vulnerable\",\"label\":\"65세 이상 또는 장애인 포함\",\"met\"…"
+   },
+   "t_ms": 33545
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "result": "{\"scheme_id\":\"medical_benefit\",\"scheme_name\":\"의료급여\",\"domain\":\"health\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"medical_benefit.income\",\"label\":\"월 소득이 기준 중위소득 40% 이하\",\"met\":true,\"used_value\":\"월 소득 1,350,000원 ≤ 기준 1,679,716원(2인 40%)\"}],\"missing_fields\":[],\"source_url\":\"https://www.law.go.kr/법령/의료급여법\"…"
+   },
+   "t_ms": 33545
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "lookup_decision",
+    "result": "{\"scheme_id\":\"disability_pension\",\"scheme_name\":\"장애인연금\",\"domain\":\"health\",\"status\":\"eligible\",\"conditions\":[{\"id\":\"disability_pension.disability\",\"label\":\"중증 장애\",\"met\":true,\"used_value\":\"장애 정도 중증\"},{\"id\":\"disability_pension.age\",\"label\":\"나이 18세 이상\",\"met\":true,\"used_value\":\"나이 45세 ≥ 기준 18세\"},{\"id\":\"…"
+   },
+   "t_ms": 33546
+  },
+  {
+   "type": "usage",
+   "step": "documenter",
+   "data": {
+    "input": 9416,
+    "output": 1891
+   },
+   "t_ms": 45451
+  },
+  {
+   "type": "tool_call",
+   "step": "documenter",
+   "data": {
+    "tool": "submit_draft",
+    "args": {
+     "draft": {
+      "sections": [
+       {
+        "id": "record.basic_info",
+        "text": "방문일 2026.11.4. 청도군 청도읍 고수리 [주소1]. 대상자 [이름1] 씨(45세), 뇌병변 중증 장애, 휠체어 사용. 가구원 2인(어머니 [이름2] 님, 73세). 연락처: 어머니 휴대전화 [전화1]. 월세 20만 원(연립주택 1층). 가구 월 소득 135만 원(기초연금, 장애수당, 어머니 공공근로 수입).",
+        "cited_decisions": []
+       },
+       {
+        "id": "record.summary",
+        "text": "[이름1] 씨는 욕창과 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였음. 어머니도 무릎 수술을 미루고 있음. 어머니가 아플 때 돌봐 줄 다른 가족이 없음. 장애인연금은 미신청 상태. 겨울철 난방비 걱정이 큼.",
+        "cited_decisions": []
+       },
+       {
+        "id": "record.needs",
+        "text": "1) 의료·재활: 치료비와 이동비 부담으로 치료 축소. 2) 주거·생활: 월세 부담, 겨울철 난방비. 3) 소득: 장애인연금 미신청. 4) 돌봄: 대체 돌봄 인력 없음.",
+        "cited_decisions": [
+         "d10",
+         "d2",
+         "d4",
+         "d12"
+        ]
+       },
+       {
+        "id": "record.linked_schemes",
+        "text": "검증 통과 제도: 주거급여(d2: 소득 및 월세 조건 충족), 에너지바우처(d4: 소득 조건 충족, 장애인 포함), 의료급여(d10: 2인 기준 중위소득 40% 이하), 장애인연금(d12: 중증 장애, 18세 이상, 소득 단독 기준 이하, 미신청이므로 신청 안내), 긴급복지 생계지원(d3: 소득 조건만 충족, 위기 사유 해당 여부는 담당자 확인 필요).",
+        "cited_decisions": [
+         "d2",
+         "d4",
+         "d10",
+         "d12",
+         "d3"
+        ]
+       },
+       {
+        "id": "record.follow_up",
+        "text": "확인 필요: 긴급 위기 사유(실직·질병 등) 여부, 재활 중단과 어머니 수술 지연에 따른 의료비 부담 정도, 장애인 증명서와 소득 서류, 재산 정보(현재 미확인).",
+        "cited_decisions": [
+         "d3"
+        ]
+       },
+       {
+        "id": "referral.agency",
+        "text": "[기관명]",
+        "cited_decisions": []
+       },
+       {
+        "id": "referral.subject",
+        "text": "[이름1] 씨(45세), 뇌병변 중증 장애, 욕창·재활 치료 중. 어머니 [이름2] 님(73세)과 2인 가구, 월 소득 135만 원, 월세 20만 원 거주. 치료비와 이동비 부담으로 재활을 줄였고 돌봄 가족이 없음. 연락처 [전화1].",
+        "cited_decisions": []
+       },
+       {
+        "id": "referral.schemes",
+        "text": "의뢰 제도와 근거 조건: 의료급여(월 소득 135만 원 ≤ 2인 40% 기준 1,679,716원), 주거급여(소득 ≤ 2인 48% 기준 2,015,660원, 월세 거주), 에너지바우처(소득 ≤ 2인 48% 기준, 장애인 포함), 장애인연금(중증 장애, 만 18세 이상, 소득 ≤ 단독 기준 140만 원, 미신청), 긴급복지 생계지원(소득 ≤ 2인 75% 기준 3,149,469원 충족, 위기 사유는 담당자 확인 필요).",
+        "cited_decisions": [
+         "d10",
+         "d2",
+         "d4",
+         "d12",
+         "d3"
+        ]
+       },
+       {
+        "id": "referral.officer",
+        "text": "[담당자]",
+        "cited_decisions": []
+       }
+      ],
+      "follow_up_questions": [
+       "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인해 주세요.",
+       "재활 치료 중단과 어머니 무릎 수술 지연으로 인한 의료비 부담 정도는 어느 정도인가요?",
+       "장애인 증명서와 소득 서류를 준비하셨나요?",
+       "재산(예금, 차량 등) 현황은 어떻게 되나요?"
+      ]
+     }
+    }
+   },
+   "t_ms": 45453
+  },
+  {
+   "type": "tool_result",
+   "step": "documenter",
+   "data": {
+    "tool": "submit_draft",
+    "result": "제출했습니다."
+   },
+   "t_ms": 45457
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "상"
+   },
+   "t_ms": 49107
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "담기록지 "
+   },
+   "t_ms": 49108
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "5개 구획과 의"
+   },
+   "t_ms": 49109
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "뢰서 4개 "
+   },
+   "t_ms": 49109
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "구획을 `submit_"
+   },
+   "t_ms": 49110
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "draft`로 제"
+   },
+   "t_ms": 49111
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "출했습니다.\n\n-"
+   },
+   "t_ms": 49111
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " **연"
+   },
+   "t_ms": 49112
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "계 제도:** 의"
+   },
+   "t_ms": 49113
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "료"
+   },
+   "t_ms": 49113
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "급여("
+   },
+   "t_ms": 49114
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "d10), 주거급여"
+   },
+   "t_ms": 49114
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "(d2), 에너지"
+   },
+   "t_ms": 49115
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "바우처(d4), "
+   },
+   "t_ms": 49115
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "장애인연금(d12"
+   },
+   "t_ms": 49115
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "), 긴급복지 "
+   },
+   "t_ms": 49116
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "생계지원(d3)"
+   },
+   "t_ms": 49116
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "입니다. `lookup"
+   },
+   "t_ms": 49117
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "_decision`으로 5"
+   },
+   "t_ms": 49117
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "건"
+   },
+   "t_ms": 49117
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "을"
+   },
+   "t_ms": 49118
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 확인했"
+   },
+   "t_ms": 49118
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "고, 기록"
+   },
+   "t_ms": 49119
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "된 소득 기준과"
+   },
+   "t_ms": 49119
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 조건 모"
+   },
+   "t_ms": 49119
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "두 내용이"
+   },
+   "t_ms": 49120
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 일치했습니다."
+   },
+   "t_ms": 49120
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "\n- **긴급복지"
+   },
+   "t_ms": 49121
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 생계지원:** "
+   },
+   "t_ms": 49121
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "소득 조건만 충"
+   },
+   "t_ms": 49121
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "족했습"
+   },
+   "t_ms": 49121
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "니다. 위기 사"
+   },
+   "t_ms": 49122
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "유에"
+   },
+   "t_ms": 49122
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 해당하는지는 "
+   },
+   "t_ms": 49123
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "담당자가 확인해"
+   },
+   "t_ms": 49124
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "야 한"
+   },
+   "t_ms": 49124
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "다고 적"
+   },
+   "t_ms": 49124
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "었습니다.\n- **"
+   },
+   "t_ms": 49125
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "장애인연금:** "
+   },
+   "t_ms": 49125
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "아직 신청 전이"
+   },
+   "t_ms": 49125
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "라 신청 안내 "
+   },
+   "t_ms": 49126
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "대상으로 적었습"
+   },
+   "t_ms": 49126
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "니다.\n- **다음"
+   },
+   "t_ms": 49126
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 방문 질문:**"
+   },
+   "t_ms": 49127
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 긴급 위기 "
+   },
+   "t_ms": 49127
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "사유, 의료비 "
+   },
+   "t_ms": 49127
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "부담 정도,"
+   },
+   "t_ms": 49128
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 장애인 증명서"
+   },
+   "t_ms": 49128
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "와 소득 서류,"
+   },
+   "t_ms": 49128
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 재산 현"
+   },
+   "t_ms": 49128
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "황 4개"
+   },
+   "t_ms": 49129
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "를 넣었습니다"
+   },
+   "t_ms": 49129
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": ". 재산 "
+   },
+   "t_ms": 49129
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "정보는 가구 정"
+   },
+   "t_ms": 49129
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "보에 없어서"
+   },
+   "t_ms": 49130
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 직"
+   },
+   "t_ms": 49130
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "접 추"
+   },
+   "t_ms": 49131
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "가한 질"
+   },
+   "t_ms": 49131
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "문입니다.\n- **"
+   },
+   "t_ms": 49131
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "빈칸 처"
+   },
+   "t_ms": 49131
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "리:** 의뢰"
+   },
+   "t_ms": 49131
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 기관은"
+   },
+   "t_ms": 49179
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " '"
+   },
+   "t_ms": 49180
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "[기관명]', 담"
+   },
+   "t_ms": 49181
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "당자는 '[담당"
+   },
+   "t_ms": 49181
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "자]'로 비"
+   },
+   "t_ms": 49181
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "워 두었습니다."
+   },
+   "t_ms": 49182
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 개인정보 자리"
+   },
+   "t_ms": 49182
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": "표시자는 그대로"
+   },
+   "t_ms": 49183
+  },
+  {
+   "type": "token",
+   "step": "documenter",
+   "data": {
+    "text": " 두었습니다."
+   },
+   "t_ms": 49185
+  },
+  {
+   "type": "usage",
+   "step": "documenter",
+   "data": {
+    "input": 17906,
+    "output": 441
+   },
+   "t_ms": 49185
+  },
+  {
+   "type": "draft",
+   "step": "documenter",
+   "data": {
+    "sections": [
+     {
+      "id": "record.basic_info",
+      "title": "기본 정보",
+      "text": "방문일 2026.11.4. 청도군 청도읍 고수리 [주소1]. 대상자 [이름1] 씨(45세), 뇌병변 중증 장애, 휠체어 사용. 가구원 2인(어머니 [이름2] 님, 73세). 연락처: 어머니 휴대전화 [전화1]. 월세 20만 원(연립주택 1층). 가구 월 소득 135만 원(기초연금, 장애수당, 어머니 공공근로 수입).",
+      "cited_decisions": []
+     },
+     {
+      "id": "record.summary",
+      "title": "상담 내용 요약",
+      "text": "[이름1] 씨는 욕창과 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였음. 어머니도 무릎 수술을 미루고 있음. 어머니가 아플 때 돌봐 줄 다른 가족이 없음. 장애인연금은 미신청 상태. 겨울철 난방비 걱정이 큼.",
+      "cited_decisions": []
+     },
+     {
+      "id": "record.needs",
+      "title": "욕구 분류",
+      "text": "1) 의료·재활: 치료비와 이동비 부담으로 치료 축소. 2) 주거·생활: 월세 부담, 겨울철 난방비. 3) 소득: 장애인연금 미신청. 4) 돌봄: 대체 돌봄 인력 없음.",
+      "cited_decisions": [
+       "d10",
+       "d2",
+       "d4",
+       "d12"
+      ]
+     },
+     {
+      "id": "record.linked_schemes",
+      "title": "연계 제도",
+      "text": "검증 통과 제도: 주거급여(d2: 소득 및 월세 조건 충족), 에너지바우처(d4: 소득 조건 충족, 장애인 포함), 의료급여(d10: 2인 기준 중위소득 40% 이하), 장애인연금(d12: 중증 장애, 18세 이상, 소득 단독 기준 이하, 미신청이므로 신청 안내), 긴급복지 생계지원(d3: 소득 조건만 충족, 위기 사유 해당 여부는 담당자 확인 필요).",
+      "cited_decisions": [
+       "d2",
+       "d4",
+       "d10",
+       "d12",
+       "d3"
+      ]
+     },
+     {
+      "id": "record.follow_up",
+      "title": "확인 필요 항목과 다음 방문 질문",
+      "text": "확인 필요: 긴급 위기 사유(실직·질병 등) 여부, 재활 중단과 어머니 수술 지연에 따른 의료비 부담 정도, 장애인 증명서와 소득 서류, 재산 정보(현재 미확인).",
+      "cited_decisions": [
+       "d3"
+      ]
+     },
+     {
+      "id": "referral.agency",
+      "title": "의뢰 기관",
+      "text": "[기관명]",
+      "cited_decisions": []
+     },
+     {
+      "id": "referral.subject",
+      "title": "대상자 요약",
+      "text": "[이름1] 씨(45세), 뇌병변 중증 장애, 욕창·재활 치료 중. 어머니 [이름2] 님(73세)과 2인 가구, 월 소득 135만 원, 월세 20만 원 거주. 치료비와 이동비 부담으로 재활을 줄였고 돌봄 가족이 없음. 연락처 [전화1].",
+      "cited_decisions": []
+     },
+     {
+      "id": "referral.schemes",
+      "title": "의뢰 제도와 근거 조건",
+      "text": "의뢰 제도와 근거 조건: 의료급여(월 소득 135만 원 ≤ 2인 40% 기준 1,679,716원), 주거급여(소득 ≤ 2인 48% 기준 2,015,660원, 월세 거주), 에너지바우처(소득 ≤ 2인 48% 기준, 장애인 포함), 장애인연금(중증 장애, 만 18세 이상, 소득 ≤ 단독 기준 140만 원, 미신청), 긴급복지 생계지원(소득 ≤ 2인 75% 기준 3,149,469원 충족, 위기 사유는 담당자 확인 필요).",
+      "cited_decisions": [
+       "d10",
+       "d2",
+       "d4",
+       "d12",
+       "d3"
+      ]
+     },
+     {
+      "id": "referral.officer",
+      "title": "담당자",
+      "text": "[담당자]",
+      "cited_decisions": []
+     }
+    ],
+    "follow_up_questions": [
+     "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인해 주세요.",
+     "재활 치료 중단과 어머니 무릎 수술 지연으로 인한 의료비 부담 정도는 어느 정도인가요?",
+     "장애인 증명서와 소득 서류를 준비하셨나요?",
+     "재산(예금, 차량 등) 현황은 어떻게 되나요?"
+    ]
+   },
+   "t_ms": 49189
+  },
+  {
+   "type": "step_completed",
+   "step": "documenter",
+   "data": {
+    "ms": 23301
+   },
+   "t_ms": 49189
+  },
+  {
+   "type": "step_started",
+   "step": "referral_gate",
+   "data": {},
+   "t_ms": 49189
+  },
+  {
+   "type": "approval_required",
+   "step": "referral_gate",
+   "data": {
+    "request_id": "8efed87a-1f2b-4c3c-a691-3fa6faa7ae7f",
+    "scheme_ids": [
+     "housing_benefit",
+     "energy_voucher",
+     "emergency_livelihood",
+     "medical_benefit",
+     "disability_pension"
+    ],
+    "documents_summary": [
+     "상담기록지(5개 구획)",
+     "서비스 연계 의뢰서(제도 5개)"
+    ]
+   },
+   "t_ms": 49189
+  },
+  {
+   "type": "step_completed",
+   "step": "referral_gate",
+   "data": {
+    "ms": 0
+   },
+   "t_ms": 49190
+  }
+ ],
+ "snapshot": {
+  "verified": {
+   "eligible": [
+    {
+     "scheme_id": "housing_benefit",
+     "scheme_name": "주거급여",
+     "domain": "living",
+     "status": "eligible",
+     "decision_id": "d2",
+     "condition_ids": [
+      "housing_benefit.income",
+      "housing_benefit.housing"
+     ],
+     "explanation": "월세 20만 원 거주, 소득 기준 충족. 임차료 지원 우선 안내.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "energy_voucher",
+     "scheme_name": "에너지바우처",
+     "domain": "living",
+     "status": "eligible",
+     "decision_id": "d4",
+     "condition_ids": [
+      "energy_voucher.income",
+      "energy_voucher.vulnerable"
+     ],
+     "explanation": "중증 장애인 포함, 겨울철 난방비 걱정이 커서 신청 안내.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "emergency_livelihood",
+     "scheme_name": "긴급복지 생계지원",
+     "domain": "living",
+     "status": "eligible",
+     "decision_id": "d3",
+     "condition_ids": [
+      "emergency_livelihood.income"
+     ],
+     "explanation": "소득 기준은 충족. 치료비·이동비 부담으로 재활을 줄인 상황이라 위기 사유 해당 여부는 담당자가 확인해야 함.",
+     "follow_up_questions": [
+      "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인",
+      "재활 치료 중단 및 어머니 수술 지연 등 의료비 부담 정도 확인"
+     ],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "medical_benefit",
+     "scheme_name": "의료급여",
+     "domain": "health",
+     "status": "eligible",
+     "decision_id": "d10",
+     "condition_ids": [
+      "medical_benefit.income"
+     ],
+     "explanation": "월 소득 135만 원이 2인 기준 중위소득 40% 이하입니다. 욕창·재활 치료비 부담으로 치료를 줄인 상황이라 가장 시급합니다.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "disability_pension",
+     "scheme_name": "장애인연금",
+     "domain": "health",
+     "status": "eligible",
+     "decision_id": "d12",
+     "condition_ids": [
+      "disability_pension.disability",
+      "disability_pension.age",
+      "disability_pension.income"
+     ],
+     "explanation": "중증 장애이고 소득이 단독 기준 이하입니다. 아직 신청 전이므로 신청을 안내해 주세요.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    }
+   ],
+   "unknown": [],
+   "ineligible": [
+    {
+     "scheme_id": "livelihood_benefit",
+     "scheme_name": "생계급여",
+     "domain": "living",
+     "status": "ineligible",
+     "decision_id": "d1",
+     "condition_ids": [
+      "livelihood_benefit.income"
+     ],
+     "explanation": "충족하지 않는 조건: 월 소득이 기준 중위소득 32% 이하.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "copay_reduction",
+     "scheme_name": "본인부담 경감(차상위)",
+     "domain": "health",
+     "status": "ineligible",
+     "decision_id": "d11",
+     "condition_ids": [
+      "copay_reduction.income"
+     ],
+     "explanation": "충족하지 않는 조건: 월 소득이 기준 중위소득 40% 초과 50% 이하.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "health_checkup_visit",
+     "scheme_name": "건강검진·방문건강관리",
+     "domain": "health",
+     "status": "ineligible",
+     "decision_id": "d13",
+     "condition_ids": [
+      "health_checkup_visit.age"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "basic_pension",
+     "scheme_name": "기초연금",
+     "domain": "care",
+     "status": "ineligible",
+     "decision_id": "d5",
+     "condition_ids": [
+      "basic_pension.age"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "elderly_care_service",
+     "scheme_name": "노인맞춤돌봄서비스",
+     "domain": "care",
+     "status": "ineligible",
+     "decision_id": "d6",
+     "condition_ids": [
+      "elderly_care_service.age",
+      "elderly_care_service.living_alone"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 65세 이상, 혼자 사는 가구(독거).",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "emergency_safety_service",
+     "scheme_name": "응급안전안심서비스",
+     "domain": "care",
+     "status": "ineligible",
+     "decision_id": "d7",
+     "condition_ids": [
+      "emergency_safety_service.age",
+      "emergency_safety_service.living_alone"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 65세 이상, 혼자 사는 가구(독거).",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "senior_job_public",
+     "scheme_name": "노인일자리(공익활동)",
+     "domain": "care",
+     "status": "ineligible",
+     "decision_id": "d8",
+     "condition_ids": [
+      "senior_job_public.age"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 65세 이상.",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    },
+    {
+     "scheme_id": "lonely_death_prevention",
+     "scheme_name": "고독사 예방 안부 확인",
+     "domain": "care",
+     "status": "ineligible",
+     "decision_id": "d9",
+     "condition_ids": [
+      "lonely_death_prevention.age",
+      "lonely_death_prevention.living_alone"
+     ],
+     "explanation": "충족하지 않는 조건: 나이 50세 이상, 혼자 사는 가구(독거).",
+     "follow_up_questions": [],
+     "source": "model",
+     "missing_fields": []
+    }
+   ],
+   "removed": [],
+   "failed_domains": [],
+   "verifier_filled": [],
+   "audit_rule_skipped": []
+  },
+  "draft": {
+   "sections": [
+    {
+     "id": "record.basic_info",
+     "text": "방문일 2026.11.4. 청도군 청도읍 고수리 [주소1]. 대상자 [이름1] 씨(45세), 뇌병변 중증 장애, 휠체어 사용. 가구원 2인(어머니 [이름2] 님, 73세). 연락처: 어머니 휴대전화 [전화1]. 월세 20만 원(연립주택 1층). 가구 월 소득 135만 원(기초연금, 장애수당, 어머니 공공근로 수입).",
+     "cited_decisions": []
+    },
+    {
+     "id": "record.summary",
+     "text": "[이름1] 씨는 욕창과 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였음. 어머니도 무릎 수술을 미루고 있음. 어머니가 아플 때 돌봐 줄 다른 가족이 없음. 장애인연금은 미신청 상태. 겨울철 난방비 걱정이 큼.",
+     "cited_decisions": []
+    },
+    {
+     "id": "record.needs",
+     "text": "1) 의료·재활: 치료비와 이동비 부담으로 치료 축소. 2) 주거·생활: 월세 부담, 겨울철 난방비. 3) 소득: 장애인연금 미신청. 4) 돌봄: 대체 돌봄 인력 없음.",
+     "cited_decisions": [
+      "d10",
+      "d2",
+      "d4",
+      "d12"
+     ]
+    },
+    {
+     "id": "record.linked_schemes",
+     "text": "검증 통과 제도: 주거급여(d2: 소득 및 월세 조건 충족), 에너지바우처(d4: 소득 조건 충족, 장애인 포함), 의료급여(d10: 2인 기준 중위소득 40% 이하), 장애인연금(d12: 중증 장애, 18세 이상, 소득 단독 기준 이하, 미신청이므로 신청 안내), 긴급복지 생계지원(d3: 소득 조건만 충족, 위기 사유 해당 여부는 담당자 확인 필요).",
+     "cited_decisions": [
+      "d2",
+      "d4",
+      "d10",
+      "d12",
+      "d3"
+     ]
+    },
+    {
+     "id": "record.follow_up",
+     "text": "확인 필요: 긴급 위기 사유(실직·질병 등) 여부, 재활 중단과 어머니 수술 지연에 따른 의료비 부담 정도, 장애인 증명서와 소득 서류, 재산 정보(현재 미확인).",
+     "cited_decisions": [
+      "d3"
+     ]
+    },
+    {
+     "id": "referral.agency",
+     "text": "[기관명]",
+     "cited_decisions": []
+    },
+    {
+     "id": "referral.subject",
+     "text": "[이름1] 씨(45세), 뇌병변 중증 장애, 욕창·재활 치료 중. 어머니 [이름2] 님(73세)과 2인 가구, 월 소득 135만 원, 월세 20만 원 거주. 치료비와 이동비 부담으로 재활을 줄였고 돌봄 가족이 없음. 연락처 [전화1].",
+     "cited_decisions": []
+    },
+    {
+     "id": "referral.schemes",
+     "text": "의뢰 제도와 근거 조건: 의료급여(월 소득 135만 원 ≤ 2인 40% 기준 1,679,716원), 주거급여(소득 ≤ 2인 48% 기준 2,015,660원, 월세 거주), 에너지바우처(소득 ≤ 2인 48% 기준, 장애인 포함), 장애인연금(중증 장애, 만 18세 이상, 소득 ≤ 단독 기준 140만 원, 미신청), 긴급복지 생계지원(소득 ≤ 2인 75% 기준 3,149,469원 충족, 위기 사유는 담당자 확인 필요).",
+     "cited_decisions": [
+      "d10",
+      "d2",
+      "d4",
+      "d12",
+      "d3"
+     ]
+    },
+    {
+     "id": "referral.officer",
+     "text": "[담당자]",
+     "cited_decisions": []
+    }
+   ],
+   "follow_up_questions": [
+    "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인해 주세요.",
+    "재활 치료 중단과 어머니 무릎 수술 지연으로 인한 의료비 부담 정도는 어느 정도인가요?",
+    "장애인 증명서와 소득 서류를 준비하셨나요?",
+    "재산(예금, 차량 등) 현황은 어떻게 되나요?"
+   ]
+  },
+  "approval_request": {
+   "run_id": "d33e158d-2d61-40ad-8fd7-21bf667bde2f",
+   "scheme_ids": [
+    "housing_benefit",
+    "energy_voucher",
+    "emergency_livelihood",
+    "medical_benefit",
+    "disability_pension"
+   ],
+   "documents_summary": [
+    "상담기록지(5개 구획)",
+    "서비스 연계 의뢰서(제도 5개)"
+   ],
+   "draft_snapshot": {
+    "sections": [
+     {
+      "id": "record.basic_info",
+      "text": "방문일 2026.11.4. 청도군 청도읍 고수리 [주소1]. 대상자 [이름1] 씨(45세), 뇌병변 중증 장애, 휠체어 사용. 가구원 2인(어머니 [이름2] 님, 73세). 연락처: 어머니 휴대전화 [전화1]. 월세 20만 원(연립주택 1층). 가구 월 소득 135만 원(기초연금, 장애수당, 어머니 공공근로 수입).",
+      "cited_decisions": []
+     },
+     {
+      "id": "record.summary",
+      "text": "[이름1] 씨는 욕창과 재활 치료를 받고 있으나 병원비와 이동 비용 때문에 재활 치료를 줄였음. 어머니도 무릎 수술을 미루고 있음. 어머니가 아플 때 돌봐 줄 다른 가족이 없음. 장애인연금은 미신청 상태. 겨울철 난방비 걱정이 큼.",
+      "cited_decisions": []
+     },
+     {
+      "id": "record.needs",
+      "text": "1) 의료·재활: 치료비와 이동비 부담으로 치료 축소. 2) 주거·생활: 월세 부담, 겨울철 난방비. 3) 소득: 장애인연금 미신청. 4) 돌봄: 대체 돌봄 인력 없음.",
+      "cited_decisions": [
+       "d10",
+       "d2",
+       "d4",
+       "d12"
+      ]
+     },
+     {
+      "id": "record.linked_schemes",
+      "text": "검증 통과 제도: 주거급여(d2: 소득 및 월세 조건 충족), 에너지바우처(d4: 소득 조건 충족, 장애인 포함), 의료급여(d10: 2인 기준 중위소득 40% 이하), 장애인연금(d12: 중증 장애, 18세 이상, 소득 단독 기준 이하, 미신청이므로 신청 안내), 긴급복지 생계지원(d3: 소득 조건만 충족, 위기 사유 해당 여부는 담당자 확인 필요).",
+      "cited_decisions": [
+       "d2",
+       "d4",
+       "d10",
+       "d12",
+       "d3"
+      ]
+     },
+     {
+      "id": "record.follow_up",
+      "text": "확인 필요: 긴급 위기 사유(실직·질병 등) 여부, 재활 중단과 어머니 수술 지연에 따른 의료비 부담 정도, 장애인 증명서와 소득 서류, 재산 정보(현재 미확인).",
+      "cited_decisions": [
+       "d3"
+      ]
+     },
+     {
+      "id": "referral.agency",
+      "text": "[기관명]",
+      "cited_decisions": []
+     },
+     {
+      "id": "referral.subject",
+      "text": "[이름1] 씨(45세), 뇌병변 중증 장애, 욕창·재활 치료 중. 어머니 [이름2] 님(73세)과 2인 가구, 월 소득 135만 원, 월세 20만 원 거주. 치료비와 이동비 부담으로 재활을 줄였고 돌봄 가족이 없음. 연락처 [전화1].",
+      "cited_decisions": []
+     },
+     {
+      "id": "referral.schemes",
+      "text": "의뢰 제도와 근거 조건: 의료급여(월 소득 135만 원 ≤ 2인 40% 기준 1,679,716원), 주거급여(소득 ≤ 2인 48% 기준 2,015,660원, 월세 거주), 에너지바우처(소득 ≤ 2인 48% 기준, 장애인 포함), 장애인연금(중증 장애, 만 18세 이상, 소득 ≤ 단독 기준 140만 원, 미신청), 긴급복지 생계지원(소득 ≤ 2인 75% 기준 3,149,469원 충족, 위기 사유는 담당자 확인 필요).",
+      "cited_decisions": [
+       "d10",
+       "d2",
+       "d4",
+       "d12",
+       "d3"
+      ]
+     },
+     {
+      "id": "referral.officer",
+      "text": "[담당자]",
+      "cited_decisions": []
+     }
+    ],
+    "follow_up_questions": [
+     "최근 실직·질병 등 긴급 위기 사유가 있었는지 확인해 주세요.",
+     "재활 치료 중단과 어머니 무릎 수술 지연으로 인한 의료비 부담 정도는 어느 정도인가요?",
+     "장애인 증명서와 소득 서류를 준비하셨나요?",
+     "재산(예금, 차량 등) 현황은 어떻게 되나요?"
+    ]
+   }
+  },
+  "profile": {
+   "age": 45,
+   "household_type": "기타",
+   "household_size": 2,
+   "monthly_income_krw": 1350000,
+   "assets_krw": null,
+   "disability": "중증",
+   "chronic_illness": [
+    "욕창",
+    "뇌병변(재활 치료 중)"
+   ],
+   "housing": "월세",
+   "monthly_rent_krw": 200000,
+   "caregiver_available": false,
+   "isolation_signals": [],
+   "crisis_events": [],
+   "missing_fields": []
+  }
+ }
+}

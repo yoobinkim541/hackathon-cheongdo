@@ -163,11 +163,18 @@ async def list_cases():
     for case in load_cases().values():
         path = sample_path(case)
         out.append({
-            "id": case.id, "title": case.title, "household": case.household, "input_type": case.input_type,
+            "id": case.id, "case_id": case.id, "title": case.title, "household": case.household,
+            "summary": case.household, "input_type": case.input_type,
             "media_url": f"/samples/{path.name}" if path else None,
             "replay_available": load_replay(case.id) is not None,
         })
     return out
+
+
+@app.get("/api/features")
+async def features():
+    media = SERVICE.readiness.ai_services_token_ok
+    return {"image_input": media, "audio_input": media, "browser_recording": media, "ask": False, "reapproval": False}
 
 
 @app.get("/api/schemes")
