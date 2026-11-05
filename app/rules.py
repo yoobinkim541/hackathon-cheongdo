@@ -254,6 +254,10 @@ def schemes_by_domain(domain: str) -> list[Scheme]:
 def evaluate(scheme: Scheme, profile: CaseProfile) -> EligibilityResult:
     """Order: any known condition false → ineligible; any required field missing → unknown; else eligible."""
     conditions = RULES[scheme.rule](scheme, profile)
+    receiving = [b for b in profile.current_benefits if len(b.strip()) >= 3 and (scheme.name in b or b.strip() in scheme.name)]
+    if receiving:
+        conditions.append(ConditionResult(id=_cid(scheme, "not_receiving"), label="이미 받는 중이 아님", met=False,
+                                          used_value="받는 중 " + ", ".join(receiving)))
     missing = [f for f in scheme.required_fields if getattr(profile, f) is None]
     if any(c.met is False for c in conditions):
         status = "ineligible"

@@ -97,6 +97,15 @@ def test_emergency_livelihood_needs_legal_crisis_reason():
     assert r.status == "ineligible"
 
 
+def test_scheme_already_received_is_ineligible():
+    s = scheme("basic_pension")
+    base = dict(age=78, household_type="독거", household_size=1, monthly_income_krw=680_000)
+    assert rules.evaluate(s, CaseProfile(**base)).status == "eligible"
+    r = rules.evaluate(s, CaseProfile(**base, current_benefits=["기초연금"]))
+    assert r.status == "ineligible" and r.conditions[-1].id == "basic_pension.not_receiving"
+    assert rules.evaluate(s, CaseProfile(**base, current_benefits=["연금"])).status == "eligible"
+
+
 @pytest.mark.parametrize("s", rules.load_schemes(), ids=lambda s: s.id)
 def test_condition_id_format(s):
     for c in rules.evaluate(s, CaseProfile()).conditions:

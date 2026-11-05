@@ -53,6 +53,7 @@ const FIELD_LABELS = {
   caregiver_available: "보호자 유무",
   isolation_signals: "고립 신호",
   crisis_events: "위기 사건",
+  current_benefits: "받는 중인 제도",
   missing_fields: "알 수 없는 필드",
 };
 const ERROR_LABELS = {

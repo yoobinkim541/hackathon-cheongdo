@@ -76,6 +76,7 @@ class CaseProfile(BaseModel):
     caregiver_available: bool | None = Field(None, description="돌봐 줄 가족·보호자 유무")
     isolation_signals: list[str] = Field(default_factory=list, description="고립 신호")
     crisis_events: list[str] = Field(default_factory=list, description="실직·질병·사망 같은 위기 사건")
+    current_benefits: list[str] = Field(default_factory=list, description="메모에 받고 있다고 적힌 복지 제도 이름(예: 기초연금)")
     missing_fields: list[str] = Field(default_factory=list, description="메모에서 알 수 없는 필드")
 
 

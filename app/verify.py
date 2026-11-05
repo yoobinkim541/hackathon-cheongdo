@@ -28,6 +28,7 @@ FIELD_LABELS = {
     "caregiver_available": "돌봐 줄 가족·보호자 유무",
     "isolation_signals": "고립 신호",
     "crisis_events": "위기 사건",
+    "current_benefits": "받는 중인 제도",
 }
 STATUS_LABELS = {"eligible": "대상 가능성 높음", "unknown": "확인 필요", "ineligible": "대상 아님"}
 _FILLED_PRIORITY = 1000

@@ -15,7 +15,8 @@
       "disability": "없음",
       "housing": "월세",
       "monthly_rent_krw": 150000,
-      "caregiver_available": false
+      "caregiver_available": false,
+      "current_benefits": ["기초연금"]
     },
     "expected_eligible": [
       "livelihood_benefit",
@@ -23,7 +24,6 @@
       "energy_voucher",
       "medical_benefit",
       "health_checkup_visit",
-      "basic_pension",
       "elderly_care_service",
       "emergency_safety_service",
       "senior_job_public",
@@ -31,6 +31,7 @@
     ],
     "expected_unknown": ["emergency_livelihood"],
     "expected_ineligible": [
+      "basic_pension",
       "copay_reduction",
       "disability_pension"
     ],
@@ -238,14 +239,14 @@
       "monthly_income_krw": 750000,
       "disability": "없음",
       "housing": "자가",
-      "caregiver_available": false
+      "caregiver_available": false,
+      "current_benefits": ["기초연금"]
     },
     "expected_eligible": [
       "livelihood_benefit",
       "energy_voucher",
       "medical_benefit",
       "health_checkup_visit",
-      "basic_pension",
       "elderly_care_service",
       "emergency_safety_service",
       "senior_job_public",
@@ -253,6 +254,7 @@
     ],
     "expected_unknown": ["emergency_livelihood"],
     "expected_ineligible": [
+      "basic_pension",
       "housing_benefit",
       "copay_reduction",
       "disability_pension"
