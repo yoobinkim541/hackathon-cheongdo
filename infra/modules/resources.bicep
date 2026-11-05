@@ -155,6 +155,10 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
         targetPort: 8000
         transport: 'auto'
         allowInsecure: false
+        // Runs live in process memory; affinity keeps a browser's SSE stream and approval on the replica that owns the run.
+        stickySessions: {
+          affinity: 'sticky'
+        }
       }
       registries: [
         {
@@ -207,7 +211,17 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
       ]
       scale: {
         minReplicas: 1
-        maxReplicas: 1
+        maxReplicas: 3
+        rules: [
+          {
+            name: 'http-concurrency'
+            http: {
+              metadata: {
+                concurrentRequests: '20'
+              }
+            }
+          }
+        ]
       }
     }
   }

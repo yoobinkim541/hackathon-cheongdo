@@ -126,7 +126,7 @@ resource rateLimitAlert 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
   tags: tags
   properties: {
     displayName: 'Copilot rate limit'
-    description: '3 or more rate_limit traces within 5 minutes'
+    description: 'Any Copilot rate-limit failure (fixed log message copilot_rate_limited) within 5 minutes'
     severity: 2
     enabled: true
     scopes: [appInsightsId]
@@ -135,10 +135,10 @@ resource rateLimitAlert 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
     criteria: {
       allOf: [
         {
-          query: 'traces | where message contains "rate_limit"'
+          query: 'traces | where message startswith "copilot_rate_limited"'
           timeAggregation: 'Count'
           operator: 'GreaterThanOrEqual'
-          threshold: 3
+          threshold: 1
           failingPeriods: {
             numberOfEvaluationPeriods: 1
             minFailingPeriodsToAlert: 1

@@ -178,6 +178,8 @@ async def call_agent(
             await HUB.delete_session(getattr(session, "service_session_id", None))
             run.sessions.pop(step, None)
         if error_code == "rate_limit":
+            # Fixed message text: the Application Insights rate-limit alert matches on it.
+            log.error("copilot_rate_limited step=%s attempt=%s", step, attempt)
             break
         if attempt < config.MAX_ATTEMPTS:
             await emit(UiEvent(type="step_retry", step=step, data={"attempt": attempt + 1, "reason": error_code}))
